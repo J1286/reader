@@ -619,45 +619,95 @@ button:disabled {
 
 /* PRINT / PDF */
 
+@page {
+  size: auto;
+  margin: 20mm;
+}
+
 @media print {
   body {
-    padding: 0;
+    margin: 0 !important;
+    padding: 0 !important;
 
-    background: white;
+    background: white !important;
+
+    color: #222 !important;
   }
 
   .header,
-  .toolbar,
   .cleanup-panel,
   .cleanup-result,
-  .input-box,
   .preset-bar,
+  .theme-controls,
   .chapter-panel,
   .section-title-row,
-  h2,
+  .toolbar,
+  .input-box,
   .stats,
-  .status {
-    display: none;
+  .status,
+  h2 {
+    display: none !important;
   }
 
   .container {
-    max-width: none;
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   .preview-area {
-    padding: 0;
+    width: 100% !important;
 
-    background: white;
+    margin: 0 !important;
+    padding: 0 !important;
+
+    background: white !important;
+
+    overflow: visible !important;
   }
 
   .preview-page {
-    width: 100%;
+    width: 100% !important;
+    max-width: none !important;
 
-    min-height: 0;
+    min-height: 0 !important;
 
-    padding: 0;
+    margin: 0 !important;
+    padding: 0 !important;
 
-    box-shadow: none;
+    background: white !important;
+    color: #222 !important;
+
+    box-shadow: none !important;
+
+    overflow: visible !important;
+  }
+
+  .preview-page.preset-book,
+  .preview-page.preset-ereader,
+  .preview-page.preset-web,
+  .preview-page.preset-manuscript,
+  .preview-page.preset-custom {
+    background: white !important;
+
+    color: #222 !important;
+  }
+
+  .preview-paragraph {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .preview-chapter-title {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  .preview-page::before,
+  .preview-page::after {
+    display: none !important;
   }
 }
 
@@ -1060,7 +1110,6 @@ button.secondary:hover {
 /* CLEAN PDF / PRINT OUTPUT */
 
 @media print {
-
   @page {
     margin: 20mm;
   }
@@ -1100,5 +1149,4 @@ button.secondary:hover {
     background: white !important;
     color: #222 !important;
   }
-
 }
