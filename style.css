@@ -828,6 +828,19 @@ body[data-theme="sepia"] {
   font-weight: 600;
 }
 
+/* SECONDARY BUTTONS */
+
+button.secondary {
+  background: #4b5563;
+  color: white;
+  border-color: #4b5563;
+}
+
+button.secondary:hover {
+  background: #374151;
+  color: white;
+}
+
 /* DRAG AND DROP */
 
 .input-box {
