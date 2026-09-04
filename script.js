@@ -1,11 +1,8 @@
 /* =================================================
    TEXT FORMATTER
-   Clean + Format + Chapters + Export
 ================================================= */
 
-/* =========================================
-   ELEMENTS
-========================================= */
+/* ELEMENTS */
 
 const inputText = document.getElementById("inputText");
 
@@ -51,9 +48,7 @@ const detectChaptersButton = document.getElementById("detectChaptersButton");
 
 const presetButtons = document.querySelectorAll(".preset-button");
 
-/* =========================================
-   CJK
-========================================= */
+/* CJK */
 
 function isCJK(char) {
   if (!char) {
@@ -71,9 +66,7 @@ function isCJK(char) {
   );
 }
 
-/* =========================================
-   CHARACTER WIDTH
-========================================= */
+/* CHARACTER WIDTH */
 
 function characterWidth(char) {
   if (isCJK(char)) {
@@ -118,9 +111,7 @@ function textWidth(text) {
   return width;
 }
 
-/* =========================================
-   TOKENIZATION
-========================================= */
+/* TOKENIZATION */
 
 function tokenize(text) {
   const tokens = [];
@@ -160,9 +151,7 @@ function tokenize(text) {
   return tokens;
 }
 
-/* =========================================
-   WRAPPING
-========================================= */
+/* WRAPPING */
 
 function wrapParagraph(paragraph, maxWidth) {
   const tokens = tokenize(paragraph.trim());
@@ -232,9 +221,7 @@ function formatDocument(text, maxWidth) {
     .map((paragraph) => wrapParagraph(paragraph, maxWidth));
 }
 
-/* =========================================
-   CLEANUP
-========================================= */
+/* CLEANUP */
 
 function cleanSpacing(text) {
   let result = text;
@@ -322,9 +309,7 @@ function joinBrokenLines(text) {
   return result.join("\n");
 }
 
-/*
- * Conservative paragraph detection.
- */
+/* Conservative paragraph detection */
 
 function detectParagraphBreaks(text) {
   const lines = text.split(/\r?\n/);
@@ -424,9 +409,7 @@ function applyCleanup() {
   showStatus("Cleaned text applied.");
 }
 
-/* =========================================
-   CHAPTER DETECTION
-========================================= */
+/* CHAPTER DETECTION */
 
 const chapterPatterns = [
   /^chapter\s+\d+[\s:.\-]*(.*)$/i,
@@ -534,9 +517,7 @@ function renderChapterNavigation(chapters) {
   });
 }
 
-/* =========================================
-   READING PRESETS
-========================================= */
+/* READING PRESETS */
 
 const presetSettings = {
   book: {
@@ -647,9 +628,7 @@ presetButtons.forEach((button) => {
   });
 });
 
-/* =========================================
-   PREVIEW
-========================================= */
+/* PREVIEW */
 
 function renderPreview() {
   const width = parseFloat(lineWidth.value) || 40;
@@ -667,11 +646,6 @@ function renderPreview() {
   widthValue.textContent = pageWidth + "px";
 
   preview.innerHTML = "";
-
-  /*
-   * Re-detect chapters so the
-   * preview always matches input.
-   */
 
   const rawChapters = detectChapters(inputText.value);
 
@@ -729,9 +703,7 @@ function renderPreview() {
   updateStats();
 }
 
-/* =========================================
-   STATS
-========================================= */
+/* STATS */
 
 function updateStats() {
   const text = inputText.value;
@@ -753,9 +725,7 @@ function updateStats() {
     `${characters} characters · ` + `${words} words · ` + `${lines} lines`;
 }
 
-/* =========================================
-   DOWNLOAD
-========================================= */
+/* DOWNLOAD */
 
 function download(blob, filename) {
   const url = URL.createObjectURL(blob);
@@ -775,9 +745,7 @@ function download(blob, filename) {
   URL.revokeObjectURL(url);
 }
 
-/* =========================================
-   COPY
-========================================= */
+/* COPY */
 
 document.getElementById("copyButton").addEventListener("click", async () => {
   const text = getFormattedText();
@@ -795,9 +763,7 @@ document.getElementById("copyButton").addEventListener("click", async () => {
   }
 });
 
-/* =========================================
-   FORMATTED TEXT
-========================================= */
+/* FORMATTED TEXT */
 
 function getFormattedText() {
   const width = parseFloat(lineWidth.value) || 40;
@@ -806,10 +772,6 @@ function getFormattedText() {
 
   return paragraphs.map((paragraph) => paragraph.join("\n")).join("\n\n");
 }
-
-/* =========================================
-   TXT
-========================================= */
 
 document.getElementById("txtButton").addEventListener("click", () => {
   const text = getFormattedText();
@@ -827,17 +789,9 @@ document.getElementById("txtButton").addEventListener("click", () => {
   showStatus("TXT downloaded.");
 });
 
-/* =========================================
-   PDF
-========================================= */
-
 document.getElementById("pdfButton").addEventListener("click", () => {
   window.print();
 });
-
-/* =========================================
-   WORD
-========================================= */
 
 document.getElementById("wordButton").addEventListener("click", async () => {
   const text = getFormattedText();
@@ -913,17 +867,12 @@ document.getElementById("wordButton").addEventListener("click", async () => {
   }
 });
 
-/* =========================================
-   CLEANUP EVENTS
-========================================= */
+/* CLEANUP EVENTS */
 
 analyzeButton.addEventListener("click", analyzeText);
-
 applyButton.addEventListener("click", applyCleanup);
 
-/* =========================================
-   CHAPTER EVENT
-========================================= */
+/* CHAPTER EVENT */
 
 detectChaptersButton.addEventListener("click", () => {
   prepareChapters(inputText.value);
@@ -941,9 +890,7 @@ detectChaptersButton.addEventListener("click", () => {
   }
 });
 
-/* =========================================
-   LIVE PREVIEW
-========================================= */
+/* LIVE PREVIEW */
 
 inputText.addEventListener("input", () => {
   prepareChapters(inputText.value);
@@ -965,9 +912,111 @@ liveControls.forEach((control) => {
   });
 });
 
-/* =========================================
-   MANUAL SETTINGS → CUSTOM
-========================================= */
+/* DRAG AND DROP */
+
+const dropZone = document.getElementById("dropZone");
+
+let dragCounter = 0;
+
+["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+  dropZone.addEventListener(eventName, (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+  });
+});
+
+dropZone.addEventListener("dragenter", () => {
+  dragCounter++;
+
+  dropZone.classList.add("drag-over");
+});
+
+dropZone.addEventListener("dragover", (event) => {
+  event.dataTransfer.dropEffect = "copy";
+});
+
+dropZone.addEventListener("dragleave", () => {
+  dragCounter--;
+
+  if (dragCounter <= 0) {
+    dragCounter = 0;
+
+    dropZone.classList.remove("drag-over");
+  }
+});
+
+dropZone.addEventListener("drop", async (event) => {
+  dragCounter = 0;
+
+  dropZone.classList.remove("drag-over");
+
+  const files = Array.from(event.dataTransfer.files);
+
+  if (files.length > 0) {
+    await importDroppedFile(files[0]);
+
+    return;
+  }
+
+  const text = event.dataTransfer.getData("text/plain");
+
+  if (text.trim()) {
+    inputText.value = text;
+
+    inputText.dispatchEvent(
+      new Event("input", {
+        bubbles: true
+      })
+    );
+
+    showStatus("Text imported.");
+
+    return;
+  }
+
+  showStatus("Nothing usable was dropped.");
+});
+
+async function importDroppedFile(file) {
+  const filename = file.name.toLowerCase();
+
+  const supported =
+    filename.endsWith(".txt") ||
+    filename.endsWith(".md") ||
+    filename.endsWith(".text");
+
+  if (!supported) {
+    showStatus("Please drop a TXT or Markdown file.");
+
+    return;
+  }
+
+  try {
+    const text = await file.text();
+
+    if (!text.trim()) {
+      showStatus("The dropped file is empty.");
+
+      return;
+    }
+
+    inputText.value = text;
+
+    inputText.dispatchEvent(
+      new Event("input", {
+        bubbles: true
+      })
+    );
+
+    showStatus(`Imported ${file.name}.`);
+  } catch (error) {
+    console.error("Could not read dropped file:", error);
+
+    showStatus("Could not read that file.");
+  }
+}
+
+/* MANUAL SETTINGS → CUSTOM */
 
 [
   lineWidth,
@@ -995,9 +1044,7 @@ liveControls.forEach((control) => {
   });
 });
 
-/* =========================================
-   STATUS
-========================================= */
+/* STATUS */
 
 function showStatus(message) {
   status.textContent = message;
@@ -1007,9 +1054,7 @@ function showStatus(message) {
   }, 2000);
 }
 
-/* =========================================
-   THEMES
-========================================= */
+/* THEMES */
 
 const themeButtons = document.querySelectorAll(".theme-button");
 
@@ -1037,9 +1082,7 @@ if (savedTheme) {
   setTheme(savedTheme);
 }
 
-/* =========================================
-   INITIAL STATE
-========================================= */
+/* INITIAL STATE */
 
 prepareChapters(inputText.value);
 
