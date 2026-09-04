@@ -48,6 +48,8 @@ const detectChaptersButton = document.getElementById("detectChaptersButton");
 
 const presetButtons = document.querySelectorAll(".preset-button");
 
+const clearButton = document.getElementById("clearButton");
+
 /* CJK */
 
 function isCJK(char) {
@@ -1113,6 +1115,34 @@ dropZone.addEventListener("drop", async (event) => {
     preview.classList.add("preset-custom");
   });
 });
+
+/* CLEAR DOCUMENT */
+
+function clearDocument() {
+  if (!inputText.value.trim() && !cleanedText.value.trim()) {
+    return;
+  }
+
+  inputText.value = "";
+
+  cleanedText.value = "";
+
+  cleanupResult.classList.add("hidden");
+
+  applyButton.disabled = true;
+
+  changeCount.textContent = "No changes yet";
+
+  detectedChapters = [];
+
+  renderChapterNavigation([]);
+
+  renderPreview();
+
+  showStatus("Document cleared.");
+}
+
+clearButton.addEventListener("click", clearDocument);
 
 /* STATUS */
 
