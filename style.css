@@ -1,0 +1,873 @@
+/* =========================================
+   GLOBAL
+========================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+
+  padding: 30px;
+
+  background: #f3f4f6;
+
+  color: #222;
+
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+.container {
+  max-width: 1200px;
+
+  margin: 0 auto;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.header h1 {
+  margin: 0 0 5px;
+
+  font-size: 28px;
+}
+
+.header p {
+  margin: 0;
+
+  color: #6b7280;
+}
+
+/* =========================================
+   HEADINGS
+========================================= */
+
+h2 {
+  margin: 28px 0 10px;
+
+  font-size: 16px;
+
+  font-weight: 700;
+}
+
+/* =========================================
+   CLEANUP
+========================================= */
+
+.cleanup-panel {
+  padding: 16px;
+
+  background: white;
+
+  border: 1px solid #ddd;
+
+  border-radius: 10px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+
+  flex-wrap: wrap;
+}
+
+.cleanup-options {
+  display: flex;
+
+  gap: 18px;
+
+  flex-wrap: wrap;
+}
+
+.cleanup-buttons {
+  margin-left: auto;
+
+  display: flex;
+
+  gap: 8px;
+}
+
+.cleanup-result {
+  margin-top: 12px;
+
+  padding: 16px;
+
+  background: white;
+
+  border: 1px solid #ddd;
+
+  border-radius: 10px;
+}
+
+.cleanup-result.hidden {
+  display: none;
+}
+
+.cleanup-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 10px;
+}
+
+#changeCount {
+  color: #6b7280;
+
+  font-size: 13px;
+}
+
+#cleanedText {
+  display: block;
+
+  width: 100%;
+
+  min-height: 260px;
+
+  padding: 15px;
+
+  resize: vertical;
+
+  border: 1px solid #ddd;
+
+  border-radius: 7px;
+
+  font: 15px/1.6 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    monospace;
+}
+
+.hint {
+  margin: 8px 0 0;
+
+  color: #6b7280;
+
+  font-size: 13px;
+}
+
+/* =========================================
+   READING PRESETS
+========================================= */
+
+.preset-bar {
+  display: flex;
+
+  gap: 8px;
+
+  flex-wrap: wrap;
+}
+
+.preset-button {
+  background: white;
+
+  color: #374151;
+
+  border: 1px solid #d1d5db;
+
+  padding: 9px 16px;
+}
+
+.preset-button:hover {
+  background: #f9fafb;
+
+  color: #111827;
+}
+
+.preset-button.active {
+  background: #2563eb;
+
+  color: white;
+
+  border-color: #2563eb;
+}
+
+/* =========================================
+   CHAPTERS
+========================================= */
+
+.section-title-row {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+.small-button {
+  padding: 7px 11px;
+
+  font-size: 13px;
+
+  background: #6b7280;
+}
+
+.small-button:hover {
+  background: #4b5563;
+}
+
+.chapter-panel {
+  padding: 10px;
+
+  background: white;
+
+  border: 1px solid #ddd;
+
+  border-radius: 10px;
+
+  max-height: 300px;
+
+  overflow-y: auto;
+}
+
+.chapter-empty {
+  padding: 12px;
+
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+.chapter-item {
+  display: block;
+
+  width: 100%;
+
+  padding: 10px 12px;
+
+  border: 0;
+
+  border-bottom: 1px solid #eee;
+
+  border-radius: 0;
+
+  background: transparent;
+
+  color: #374151;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.chapter-item:last-child {
+  border-bottom: 0;
+}
+
+.chapter-item:hover {
+  background: #f3f4f6;
+
+  color: #111827;
+}
+
+.chapter-number {
+  display: inline-block;
+
+  min-width: 32px;
+
+  margin-right: 8px;
+
+  color: #9ca3af;
+
+  font-size: 12px;
+}
+
+/* =========================================
+   FORMAT TOOLBAR
+========================================= */
+
+.toolbar {
+  padding: 16px;
+
+  background: white;
+
+  border: 1px solid #ddd;
+
+  border-radius: 10px;
+
+  display: flex;
+
+  gap: 18px;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+}
+
+.setting {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+}
+
+.setting label {
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+.setting span {
+  color: #6b7280;
+
+  font-size: 13px;
+}
+
+input[type="number"] {
+  width: 70px;
+
+  padding: 7px 8px;
+
+  border: 1px solid #ccc;
+
+  border-radius: 6px;
+
+  font-size: 14px;
+}
+
+input[type="range"] {
+  width: 130px;
+}
+
+.checkbox {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  font-size: 14px;
+}
+
+.export-buttons {
+  margin-left: auto;
+
+  display: flex;
+
+  gap: 7px;
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+button {
+  padding: 9px 14px;
+
+  border: 0;
+
+  border-radius: 6px;
+
+  background: #2563eb;
+
+  color: white;
+
+  cursor: pointer;
+
+  font-size: 14px;
+}
+
+button:hover {
+  background: #1d4ed8;
+}
+
+button.secondary {
+  background: #4b5563;
+}
+
+button.secondary:hover {
+  background: #374151;
+}
+
+button:disabled {
+  opacity: 0.45;
+
+  cursor: not-allowed;
+}
+
+/* =========================================
+   INPUT
+========================================= */
+
+.input-box {
+  background: white;
+
+  border: 1px solid #ddd;
+
+  border-radius: 10px;
+
+  overflow: hidden;
+}
+
+#inputText {
+  display: block;
+
+  width: 100%;
+
+  min-height: 300px;
+
+  padding: 20px;
+
+  border: 0;
+
+  outline: none;
+
+  resize: vertical;
+
+  font: 16px/1.6 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    monospace;
+}
+
+/* =========================================
+   PREVIEW
+========================================= */
+
+.preview-area {
+  padding: 30px;
+
+  background: #dfe2e6;
+
+  border-radius: 10px;
+
+  overflow-x: auto;
+}
+
+.preview-page {
+  width: 800px;
+
+  max-width: 100%;
+
+  min-height: 700px;
+
+  margin: 0 auto;
+
+  padding: 55px;
+
+  background: white;
+
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.12);
+
+  font-size: 18px;
+
+  line-height: 1.6;
+
+  overflow-wrap: break-word;
+}
+
+.preview-paragraph {
+  margin: 0;
+
+  white-space: pre-wrap;
+
+  overflow-wrap: break-word;
+
+  scroll-margin-top: 30px;
+}
+
+.preview-chapter-title {
+  margin-top: 1.8em;
+
+  margin-bottom: 1em;
+
+  font-size: 1.35em;
+
+  font-weight: 700;
+
+  line-height: 1.3;
+}
+
+/* =========================================
+   BOOK
+========================================= */
+
+.preview-page.preset-book {
+  font-family: Georgia, "Noto Serif CJK TC", "Noto Serif CJK SC",
+    "Times New Roman", serif;
+
+  font-size: 19px;
+
+  line-height: 1.8;
+
+  color: #292524;
+
+  background: #fffdf8;
+}
+
+.preview-page.preset-book .preview-chapter-title {
+  text-align: center;
+
+  font-weight: 600;
+
+  margin-top: 2.5em;
+}
+
+/* =========================================
+   E-READER
+========================================= */
+
+.preview-page.preset-ereader {
+  font-family: "Noto Sans CJK TC", "PingFang TC", "Microsoft JhengHei",
+    system-ui, sans-serif;
+
+  font-size: 21px;
+
+  line-height: 1.85;
+
+  color: #262626;
+}
+
+.preview-page.preset-ereader .preview-chapter-title {
+  font-size: 1.45em;
+
+  margin-top: 2em;
+}
+
+/* =========================================
+   WEB
+========================================= */
+
+.preview-page.preset-web {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+
+  font-size: 17px;
+
+  line-height: 1.65;
+
+  color: #1f2937;
+}
+
+.preview-page.preset-web .preview-chapter-title {
+  border-bottom: 1px solid #ddd;
+
+  padding-bottom: 8px;
+}
+
+/* =========================================
+   MANUSCRIPT
+========================================= */
+
+.preview-page.preset-manuscript {
+  font-family: "Courier New", monospace;
+
+  font-size: 15px;
+
+  line-height: 2;
+
+  color: #222;
+
+  background: white;
+}
+
+.preview-page.preset-manuscript .preview-chapter-title {
+  font-size: 1.1em;
+
+  font-weight: bold;
+
+  text-align: left;
+
+  text-transform: uppercase;
+}
+
+/* =========================================
+   CUSTOM
+========================================= */
+
+.preview-page.preset-custom {
+  font-family: "Noto Sans CJK TC", "Microsoft JhengHei", "PingFang TC",
+    "Segoe UI", sans-serif;
+}
+
+/* =========================================
+   STATS / STATUS
+========================================= */
+
+.stats {
+  margin-top: 12px;
+
+  color: #6b7280;
+
+  font-size: 13px;
+}
+
+.status {
+  min-height: 20px;
+
+  margin-top: 4px;
+
+  color: #2563eb;
+
+  font-size: 13px;
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 800px) {
+  body {
+    padding: 15px;
+  }
+
+  .cleanup-buttons {
+    width: 100%;
+
+    margin-left: 0;
+  }
+
+  .cleanup-buttons button {
+    flex: 1;
+  }
+
+  .export-buttons {
+    width: 100%;
+
+    margin-left: 0;
+  }
+
+  .export-buttons button {
+    flex: 1;
+  }
+
+  .preview-area {
+    padding: 10px;
+  }
+
+  .preview-page {
+    padding: 30px 25px;
+
+    font-size: 16px;
+  }
+
+  .preset-button {
+    flex: 1;
+
+    min-width: 90px;
+  }
+}
+
+/* =========================================
+   PRINT / PDF
+========================================= */
+
+@media print {
+  body {
+    padding: 0;
+
+    background: white;
+  }
+
+  .header,
+  .toolbar,
+  .cleanup-panel,
+  .cleanup-result,
+  .input-box,
+  .preset-bar,
+  .chapter-panel,
+  .section-title-row,
+  h2,
+  .stats,
+  .status {
+    display: none;
+  }
+
+  .container {
+    max-width: none;
+  }
+
+  .preview-area {
+    padding: 0;
+
+    background: white;
+  }
+
+  .preview-page {
+    width: 100%;
+
+    min-height: 0;
+
+    padding: 0;
+
+    box-shadow: none;
+  }
+}
+
+/* =========================================
+   THEMES
+========================================= */
+
+:root {
+  --page-bg: #f5f5f5;
+  --panel-bg: #ffffff;
+  --text-color: #222222;
+  --muted-color: #666666;
+  --border-color: #dddddd;
+  --button-bg: #ffffff;
+  --button-hover: #eeeeee;
+
+  --preview-bg: #ffffff;
+  --preview-text: #222222;
+}
+
+body {
+  background: var(--page-bg);
+  color: var(--text-color);
+}
+
+textarea,
+input,
+select {
+  background: var(--panel-bg);
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+button {
+  background: var(--button-bg);
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+button:hover {
+  background: var(--button-hover);
+}
+
+/* Preview */
+
+#preview {
+  background: var(--preview-bg);
+  color: var(--preview-text);
+}
+
+/* =========================================
+   DARK THEME
+========================================= */
+
+body[data-theme="dark"] {
+  --page-bg: #121212;
+  --panel-bg: #1b1b1b;
+  --text-color: #dddddd;
+  --muted-color: #8f8f8f;
+  --border-color: #303030;
+
+  --button-bg: #202020;
+  --button-hover: #292929;
+
+  --preview-bg: #181818;
+  --preview-text: #dddddd;
+}
+
+/* Main panels */
+
+body[data-theme="dark"] .panel,
+body[data-theme="dark"] section {
+  background: #1b1b1b;
+}
+
+/* Text input */
+
+body[data-theme="dark"] textarea {
+  background: #181818;
+  color: #dddddd;
+  border-color: #303030;
+}
+
+/* Inputs and controls */
+
+body[data-theme="dark"] input,
+body[data-theme="dark"] select,
+body[data-theme="dark"] button {
+  background: #202020;
+  color: #dddddd;
+  border-color: #303030;
+}
+
+/* Checkboxes */
+
+body[data-theme="dark"] input[type="checkbox"] {
+  accent-color: #777777;
+}
+
+/* Buttons */
+
+body[data-theme="dark"] button:hover {
+  background: #292929;
+}
+
+/* Active buttons */
+
+body[data-theme="dark"] .theme-button.active {
+  background: #303030;
+  border-color: #555555;
+  color: #ffffff;
+}
+
+/* Reading preset buttons */
+
+body[data-theme="dark"] .preset-button.active {
+  background: #315fa8;
+  color: white;
+}
+
+/* Preview */
+
+body[data-theme="dark"] #preview {
+  background: #181818;
+  color: #dddddd;
+}
+
+/* =========================================
+   SEPIA THEME
+========================================= */
+
+body[data-theme="sepia"] {
+  --page-bg: #e8dfc9;
+  --panel-bg: #f4ecd9;
+  --text-color: #493d2f;
+  --muted-color: #776957;
+  --border-color: #cdbf9f;
+  --button-bg: #f4ecd9;
+  --button-hover: #e8dcc1;
+
+  --preview-bg: #f7efd9;
+  --preview-text: #493d2f;
+}
+
+/* =========================================
+   THEME BUTTONS
+========================================= */
+
+.theme-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.theme-controls > span {
+  margin-right: 4px;
+  color: var(--muted-color);
+}
+
+.theme-button {
+  padding: 6px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+
+  transition: background 0.15s ease, border-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.theme-button:hover {
+  transform: translateY(-1px);
+}
+
+.theme-button.active {
+  font-weight: 600;
+}

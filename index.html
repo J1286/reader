@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Text Formatter</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.umd.min.js" defer></script>
+
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+
+  <main class="container">
+
+    <header class="header">
+
+      <h1>Text Formatter</h1>
+
+      <p>
+        Clean, organize and format Chinese,
+        English and mixed-language text.
+      </p>
+
+    </header>
+
+    <!-- =========================
+         CLEANUP
+    ========================== -->
+
+    <section>
+
+      <h2>Cleanup</h2>
+
+      <div class="cleanup-panel">
+
+        <div class="cleanup-options">
+
+          <label class="checkbox">
+            <input id="cleanSpaces" type="checkbox" checked>
+            Clean extra spaces
+          </label>
+
+          <label class="checkbox">
+            <input id="detectParagraphs" type="checkbox" checked>
+            Detect possible paragraphs
+          </label>
+
+          <label class="checkbox">
+            <input id="joinBrokenLines" type="checkbox" checked>
+            Join broken lines
+          </label>
+
+        </div>
+
+        <div class="cleanup-buttons">
+
+          <button id="analyzeButton">
+            Analyze Text
+          </button>
+
+          <button id="applyButton" class="secondary" disabled>
+            Apply to Input
+          </button>
+
+        </div>
+
+      </div>
+
+      <div id="cleanupResult" class="cleanup-result hidden">
+
+        <div class="cleanup-header">
+
+          <strong>
+            Suggested cleanup
+          </strong>
+
+          <span id="changeCount">
+            No changes yet
+          </span>
+
+        </div>
+
+        <textarea id="cleanedText" spellcheck="false"></textarea>
+
+        <p class="hint">
+          Review the suggested text before applying it.
+          Your original input will not change until you
+          press "Apply to Input".
+        </p>
+
+      </div>
+
+    </section>
+
+    <!-- =========================
+         READING STYLE
+    ========================== -->
+
+    <section>
+
+      <h2>Reading style</h2>
+
+      <div class="preset-bar">
+
+        <button class="preset-button active" data-preset="book">
+          Book
+        </button>
+
+        <button class="preset-button" data-preset="ereader">
+          E-reader
+        </button>
+
+        <button class="preset-button" data-preset="web">
+          Web
+        </button>
+
+        <button class="preset-button" data-preset="manuscript">
+          Manuscript
+        </button>
+
+        <button class="preset-button" data-preset="custom">
+          Custom
+        </button>
+
+      </div>
+
+    </section>
+
+    <!-- Themes -->
+
+    <div class="theme-controls">
+      <span>Theme:</span>
+
+      <button class="theme-button active" data-theme="light" title="Light theme">
+        ☀️ Light
+      </button>
+
+      <button class="theme-button" data-theme="dark" title="Dark theme">
+        🌙 Dark
+      </button>
+
+      <button class="theme-button" data-theme="sepia" title="Sepia reading theme">
+        📖 Sepia
+      </button>
+    </div>
+
+    <!-- =========================
+         CHAPTERS
+    ========================== -->
+
+    <section>
+
+      <div class="section-title-row">
+
+        <h2>Chapters</h2>
+
+        <button id="detectChaptersButton" class="small-button">
+          Detect chapters
+        </button>
+
+      </div>
+
+      <div id="chapterPanel" class="chapter-panel">
+
+        <div class="chapter-empty">
+          No chapters detected yet.
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =========================
+         FORMAT
+    ========================== -->
+
+    <section>
+
+      <h2>Format</h2>
+
+      <div class="toolbar">
+
+        <div class="setting">
+
+          <label for="lineWidth">
+            Line width
+          </label>
+
+          <input id="lineWidth" type="number" value="40" min="10" max="200">
+
+          <span>units</span>
+
+        </div>
+
+        <div class="setting">
+
+          <label for="fontSize">
+            Font size
+          </label>
+
+          <input id="fontSize" type="number" value="18" min="8" max="48">
+
+          <span>px</span>
+
+        </div>
+
+        <div class="setting">
+
+          <label for="lineSpacing">
+            Line spacing
+          </label>
+
+          <input id="lineSpacing" type="number" value="1.6" min="0.8" max="3" step="0.1">
+
+        </div>
+
+        <div class="setting">
+
+          <label for="paragraphSpacing">
+            Paragraph spacing
+          </label>
+
+          <input id="paragraphSpacing" type="number" value="16" min="0" max="100">
+
+          <span>px</span>
+
+        </div>
+
+        <div class="setting">
+
+          <label for="previewWidth">
+            Preview width
+          </label>
+
+          <input id="previewWidth" type="range" min="500" max="1100" value="800">
+
+          <span id="widthValue">
+            800px
+          </span>
+
+        </div>
+
+        <label class="checkbox">
+
+          <input id="indent" type="checkbox" checked>
+
+          First-line indent
+
+        </label>
+
+        <div class="export-buttons">
+
+          <button id="copyButton" class="secondary">
+            Copy
+          </button>
+
+          <button id="txtButton">
+            TXT
+          </button>
+
+          <button id="pdfButton">
+            PDF
+          </button>
+
+          <button id="wordButton">
+            Word
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =========================
+         INPUT
+    ========================== -->
+
+    <section>
+
+      <h2>Input</h2>
+
+      <div class="input-box">
+
+        <textarea id="inputText" placeholder="Paste or type your text here..."></textarea>
+
+      </div>
+
+    </section>
+
+    <!-- =========================
+         PREVIEW
+    ========================== -->
+
+    <section>
+
+      <h2>Preview</h2>
+
+      <div class="preview-area">
+
+        <article id="preview" class="preview-page preset-book"></article>
+
+      </div>
+
+    </section>
+
+    <div id="stats" class="stats">
+      0 characters ·
+      0 words ·
+      0 lines
+    </div>
+
+    <div id="status" class="status"></div>
+
+  </main>
+
+</body>
+
+</html>
