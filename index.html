@@ -10,9 +10,11 @@
 
   <link rel="stylesheet" href="style.css">
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.11.0/mammoth.browser.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.umd.min.js" defer></script>
 
   <script src="script.js" defer></script>
+
 </head>
 
 <body>
@@ -281,11 +283,29 @@
 
         <div class="drop-overlay">
           <div class="drop-icon">↓</div>
-          <strong>Drop your text file here</strong>
-          <span>or release to import</span>
+
+          <strong>Drop your file here</strong>
+
+          <span>
+            Release to import
+          </span>
         </div>
 
-        <textarea id="inputText" placeholder="Paste text or drag your file here..."></textarea>
+        <textarea id="inputText" placeholder="Paste, type your text, or drag your file here..."></textarea>
+
+        <div class="input-footer">
+
+          <span class="input-hint">
+            Supports TXT, Markdown and Word documents
+          </span>
+
+          <button id="browseFileButton" type="button" class="secondary">
+            Browse file
+          </button>
+
+          <input id="fileInput" type="file" accept=".txt,.md,.text,.docx" hidden>
+
+        </div>
 
       </div>
 
