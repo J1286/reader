@@ -929,3 +929,117 @@ body[data-theme="sepia"] {
   font: 16px/1.6 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     monospace;
 }
+
+/* INPUT FOOTER */
+
+.input-footer {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 10px 14px;
+
+  border-top: 1px solid var(--border-color);
+
+  background: var(--panel-bg);
+}
+
+.input-hint {
+  margin-right: auto;
+
+  color: var(--muted-color);
+
+  font-size: 13px;
+}
+
+#browseFileButton {
+  flex-shrink: 0;
+
+  padding: 7px 12px;
+}
+
+/* DRAG OVER STATE */
+
+.input-box.drag-over {
+  border-color: #2563eb;
+
+  background: rgba(37, 99, 235, 0.06);
+
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.input-box.drag-over textarea {
+  opacity: 0.35;
+}
+
+.drop-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 2;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 6px;
+
+  background: rgba(37, 99, 235, 0.94);
+
+  color: white;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition: opacity 0.2s ease;
+}
+
+.input-box.drag-over .drop-overlay {
+  opacity: 1;
+}
+
+.drop-icon {
+  margin-bottom: 4px;
+
+  font-size: 36px;
+
+  line-height: 1;
+}
+
+.drop-overlay strong {
+  font-size: 18px;
+}
+
+.drop-overlay span {
+  font-size: 14px;
+
+  opacity: 0.85;
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+  .input-footer {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+  .input-hint {
+    margin-right: 0;
+
+    text-align: center;
+  }
+
+  #browseFileButton {
+    width: 100%;
+  }
+}
