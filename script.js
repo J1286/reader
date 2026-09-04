@@ -916,7 +916,124 @@ liveControls.forEach((control) => {
 
 const dropZone = document.getElementById("dropZone");
 
+const browseFileButton = document.getElementById("browseFileButton");
+
+const fileInput = document.getElementById("fileInput");
+
 let dragCounter = 0;
+
+function isSupportedFile(file) {
+  const filename = file.name.toLowerCase();
+
+  return (
+    filename.endsWith(".txt") ||
+    filename.endsWith(".md") ||
+    filename.endsWith(".text") ||
+    filename.endsWith(".docx")
+  );
+}
+
+/* IMPORT TEXT INTO APP */
+
+function loadImportedText(text, filename) {
+  if (!text || !text.trim()) {
+    showStatus("The file appears to be empty.");
+
+    return;
+  }
+
+  inputText.value = text;
+
+  inputText.dispatchEvent(
+    new Event("input", {
+      bubbles: true
+    })
+  );
+
+  showStatus(`Imported ${filename}.`);
+}
+
+async function importTextFile(file) {
+  try {
+    const text = await file.text();
+
+    loadImportedText(text, file.name);
+  } catch (error) {
+    console.error("Could not read text file:", error);
+
+    showStatus("Could not read that text file.");
+  }
+}
+
+async function importWordFile(file) {
+  if (!window.mammoth) {
+    showStatus("Word import library unavailable.");
+
+    console.error("Mammoth.js was not loaded.");
+
+    return;
+  }
+
+  try {
+    showStatus("Reading Word document...");
+
+    const arrayBuffer = await file.arrayBuffer();
+
+    const result = await window.mammoth.extractRawText({
+      arrayBuffer
+    });
+
+    const text = result.value;
+
+    if (result.messages && result.messages.length) {
+      console.info("Word import messages:", result.messages);
+    }
+
+    loadImportedText(text, file.name);
+  } catch (error) {
+    console.error("Could not read Word document:", error);
+
+    showStatus("Could not read that Word document.");
+  }
+}
+
+async function importFile(file) {
+  if (!file) {
+    return;
+  }
+
+  if (!isSupportedFile(file)) {
+    showStatus("Please choose a TXT, Markdown or Word file.");
+
+    return;
+  }
+
+  const filename = file.name.toLowerCase();
+
+  if (filename.endsWith(".docx")) {
+    await importWordFile(file);
+
+    return;
+  }
+
+  await importTextFile(file);
+}
+
+browseFileButton.addEventListener("click", () => {
+  fileInput.click();
+});
+
+fileInput.addEventListener("change", async () => {
+  const file = fileInput.files[0];
+
+  if (file) {
+    await importFile(file);
+  }
+
+  fileInput.value = "";
+});
+
+/* DRAG EVENTS */
 
 ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
   dropZone.addEventListener(eventName, (event) => {
@@ -953,68 +1070,21 @@ dropZone.addEventListener("drop", async (event) => {
   const files = Array.from(event.dataTransfer.files);
 
   if (files.length > 0) {
-    await importDroppedFile(files[0]);
+    await importFile(files[0]);
 
     return;
   }
 
   const text = event.dataTransfer.getData("text/plain");
 
-  if (text.trim()) {
-    inputText.value = text;
-
-    inputText.dispatchEvent(
-      new Event("input", {
-        bubbles: true
-      })
-    );
-
-    showStatus("Text imported.");
+  if (text && text.trim()) {
+    loadImportedText(text, "Dragged text");
 
     return;
   }
 
   showStatus("Nothing usable was dropped.");
 });
-
-async function importDroppedFile(file) {
-  const filename = file.name.toLowerCase();
-
-  const supported =
-    filename.endsWith(".txt") ||
-    filename.endsWith(".md") ||
-    filename.endsWith(".text");
-
-  if (!supported) {
-    showStatus("Please drop a TXT or Markdown file.");
-
-    return;
-  }
-
-  try {
-    const text = await file.text();
-
-    if (!text.trim()) {
-      showStatus("The dropped file is empty.");
-
-      return;
-    }
-
-    inputText.value = text;
-
-    inputText.dispatchEvent(
-      new Event("input", {
-        bubbles: true
-      })
-    );
-
-    showStatus(`Imported ${file.name}.`);
-  } catch (error) {
-    console.error("Could not read dropped file:", error);
-
-    showStatus("Could not read that file.");
-  }
-}
 
 /* MANUAL SETTINGS → CUSTOM */
 
