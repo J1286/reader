@@ -1056,3 +1056,49 @@ button.secondary:hover {
     width: 100%;
   }
 }
+
+/* CLEAN PDF / PRINT OUTPUT */
+
+@media print {
+
+  @page {
+    margin: 20mm;
+  }
+
+  html,
+  body {
+    background: white !important;
+    color: #222 !important;
+  }
+
+  .preview-area {
+    padding: 0 !important;
+    background: white !important;
+  }
+
+  .preview-page {
+    width: 100% !important;
+    max-width: none !important;
+
+    min-height: 0 !important;
+
+    padding: 0 !important;
+
+    margin: 0 !important;
+
+    background: white !important;
+    color: #222 !important;
+
+    box-shadow: none !important;
+  }
+
+  .preview-page.preset-book,
+  .preview-page.preset-ereader,
+  .preview-page.preset-web,
+  .preview-page.preset-manuscript,
+  .preview-page.preset-custom {
+    background: white !important;
+    color: #222 !important;
+  }
+
+}
