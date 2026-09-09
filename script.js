@@ -2,72 +2,76 @@
    TEXT FORMATTER
 ================================================= */
 
-/* ELEMENTS */
+/* =================================================
+   ELEMENTS
+================================================= */
 
 const inputText = document.getElementById("inputText");
-
 const cleanedText = document.getElementById("cleanedText");
-
 const cleanupResult = document.getElementById("cleanupResult");
-
 const changeCount = document.getElementById("changeCount");
-
 const analyzeButton = document.getElementById("analyzeButton");
-
 const applyButton = document.getElementById("applyButton");
-
 const cleanSpaces = document.getElementById("cleanSpaces");
-
 const detectParagraphs = document.getElementById("detectParagraphs");
-
 const joinBrokenLinesCheckbox = document.getElementById("joinBrokenLines");
 
 const lineWidth = document.getElementById("lineWidth");
-
 const fontSize = document.getElementById("fontSize");
-
 const lineSpacing = document.getElementById("lineSpacing");
-
 const paragraphSpacing = document.getElementById("paragraphSpacing");
-
 const previewWidth = document.getElementById("previewWidth");
-
 const widthValue = document.getElementById("widthValue");
-
 const indent = document.getElementById("indent");
 
 const preview = document.getElementById("preview");
-
 const stats = document.getElementById("stats");
-
 const status = document.getElementById("status");
 
 const chapterPanel = document.getElementById("chapterPanel");
-
 const detectChaptersButton = document.getElementById("detectChaptersButton");
 
 const presetButtons = document.querySelectorAll(".preset-button");
-
 const clearButton = document.getElementById("clearButton");
 
+/* =================================================
+   READER ELEMENTS
+================================================= */
+
 const readerView = document.getElementById("readerView");
-
 const readerContent = document.getElementById("readerContent");
-
 const readerTitle = document.getElementById("readerTitle");
-
 const readerMeta = document.getElementById("readerMeta");
-
 const readerProgressBar = document.getElementById("readerProgressBar");
-
 const readerProgressText = document.getElementById("readerProgressText");
 
-/* APP MODES */
+const readerFontDecrease = document.getElementById("readerFontDecrease");
+const readerFontIncrease = document.getElementById("readerFontIncrease");
+const readerFontSize = document.getElementById("readerFontSize");
+
+const readerSpacingDecrease = document.getElementById("readerSpacingDecrease");
+
+const readerSpacingIncrease = document.getElementById("readerSpacingIncrease");
+
+const readerSpacing = document.getElementById("readerSpacing");
+const readerResetButton = document.getElementById("readerResetButton");
+
+const readerThemeButtons = document.querySelectorAll(".reader-theme-button");
+
+const readerPreviousChapter = document.getElementById("readerPreviousChapter");
+
+const readerNextChapter = document.getElementById("readerNextChapter");
+
+const readerChapterIndicator = document.getElementById(
+  "readerChapterIndicator"
+);
+
+/* =================================================
+   APP MODES
+================================================= */
 
 const modeButtons = document.querySelectorAll(".mode-button");
-
 const libraryView = document.getElementById("libraryView");
-
 const formatterView = document.getElementById("formatterView");
 
 let currentMode = localStorage.getItem("textFormatterMode") || "library";
@@ -76,9 +80,7 @@ function setMode(mode) {
   currentMode = mode;
 
   libraryView.classList.toggle("hidden", mode !== "library");
-
   readerView.classList.toggle("hidden", mode !== "reader");
-
   formatterView.classList.toggle("hidden", mode !== "formatter");
 
   modeButtons.forEach((button) => {
@@ -102,18 +104,16 @@ modeButtons.forEach((button) => {
   });
 });
 
-/* BOOK LIBRARY */
+/* =================================================
+   BOOK LIBRARY
+================================================= */
 
 const libraryPanel = document.getElementById("libraryPanel");
-
 const addBookButton = document.getElementById("addBookButton");
-
 const refreshLibraryButton = document.getElementById("refreshLibraryButton");
 
 const DB_NAME = "textFormatterLibrary";
-
 const DB_VERSION = 1;
-
 const STORE_NAME = "books";
 
 let libraryDB = null;
@@ -138,7 +138,6 @@ function openLibraryDB() {
 
     request.onsuccess = () => {
       libraryDB = request.result;
-
       resolve(libraryDB);
     };
 
@@ -157,7 +156,6 @@ async function saveBook(book) {
     const transaction = libraryDB.transaction(STORE_NAME, "readwrite");
 
     const store = transaction.objectStore(STORE_NAME);
-
     const request = store.put(book);
 
     request.onsuccess = () => {
@@ -179,8 +177,28 @@ async function getAllBooks() {
     const transaction = libraryDB.transaction(STORE_NAME, "readonly");
 
     const store = transaction.objectStore(STORE_NAME);
-
     const request = store.getAll();
+
+    request.onsuccess = () => {
+      resolve(request.result);
+    };
+
+    request.onerror = () => {
+      reject(request.error);
+    };
+  });
+}
+
+async function getBook(bookId) {
+  if (!libraryDB) {
+    await openLibraryDB();
+  }
+
+  return new Promise((resolve, reject) => {
+    const transaction = libraryDB.transaction(STORE_NAME, "readonly");
+
+    const store = transaction.objectStore(STORE_NAME);
+    const request = store.get(bookId);
 
     request.onsuccess = () => {
       resolve(request.result);
@@ -201,7 +219,6 @@ async function deleteBook(bookId) {
     const transaction = libraryDB.transaction(STORE_NAME, "readwrite");
 
     const store = transaction.objectStore(STORE_NAME);
-
     const request = store.delete(bookId);
 
     request.onsuccess = () => {
@@ -223,7 +240,6 @@ async function renderLibrary() {
     const empty = document.createElement("div");
 
     empty.className = "library-empty";
-
     empty.textContent = "No books in your library yet.";
 
     libraryPanel.appendChild(empty);
@@ -237,39 +253,28 @@ async function renderLibrary() {
 
   books.forEach((book) => {
     const card = document.createElement("article");
-
     card.className = "book-card";
 
     const icon = document.createElement("div");
-
     icon.className = "book-icon";
-
     icon.textContent = book.type === "docx" ? "📘" : "📖";
 
     const title = document.createElement("div");
-
     title.className = "book-title";
-
     title.textContent = book.title || "Untitled";
 
     const meta = document.createElement("div");
-
     meta.className = "book-meta";
-
     meta.textContent = book.fileName || "Text document";
 
     const type = document.createElement("span");
-
     type.className = "book-type";
-
     type.textContent = book.type || "text";
 
     const progress = document.createElement("div");
-
     progress.className = "book-progress";
 
     const progressBar = document.createElement("div");
-
     progressBar.className = "book-progress-bar";
 
     progressBar.style.width = `${Math.round((book.progress || 0) * 100)}%`;
@@ -277,23 +282,18 @@ async function renderLibrary() {
     progress.appendChild(progressBar);
 
     const actions = document.createElement("div");
-
     actions.className = "book-card-actions";
 
     const openButton = document.createElement("button");
-
     openButton.textContent = "Open";
 
     openButton.addEventListener("click", (event) => {
       event.stopPropagation();
-
       openBook(book.id);
     });
 
     const deleteButton = document.createElement("button");
-
     deleteButton.className = "secondary";
-
     deleteButton.textContent = "Delete";
 
     deleteButton.addEventListener("click", async (event) => {
@@ -308,19 +308,11 @@ async function renderLibrary() {
       await deleteBook(book.id);
 
       if (currentBook && currentBook.id === book.id) {
-        currentBook = {
-          id: null,
-          title: "Untitled",
-          author: "",
-          type: "text",
-          fileName: "",
-          text: "",
-          chapters: [],
-          position: 0,
-          progress: 0
-        };
+        currentBook = createEmptyBook();
 
         inputText.value = "";
+
+        detectedChapters = [];
 
         renderCurrentView();
       }
@@ -331,52 +323,54 @@ async function renderLibrary() {
     });
 
     actions.appendChild(openButton);
-
     actions.appendChild(deleteButton);
 
     card.appendChild(icon);
-
     card.appendChild(title);
-
     card.appendChild(meta);
-
     card.appendChild(type);
-
     card.appendChild(progress);
-
     card.appendChild(actions);
 
-    card.addEventListener("click", () => openBook(book.id));
+    card.addEventListener("click", () => {
+      openBook(book.id);
+    });
 
     libraryPanel.appendChild(card);
   });
 }
 
-async function getBook(bookId) {
-  if (!libraryDB) {
-    await openLibraryDB();
-  }
+/* =================================================
+   CURRENT BOOK
+================================================= */
 
-  return new Promise((resolve, reject) => {
-    const transaction = libraryDB.transaction(STORE_NAME, "readonly");
-
-    const store = transaction.objectStore(STORE_NAME);
-
-    const request = store.get(bookId);
-
-    request.onsuccess = () => {
-      resolve(request.result);
-    };
-
-    request.onerror = () => {
-      reject(request.error);
-    };
-  });
+function createEmptyBook() {
+  return {
+    id: null,
+    title: "Untitled",
+    author: "",
+    type: "text",
+    fileName: "",
+    text: "",
+    chapters: [],
+    position: 0,
+    progress: 0
+  };
 }
 
-function renderCurrentView() {
-  prepareChapters(inputText.value);
-  renderPreview();
+let currentBook = createEmptyBook();
+
+async function updateCurrentBookText(text, persist = false) {
+  currentBook.text = text;
+  inputText.value = text;
+
+  if (persist && currentBook.id) {
+    try {
+      await saveBook(currentBook);
+    } catch (error) {
+      console.error("Could not save book text:", error);
+    }
+  }
 }
 
 async function openBook(bookId) {
@@ -384,7 +378,6 @@ async function openBook(bookId) {
 
   if (!book) {
     showStatus("Book could not be found.");
-
     return;
   }
 
@@ -392,9 +385,7 @@ async function openBook(bookId) {
 
   inputText.value = book.text || "";
 
-  prepareChapters(currentBook.text);
-
-  renderPreview();
+  renderCurrentView();
 
   setMode("reader");
 
@@ -410,47 +401,9 @@ async function openBook(bookId) {
   });
 }
 
-/* CURRENT BOOK */
-
-let currentBook = {
-  id: null,
-  title: "Untitled",
-  author: "",
-  type: "text",
-  fileName: "",
-  text: "",
-  chapters: [],
-  position: 0,
-  progress: 0
-};
-
-function updateCurrentBookText(text) {
-  currentBook.text = text;
-
-  inputText.value = text;
-}
-
-function createBookFromText(text, filename = "Untitled") {
-  const cleanFilename = filename.replace(/\.[^/.]+$/, "");
-
-  currentBook = {
-    id: crypto.randomUUID(),
-    title: cleanFilename || "Untitled",
-    author: "",
-    type: "text",
-    fileName: filename,
-    text,
-    chapters: [],
-    position: 0,
-    progress: 0
-  };
-
-  inputText.value = text;
-  prepareChapters(text);
-  renderCurrentView();
-}
-
-/* CJK */
+/* =================================================
+   CHARACTER / CJK HELPERS
+================================================= */
 
 function isCJK(char) {
   if (!char) {
@@ -467,8 +420,6 @@ function isCJK(char) {
     (code >= 0xac00 && code <= 0xd7af)
   );
 }
-
-/* CHARACTER WIDTH */
 
 function characterWidth(char) {
   if (isCJK(char)) {
@@ -513,30 +464,28 @@ function textWidth(text) {
   return width;
 }
 
-/* TOKENIZATION */
+/* =================================================
+   TOKENIZATION / WRAPPING
+================================================= */
 
 function tokenize(text) {
   const tokens = [];
-
   let current = "";
 
   for (const char of text) {
     if (isCJK(char)) {
       if (current) {
         tokens.push(current);
-
         current = "";
       }
 
       tokens.push(char);
-
       continue;
     }
 
     if (/\s/.test(char)) {
       if (current) {
         tokens.push(current);
-
         current = "";
       }
 
@@ -553,15 +502,12 @@ function tokenize(text) {
   return tokens;
 }
 
-/* WRAPPING */
-
 function wrapParagraph(paragraph, maxWidth) {
   const tokens = tokenize(paragraph.trim());
 
   const lines = [];
 
   let currentLine = "";
-
   let currentWidth = 0;
 
   for (const token of tokens) {
@@ -572,12 +518,10 @@ function wrapParagraph(paragraph, maxWidth) {
         lines.push(currentLine);
 
         currentLine = "";
-
         currentWidth = 0;
       }
 
       currentLine += token;
-
       currentWidth += tokenWidth;
 
       continue;
@@ -591,17 +535,14 @@ function wrapParagraph(paragraph, maxWidth) {
       lines.push(currentLine);
 
       currentLine = token;
-
       currentWidth = tokenWidth;
     } else {
       if (currentLine) {
         currentLine += " ";
-
         currentWidth += spaceWidth;
       }
 
       currentLine += token;
-
       currentWidth += tokenWidth;
     }
   }
@@ -617,13 +558,13 @@ function formatDocument(text, maxWidth) {
   const paragraphs = text.split(/\n\s*\n/);
 
   return paragraphs
-
     .filter((paragraph) => paragraph.trim())
-
     .map((paragraph) => wrapParagraph(paragraph, maxWidth));
 }
 
-/* CLEANUP */
+/* =================================================
+   CLEANUP
+================================================= */
 
 function cleanSpacing(text) {
   let result = text;
@@ -633,7 +574,6 @@ function cleanSpacing(text) {
   result = result.replace(/[ \t]+([，。！？：；,.!?])/g, "$1");
 
   result = result.replace(/「\s+/g, "「");
-
   result = result.replace(/\s+」/g, "」");
 
   return result;
@@ -668,24 +608,20 @@ function joinBrokenLines(text) {
     if (!line) {
       if (paragraph) {
         result.push(paragraph);
-
         paragraph = "";
       }
 
       result.push("");
-
       continue;
     }
 
     if (isLikelyHeading(line)) {
       if (paragraph) {
         result.push(paragraph);
-
         paragraph = "";
       }
 
       result.push(line);
-
       result.push("");
 
       continue;
@@ -693,7 +629,6 @@ function joinBrokenLines(text) {
 
     if (!paragraph) {
       paragraph = line;
-
       continue;
     }
 
@@ -711,11 +646,8 @@ function joinBrokenLines(text) {
   return result.join("\n");
 }
 
-/* Conservative paragraph detection */
-
 function detectParagraphBreaks(text) {
   const lines = text.split(/\r?\n/);
-
   const result = [];
 
   for (let i = 0; i < lines.length; i++) {
@@ -723,7 +655,6 @@ function detectParagraphBreaks(text) {
 
     if (!current) {
       result.push("");
-
       continue;
     }
 
@@ -754,7 +685,6 @@ function analyzeText() {
 
   if (!original.trim()) {
     showStatus("Paste some text first.");
-
     return;
   }
 
@@ -772,14 +702,11 @@ function analyzeText() {
     cleaned = detectParagraphBreaks(cleaned);
   }
 
-  cleaned = cleaned.replace(/\n{3,}/g, "\n\n");
-
-  cleaned = cleaned.trim();
+  cleaned = cleaned.replace(/\n{3,}/g, "\n\n").trim();
 
   cleanedText.value = cleaned;
 
   cleanupResult.classList.remove("hidden");
-
   applyButton.disabled = false;
 
   if (original === cleaned) {
@@ -789,29 +716,28 @@ function analyzeText() {
       cleaned.split(/\r?\n/).length - original.split(/\r?\n/).length
     );
 
-    changeCount.textContent = `${difference} line structure change${
-      difference === 1 ? "" : "s"
-    }`;
+    changeCount.textContent =
+      `${difference} line structure change` + `${difference === 1 ? "" : "s"}`;
   }
 
   showStatus("Text analyzed.");
 }
 
-function applyCleanup() {
+async function applyCleanup() {
   if (!cleanedText.value.trim()) {
     return;
   }
 
-  updateCurrentBookText(cleanedText.value);
-
-  prepareChapters(currentBook.text);
+  await updateCurrentBookText(cleanedText.value, Boolean(currentBook.id));
 
   renderCurrentView();
 
   showStatus("Cleaned text applied.");
 }
 
-/* CHAPTER DETECTION */
+/* =================================================
+   CHAPTER DETECTION
+================================================= */
 
 const chapterPatterns = [
   /^chapter\s+\d+[\s:.\-]*(.*)$/i,
@@ -843,7 +769,6 @@ function detectChapters(text) {
       if (pattern.test(clean)) {
         chapters.push({
           title: clean,
-
           lineIndex: index
         });
 
@@ -858,11 +783,8 @@ function detectChapters(text) {
 let detectedChapters = [];
 
 function prepareChapters(text) {
-  const chapters = detectChapters(text);
-
-  detectedChapters = chapters.map((chapter, index) => ({
+  detectedChapters = detectChapters(text).map((chapter, index) => ({
     ...chapter,
-
     id: `chapter-${index + 1}`
   }));
 
@@ -872,11 +794,10 @@ function prepareChapters(text) {
 function renderChapterNavigation(chapters) {
   chapterPanel.innerHTML = "";
 
-  if (chapters.length === 0) {
+  if (!chapters.length) {
     const empty = document.createElement("div");
 
     empty.className = "chapter-empty";
-
     empty.textContent = "No chapters detected yet.";
 
     chapterPanel.appendChild(empty);
@@ -890,17 +811,13 @@ function renderChapterNavigation(chapters) {
     button.className = "chapter-item";
 
     const number = document.createElement("span");
-
     number.className = "chapter-number";
-
     number.textContent = `${index + 1}.`;
 
     const title = document.createElement("span");
-
     title.textContent = chapter.title;
 
     button.appendChild(number);
-
     button.appendChild(title);
 
     button.addEventListener("click", () => {
@@ -909,7 +826,6 @@ function renderChapterNavigation(chapters) {
       if (target) {
         target.scrollIntoView({
           behavior: "smooth",
-
           block: "start"
         });
       }
@@ -919,54 +835,40 @@ function renderChapterNavigation(chapters) {
   });
 }
 
-/* READING PRESETS */
+/* =================================================
+   READING PRESETS
+================================================= */
 
 const presetSettings = {
   book: {
     fontSize: 19,
-
     lineSpacing: 1.8,
-
     paragraphSpacing: 22,
-
     previewWidth: 760,
-
     indent: true
   },
 
   ereader: {
     fontSize: 21,
-
     lineSpacing: 1.85,
-
     paragraphSpacing: 26,
-
     previewWidth: 680,
-
     indent: true
   },
 
   web: {
     fontSize: 17,
-
     lineSpacing: 1.65,
-
     paragraphSpacing: 18,
-
     previewWidth: 900,
-
     indent: false
   },
 
   manuscript: {
     fontSize: 15,
-
     lineSpacing: 2,
-
     paragraphSpacing: 12,
-
     previewWidth: 800,
-
     indent: false
   }
 };
@@ -979,13 +881,9 @@ function activatePreset(presetName) {
   }
 
   fontSize.value = settings.fontSize;
-
   lineSpacing.value = settings.lineSpacing;
-
   paragraphSpacing.value = settings.paragraphSpacing;
-
   previewWidth.value = settings.previewWidth;
-
   indent.checked = settings.indent;
 
   preview.classList.remove(
@@ -1030,26 +928,35 @@ presetButtons.forEach((button) => {
   });
 });
 
-/* PREVIEW */
+/* =================================================
+   FORMATTER VIEW RENDERING
+================================================= */
+
+function renderCurrentView() {
+  prepareChapters(inputText.value);
+  renderPreview();
+}
+
+/* =================================================
+   PREVIEW
+================================================= */
 
 function renderPreview() {
   const width = parseFloat(lineWidth.value) || 40;
 
   const paragraphs = formatDocument(inputText.value, width);
 
-  preview.style.fontSize = (parseFloat(fontSize.value) || 18) + "px";
+  preview.style.fontSize = `${parseFloat(fontSize.value) || 18}px`;
 
   preview.style.lineHeight = parseFloat(lineSpacing.value) || 1.6;
 
   const pageWidth = parseInt(previewWidth.value, 10) || 800;
 
-  preview.style.width = pageWidth + "px";
+  preview.style.width = `${pageWidth}px`;
 
-  widthValue.textContent = pageWidth + "px";
+  widthValue.textContent = `${pageWidth}px`;
 
   preview.innerHTML = "";
-
-  const rawChapters = detectChapters(inputText.value);
 
   let chapterCounter = 0;
 
@@ -1058,19 +965,18 @@ function renderPreview() {
 
     paragraph.className = "preview-paragraph";
 
-    paragraph.style.marginBottom =
-      (parseInt(paragraphSpacing.value, 10) || 0) + "px";
+    paragraph.style.marginBottom = `${
+      parseInt(paragraphSpacing.value, 10) || 0
+    }px`;
 
     paragraph.style.textIndent = indent.checked && index > 0 ? "2em" : "0";
 
     const fullText = lines.join("\n");
 
-    const chapter = rawChapters.find((item) => fullText.startsWith(item.title));
+    const chapter = detectedChapters[chapterCounter];
 
-    if (chapter && detectedChapters[chapterCounter]) {
-      const chapterInfo = detectedChapters[chapterCounter];
-
-      paragraph.id = chapterInfo.id;
+    if (chapter && fullText.startsWith(chapter.title)) {
+      paragraph.id = chapter.id;
 
       paragraph.classList.add("preview-chapter");
 
@@ -1105,7 +1011,9 @@ function renderPreview() {
   updateStats();
 }
 
-/* STATS */
+/* =================================================
+   STATS
+================================================= */
 
 function updateStats() {
   const text = inputText.value;
@@ -1127,7 +1035,9 @@ function updateStats() {
     `${characters} characters · ` + `${words} words · ` + `${lines} lines`;
 }
 
-/* DOWNLOAD */
+/* =================================================
+   DOWNLOAD
+================================================= */
 
 function download(blob, filename) {
   const url = URL.createObjectURL(blob);
@@ -1135,7 +1045,6 @@ function download(blob, filename) {
   const link = document.createElement("a");
 
   link.href = url;
-
   link.download = filename;
 
   document.body.appendChild(link);
@@ -1147,7 +1056,28 @@ function download(blob, filename) {
   URL.revokeObjectURL(url);
 }
 
-/* COPY */
+/* =================================================
+   FORMATTED TEXT
+================================================= */
+
+function getBookParagraphs(text) {
+  return text
+    .split(/\n\s*\n/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+}
+
+function getFormattedText() {
+  const width = parseFloat(lineWidth.value) || 40;
+
+  const paragraphs = formatDocument(inputText.value, width);
+
+  return paragraphs.map((paragraph) => paragraph.join("\n")).join("\n\n");
+}
+
+/* =================================================
+   COPY
+================================================= */
 
 document.getElementById("copyButton").addEventListener("click", async () => {
   const text = getFormattedText();
@@ -1165,43 +1095,32 @@ document.getElementById("copyButton").addEventListener("click", async () => {
   }
 });
 
-/* FORMATTED TEXT */
+/* =================================================
+   READER CHAPTER NAVIGATION
+================================================= */
 
-function getBookParagraphs(text) {
-  return text
-    .split(/\n\s*\n/)
-    .map((paragraph) => paragraph.trim())
-    .filter(Boolean);
+function getCurrentReaderChapterIndex() {
+  if (!detectedChapters.length) {
+    return 0;
+  }
+
+  const scrollTop = readerContent.scrollTop;
+
+  let currentIndex = 0;
+
+  detectedChapters.forEach((chapter, index) => {
+    const element = document.getElementById(`reader-${chapter.id}`);
+
+    if (element && element.offsetTop <= scrollTop + 100) {
+      currentIndex = index;
+    }
+  });
+
+  return currentIndex;
 }
 
-const readerFontDecrease = document.getElementById("readerFontDecrease");
-
-const readerFontIncrease = document.getElementById("readerFontIncrease");
-
-const readerFontSize = document.getElementById("readerFontSize");
-
-const readerSpacingDecrease = document.getElementById("readerSpacingDecrease");
-
-const readerSpacingIncrease = document.getElementById("readerSpacingIncrease");
-
-const readerSpacing = document.getElementById("readerSpacing");
-
-const readerResetButton = document.getElementById("readerResetButton");
-
-const readerThemeButtons = document.querySelectorAll(".reader-theme-button");
-
-const readerPreviousChapter = document.getElementById("readerPreviousChapter");
-
-const readerNextChapter = document.getElementById("readerNextChapter");
-
-const readerChapterIndicator = document.getElementById(
-  "readerChapterIndicator"
-);
-
 function updateReaderChapterNavigation() {
-  const chapters = detectedChapters;
-
-  if (!chapters.length) {
+  if (!detectedChapters.length) {
     readerChapterIndicator.textContent = "No chapters";
 
     readerPreviousChapter.disabled = true;
@@ -1211,100 +1130,48 @@ function updateReaderChapterNavigation() {
     return;
   }
 
-  const scrollTop = readerContent.scrollTop;
+  const currentIndex = getCurrentReaderChapterIndex();
 
-  let currentIndex = 0;
-
-  chapters.forEach((chapter, index) => {
-    const element = document.getElementById(`reader-${chapter.id}`);
-
-    if (!element) {
-      return;
-    }
-
-    if (element.offsetTop <= scrollTop + 100) {
-      currentIndex = index;
-    }
-  });
-
-  readerChapterIndicator.textContent = `Chapter ${currentIndex + 1} of ${
-    chapters.length
-  }`;
+  readerChapterIndicator.textContent =
+    `Chapter ${currentIndex + 1} of ` + `${detectedChapters.length}`;
 
   readerPreviousChapter.disabled = currentIndex === 0;
 
-  readerNextChapter.disabled = currentIndex === chapters.length - 1;
+  readerNextChapter.disabled = currentIndex === detectedChapters.length - 1;
+}
+
+function goToReaderChapter(index) {
+  if (index < 0 || index >= detectedChapters.length) {
+    return;
+  }
+
+  const chapter = detectedChapters[index];
+
+  const target = document.getElementById(`reader-${chapter.id}`);
+
+  if (target) {
+    readerContent.scrollTo({
+      top: target.offsetTop,
+      behavior: "smooth"
+    });
+  }
 }
 
 readerPreviousChapter.addEventListener("click", () => {
-  if (!detectedChapters.length) {
-    return;
-  }
+  const currentIndex = getCurrentReaderChapterIndex();
 
-  const scrollTop = readerContent.scrollTop;
-
-  let currentIndex = 0;
-
-  detectedChapters.forEach((chapter, index) => {
-    const element = document.getElementById(`reader-${chapter.id}`);
-
-    if (element && element.offsetTop <= scrollTop + 100) {
-      currentIndex = index;
-    }
-  });
-
-  const previousIndex = currentIndex - 1;
-
-  if (previousIndex < 0) {
-    return;
-  }
-
-  const target = document.getElementById(
-    `reader-${detectedChapters[previousIndex].id}`
-  );
-
-  if (target) {
-    readerContent.scrollTo({
-      top: target.offsetTop,
-      behavior: "smooth"
-    });
-  }
+  goToReaderChapter(currentIndex - 1);
 });
 
 readerNextChapter.addEventListener("click", () => {
-  if (!detectedChapters.length) {
-    return;
-  }
+  const currentIndex = getCurrentReaderChapterIndex();
 
-  const scrollTop = readerContent.scrollTop;
-
-  let currentIndex = 0;
-
-  detectedChapters.forEach((chapter, index) => {
-    const element = document.getElementById(`reader-${chapter.id}`);
-
-    if (element && element.offsetTop <= scrollTop + 100) {
-      currentIndex = index;
-    }
-  });
-
-  const nextIndex = currentIndex + 1;
-
-  if (nextIndex >= detectedChapters.length) {
-    return;
-  }
-
-  const target = document.getElementById(
-    `reader-${detectedChapters[nextIndex].id}`
-  );
-
-  if (target) {
-    readerContent.scrollTo({
-      top: target.offsetTop,
-      behavior: "smooth"
-    });
-  }
+  goToReaderChapter(currentIndex + 1);
 });
+
+/* =================================================
+   READER CONTROLS
+================================================= */
 
 function updateReaderControls() {
   const size = parseFloat(fontSize.value) || 18;
@@ -1325,7 +1192,6 @@ readerFontDecrease.addEventListener("click", () => {
 
   fontSize.value = Math.max(8, current - 1);
 
-  updateReaderControls();
   renderReader();
 });
 
@@ -1334,7 +1200,6 @@ readerFontIncrease.addEventListener("click", () => {
 
   fontSize.value = Math.min(48, current + 1);
 
-  updateReaderControls();
   renderReader();
 });
 
@@ -1343,7 +1208,6 @@ readerSpacingDecrease.addEventListener("click", () => {
 
   lineSpacing.value = Math.max(0.8, current - 0.1).toFixed(1);
 
-  updateReaderControls();
   renderReader();
 });
 
@@ -1352,7 +1216,6 @@ readerSpacingIncrease.addEventListener("click", () => {
 
   lineSpacing.value = Math.min(3, current + 0.1).toFixed(1);
 
-  updateReaderControls();
   renderReader();
 });
 
@@ -1363,35 +1226,43 @@ readerResetButton.addEventListener("click", () => {
   previewWidth.value = 800;
   indent.checked = true;
 
-  updateReaderControls();
   renderReader();
 
   showStatus("Reader settings reset.");
 });
 
+/* =================================================
+   READER THEMES
+================================================= */
+
+function setReaderTheme(theme) {
+  document.body.dataset.theme = theme;
+
+  readerThemeButtons.forEach((button) => {
+    button.classList.toggle("active", button.dataset.readerTheme === theme);
+  });
+
+  localStorage.setItem("textFormatterTheme", theme);
+}
+
 readerThemeButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    const theme = button.dataset.readerTheme;
-
-    document.body.dataset.theme = theme;
-
-    readerThemeButtons.forEach((item) => {
-      item.classList.toggle("active", item === button);
-    });
-
-    localStorage.setItem("textFormatterTheme", theme);
+    setReaderTheme(button.dataset.readerTheme);
   });
 });
+
+/* =================================================
+   READER RENDERING
+================================================= */
 
 function renderReader() {
   const text = currentBook.text || inputText.value;
 
-  readerContent.style.fontSize = (parseFloat(fontSize.value) || 18) + "px";
+  readerContent.style.fontSize = `${parseFloat(fontSize.value) || 18}px`;
 
   readerContent.style.lineHeight = parseFloat(lineSpacing.value) || 1.6;
 
-  readerContent.style.maxWidth =
-    (parseInt(previewWidth.value, 10) || 800) + "px";
+  readerContent.style.maxWidth = `${parseInt(previewWidth.value, 10) || 800}px`;
 
   readerTitle.textContent = currentBook.title || "Untitled";
 
@@ -1410,13 +1281,12 @@ function renderReader() {
 
     updateReaderProgress();
     updateReaderControls();
+    updateReaderChapterNavigation();
 
     return;
   }
 
   const paragraphs = getBookParagraphs(text);
-
-  const rawChapters = detectChapters(text);
 
   let chapterCounter = 0;
 
@@ -1425,19 +1295,16 @@ function renderReader() {
 
     paragraph.className = "preview-paragraph";
 
-    paragraph.style.marginBottom =
-      (parseInt(paragraphSpacing.value, 10) || 0) + "px";
+    paragraph.style.marginBottom = `${
+      parseInt(paragraphSpacing.value, 10) || 0
+    }px`;
 
     paragraph.style.textIndent = indent.checked && index > 0 ? "2em" : "0";
 
-    const chapter = rawChapters.find((item) =>
-      textParagraph.startsWith(item.title)
-    );
+    const chapter = detectedChapters[chapterCounter];
 
-    if (chapter && detectedChapters[chapterCounter]) {
-      const chapterInfo = detectedChapters[chapterCounter];
-
-      paragraph.id = `reader-${chapterInfo.id}`;
+    if (chapter && textParagraph.startsWith(chapter.title)) {
+      paragraph.id = `reader-${chapter.id}`;
 
       paragraph.classList.add("preview-chapter");
 
@@ -1474,6 +1341,10 @@ function renderReader() {
   updateReaderChapterNavigation();
 }
 
+/* =================================================
+   READER PROGRESS
+================================================= */
+
 function updateReaderProgress() {
   if (!readerContent) {
     return;
@@ -1502,21 +1373,10 @@ function updateReaderProgress() {
   readerProgressText.textContent = `${percentage}%`;
 }
 
-function restoreReaderPosition() {
-  const position = currentBook.position || 0;
-
-  requestAnimationFrame(() => {
-    readerContent.scrollTop = position;
-
-    updateReaderProgress();
-  });
-}
-
 let readerSaveTimer = null;
 
 readerContent.addEventListener("scroll", () => {
   updateReaderProgress();
-
   updateReaderChapterNavigation();
 
   clearTimeout(readerSaveTimer);
@@ -1534,13 +1394,9 @@ readerContent.addEventListener("scroll", () => {
   }, 500);
 });
 
-function getFormattedText() {
-  const width = parseFloat(lineWidth.value) || 40;
-
-  const paragraphs = formatDocument(inputText.value, width);
-
-  return paragraphs.map((paragraph) => paragraph.join("\n")).join("\n\n");
-}
+/* =================================================
+   DOWNLOAD BUTTONS
+================================================= */
 
 document.getElementById("txtButton").addEventListener("click", () => {
   const text = getFormattedText();
@@ -1591,7 +1447,6 @@ document.getElementById("wordButton").addEventListener("click", async () => {
         runs.push(
           new TextRun({
             text: line,
-
             break: index === 0 ? 0 : 1
           })
         );
@@ -1618,7 +1473,6 @@ document.getElementById("wordButton").addEventListener("click", async () => {
       sections: [
         {
           properties: {},
-
           children
         }
       ]
@@ -1636,33 +1490,37 @@ document.getElementById("wordButton").addEventListener("click", async () => {
   }
 });
 
-/* CLEANUP EVENTS */
+/* =================================================
+   CLEANUP EVENTS
+================================================= */
 
 analyzeButton.addEventListener("click", analyzeText);
+
 applyButton.addEventListener("click", applyCleanup);
 
-/* CHAPTER EVENT */
+/* =================================================
+   CHAPTER EVENT
+================================================= */
 
 detectChaptersButton.addEventListener("click", () => {
-  prepareChapters(inputText.value);
-
   renderCurrentView();
 
   if (detectedChapters.length) {
     showStatus(
-      `${detectedChapters.length} chapter${
-        detectedChapters.length === 1 ? "" : "s"
-      } detected.`
+      `${detectedChapters.length} chapter` +
+        `${detectedChapters.length === 1 ? "" : "s"} detected.`
     );
   } else {
     showStatus("No obvious chapter headings found.");
   }
 });
 
-/* LIVE PREVIEW */
+/* =================================================
+   LIVE PREVIEW
+================================================= */
 
 inputText.addEventListener("input", () => {
-  prepareChapters(inputText.value);
+  currentBook.text = inputText.value;
 
   renderCurrentView();
 });
@@ -1685,7 +1543,9 @@ liveControls.forEach((control) => {
   });
 });
 
-/* DRAG AND DROP */
+/* =================================================
+   DRAG AND DROP
+================================================= */
 
 const dropZone = document.getElementById("dropZone");
 
@@ -1706,7 +1566,9 @@ function isSupportedFile(file) {
   );
 }
 
-/* IMPORT TEXT INTO APP */
+/* =================================================
+   IMPORT
+================================================= */
 
 async function loadImportedText(text, filename) {
   if (!text || !text.trim()) {
@@ -1743,8 +1605,6 @@ async function loadImportedText(text, filename) {
 
   inputText.value = currentBook.text;
 
-  prepareChapters(currentBook.text);
-
   renderCurrentView();
 
   await renderLibrary();
@@ -1756,7 +1616,7 @@ async function importTextFile(file) {
   try {
     const text = await file.text();
 
-    loadImportedText(text, file.name);
+    await loadImportedText(text, file.name);
   } catch (error) {
     console.error("Could not read text file:", error);
 
@@ -1788,7 +1648,7 @@ async function importWordFile(file) {
       console.info("Word import messages:", result.messages);
     }
 
-    loadImportedText(text, file.name);
+    await loadImportedText(text, file.name);
   } catch (error) {
     console.error("Could not read Word document:", error);
 
@@ -1811,7 +1671,6 @@ async function importFile(file) {
 
   if (filename.endsWith(".docx")) {
     await importWordFile(file);
-
     return;
   }
 
@@ -1832,7 +1691,9 @@ fileInput.addEventListener("change", async () => {
   fileInput.value = "";
 });
 
-/* DRAG EVENTS */
+/* =================================================
+   DRAG EVENTS
+================================================= */
 
 ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
   dropZone.addEventListener(eventName, (event) => {
@@ -1870,14 +1731,13 @@ dropZone.addEventListener("drop", async (event) => {
 
   if (files.length > 0) {
     await importFile(files[0]);
-
     return;
   }
 
   const text = event.dataTransfer.getData("text/plain");
 
   if (text && text.trim()) {
-    loadImportedText(text, "Dragged text");
+    await loadImportedText(text, "Dragged text");
 
     return;
   }
@@ -1885,7 +1745,9 @@ dropZone.addEventListener("drop", async (event) => {
   showStatus("Nothing usable was dropped.");
 });
 
-/* MANUAL SETTINGS → CUSTOM */
+/* =================================================
+   MANUAL SETTINGS → CUSTOM
+================================================= */
 
 [
   lineWidth,
@@ -1913,15 +1775,18 @@ dropZone.addEventListener("drop", async (event) => {
   });
 });
 
-/* CLEAR DOCUMENT */
+/* =================================================
+   CLEAR DOCUMENT
+================================================= */
 
 function clearDocument() {
   if (!inputText.value.trim() && !cleanedText.value.trim()) {
     return;
   }
 
-  inputText.value = "";
+  currentBook = createEmptyBook();
 
+  inputText.value = "";
   cleanedText.value = "";
 
   cleanupResult.classList.add("hidden");
@@ -1932,8 +1797,6 @@ function clearDocument() {
 
   detectedChapters = [];
 
-  renderChapterNavigation([]);
-
   renderCurrentView();
 
   showStatus("Document cleared.");
@@ -1941,17 +1804,25 @@ function clearDocument() {
 
 clearButton.addEventListener("click", clearDocument);
 
-/* STATUS */
+/* =================================================
+   STATUS
+================================================= */
+
+let statusTimer = null;
 
 function showStatus(message) {
   status.textContent = message;
 
-  setTimeout(() => {
+  clearTimeout(statusTimer);
+
+  statusTimer = setTimeout(() => {
     status.textContent = "";
   }, 2000);
 }
 
-/* THEMES */
+/* =================================================
+   THEMES
+================================================= */
 
 const themeButtons = document.querySelectorAll(".theme-button");
 
@@ -1960,6 +1831,10 @@ function setTheme(theme) {
 
   themeButtons.forEach((button) => {
     button.classList.toggle("active", button.dataset.theme === theme);
+  });
+
+  readerThemeButtons.forEach((button) => {
+    button.classList.toggle("active", button.dataset.readerTheme === theme);
   });
 
   localStorage.setItem("textFormatterTheme", theme);
@@ -1971,7 +1846,9 @@ themeButtons.forEach((button) => {
   });
 });
 
-/* Restore saved theme */
+/* =================================================
+   RESTORE SAVED THEME
+================================================= */
 
 const savedTheme = localStorage.getItem("textFormatterTheme");
 
@@ -1979,7 +1856,9 @@ if (savedTheme) {
   setTheme(savedTheme);
 }
 
-/* LIBRARY INITIALIZATION */
+/* =================================================
+   LIBRARY INITIALIZATION
+================================================= */
 
 addBookButton.addEventListener("click", () => {
   fileInput.click();
@@ -1995,6 +1874,8 @@ openLibraryDB()
     showStatus("Could not open the book library.");
   });
 
-/* INITIAL STATE */
+/* =================================================
+   INITIAL STATE
+================================================= */
 
 setMode(currentMode);
