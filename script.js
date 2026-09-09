@@ -50,6 +50,406 @@ const presetButtons = document.querySelectorAll(".preset-button");
 
 const clearButton = document.getElementById("clearButton");
 
+const readerView = document.getElementById("readerView");
+
+const readerContent = document.getElementById("readerContent");
+
+const readerTitle = document.getElementById("readerTitle");
+
+const readerMeta = document.getElementById("readerMeta");
+
+const readerProgressBar = document.getElementById("readerProgressBar");
+
+const readerProgressText = document.getElementById("readerProgressText");
+
+/* APP MODES */
+
+const modeButtons = document.querySelectorAll(".mode-button");
+
+const libraryView = document.getElementById("libraryView");
+
+const formatterView = document.getElementById("formatterView");
+
+let currentMode = localStorage.getItem("textFormatterMode") || "library";
+
+function setMode(mode) {
+  currentMode = mode;
+
+  libraryView.classList.toggle("hidden", mode !== "library");
+
+  readerView.classList.toggle("hidden", mode !== "reader");
+
+  formatterView.classList.toggle("hidden", mode !== "formatter");
+
+  modeButtons.forEach((button) => {
+    button.classList.toggle("active", button.dataset.mode === mode);
+  });
+
+  localStorage.setItem("textFormatterMode", mode);
+
+  if (mode === "reader") {
+    renderReader();
+  }
+
+  if (mode === "formatter") {
+    renderCurrentView();
+  }
+}
+
+modeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    setMode(button.dataset.mode);
+  });
+});
+
+/* BOOK LIBRARY */
+
+const libraryPanel = document.getElementById("libraryPanel");
+
+const addBookButton = document.getElementById("addBookButton");
+
+const refreshLibraryButton = document.getElementById("refreshLibraryButton");
+
+const DB_NAME = "textFormatterLibrary";
+
+const DB_VERSION = 1;
+
+const STORE_NAME = "books";
+
+let libraryDB = null;
+
+function openLibraryDB() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        const store = db.createObjectStore(STORE_NAME, {
+          keyPath: "id"
+        });
+
+        store.createIndex("title", "title", {
+          unique: false
+        });
+      }
+    };
+
+    request.onsuccess = () => {
+      libraryDB = request.result;
+
+      resolve(libraryDB);
+    };
+
+    request.onerror = () => {
+      reject(request.error);
+    };
+  });
+}
+
+async function saveBook(book) {
+  if (!libraryDB) {
+    await openLibraryDB();
+  }
+
+  return new Promise((resolve, reject) => {
+    const transaction = libraryDB.transaction(STORE_NAME, "readwrite");
+
+    const store = transaction.objectStore(STORE_NAME);
+
+    const request = store.put(book);
+
+    request.onsuccess = () => {
+      resolve();
+    };
+
+    request.onerror = () => {
+      reject(request.error);
+    };
+  });
+}
+
+async function getAllBooks() {
+  if (!libraryDB) {
+    await openLibraryDB();
+  }
+
+  return new Promise((resolve, reject) => {
+    const transaction = libraryDB.transaction(STORE_NAME, "readonly");
+
+    const store = transaction.objectStore(STORE_NAME);
+
+    const request = store.getAll();
+
+    request.onsuccess = () => {
+      resolve(request.result);
+    };
+
+    request.onerror = () => {
+      reject(request.error);
+    };
+  });
+}
+
+async function deleteBook(bookId) {
+  if (!libraryDB) {
+    await openLibraryDB();
+  }
+
+  return new Promise((resolve, reject) => {
+    const transaction = libraryDB.transaction(STORE_NAME, "readwrite");
+
+    const store = transaction.objectStore(STORE_NAME);
+
+    const request = store.delete(bookId);
+
+    request.onsuccess = () => {
+      resolve();
+    };
+
+    request.onerror = () => {
+      reject(request.error);
+    };
+  });
+}
+
+async function renderLibrary() {
+  const books = await getAllBooks();
+
+  libraryPanel.innerHTML = "";
+
+  if (!books.length) {
+    const empty = document.createElement("div");
+
+    empty.className = "library-empty";
+
+    empty.textContent = "No books in your library yet.";
+
+    libraryPanel.appendChild(empty);
+
+    return;
+  }
+
+  books.sort((a, b) => {
+    return (b.lastOpened || 0) - (a.lastOpened || 0);
+  });
+
+  books.forEach((book) => {
+    const card = document.createElement("article");
+
+    card.className = "book-card";
+
+    const icon = document.createElement("div");
+
+    icon.className = "book-icon";
+
+    icon.textContent = book.type === "docx" ? "📘" : "📖";
+
+    const title = document.createElement("div");
+
+    title.className = "book-title";
+
+    title.textContent = book.title || "Untitled";
+
+    const meta = document.createElement("div");
+
+    meta.className = "book-meta";
+
+    meta.textContent = book.fileName || "Text document";
+
+    const type = document.createElement("span");
+
+    type.className = "book-type";
+
+    type.textContent = book.type || "text";
+
+    const progress = document.createElement("div");
+
+    progress.className = "book-progress";
+
+    const progressBar = document.createElement("div");
+
+    progressBar.className = "book-progress-bar";
+
+    progressBar.style.width = `${Math.round((book.progress || 0) * 100)}%`;
+
+    progress.appendChild(progressBar);
+
+    const actions = document.createElement("div");
+
+    actions.className = "book-card-actions";
+
+    const openButton = document.createElement("button");
+
+    openButton.textContent = "Open";
+
+    openButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+
+      openBook(book.id);
+    });
+
+    const deleteButton = document.createElement("button");
+
+    deleteButton.className = "secondary";
+
+    deleteButton.textContent = "Delete";
+
+    deleteButton.addEventListener("click", async (event) => {
+      event.stopPropagation();
+
+      const confirmed = confirm(`Delete "${book.title}" from your library?`);
+
+      if (!confirmed) {
+        return;
+      }
+
+      await deleteBook(book.id);
+
+      if (currentBook && currentBook.id === book.id) {
+        currentBook = {
+          id: null,
+          title: "Untitled",
+          author: "",
+          type: "text",
+          fileName: "",
+          text: "",
+          chapters: [],
+          position: 0,
+          progress: 0
+        };
+
+        inputText.value = "";
+
+        renderCurrentView();
+      }
+
+      await renderLibrary();
+
+      showStatus("Book deleted.");
+    });
+
+    actions.appendChild(openButton);
+
+    actions.appendChild(deleteButton);
+
+    card.appendChild(icon);
+
+    card.appendChild(title);
+
+    card.appendChild(meta);
+
+    card.appendChild(type);
+
+    card.appendChild(progress);
+
+    card.appendChild(actions);
+
+    card.addEventListener("click", () => openBook(book.id));
+
+    libraryPanel.appendChild(card);
+  });
+}
+
+async function getBook(bookId) {
+  if (!libraryDB) {
+    await openLibraryDB();
+  }
+
+  return new Promise((resolve, reject) => {
+    const transaction = libraryDB.transaction(STORE_NAME, "readonly");
+
+    const store = transaction.objectStore(STORE_NAME);
+
+    const request = store.get(bookId);
+
+    request.onsuccess = () => {
+      resolve(request.result);
+    };
+
+    request.onerror = () => {
+      reject(request.error);
+    };
+  });
+}
+
+function renderCurrentView() {
+  prepareChapters(inputText.value);
+  renderPreview();
+}
+
+async function openBook(bookId) {
+  const book = await getBook(bookId);
+
+  if (!book) {
+    showStatus("Book could not be found.");
+
+    return;
+  }
+
+  currentBook = book;
+
+  inputText.value = book.text || "";
+
+  prepareChapters(currentBook.text);
+
+  renderPreview();
+
+  setMode("reader");
+
+  currentBook.lastOpened = Date.now();
+
+  await saveBook(currentBook);
+
+  showStatus(`Opened "${currentBook.title}".`);
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+/* CURRENT BOOK */
+
+let currentBook = {
+  id: null,
+  title: "Untitled",
+  author: "",
+  type: "text",
+  fileName: "",
+  text: "",
+  chapters: [],
+  position: 0,
+  progress: 0
+};
+
+function updateCurrentBookText(text) {
+  currentBook.text = text;
+
+  inputText.value = text;
+}
+
+function createBookFromText(text, filename = "Untitled") {
+  const cleanFilename = filename.replace(/\.[^/.]+$/, "");
+
+  currentBook = {
+    id: crypto.randomUUID(),
+    title: cleanFilename || "Untitled",
+    author: "",
+    type: "text",
+    fileName: filename,
+    text,
+    chapters: [],
+    position: 0,
+    progress: 0
+  };
+
+  inputText.value = text;
+  prepareChapters(text);
+  renderCurrentView();
+}
+
 /* CJK */
 
 function isCJK(char) {
@@ -402,11 +802,11 @@ function applyCleanup() {
     return;
   }
 
-  inputText.value = cleanedText.value;
+  updateCurrentBookText(cleanedText.value);
 
-  prepareChapters(inputText.value);
+  prepareChapters(currentBook.text);
 
-  renderPreview();
+  renderCurrentView();
 
   showStatus("Cleaned text applied.");
 }
@@ -602,7 +1002,7 @@ function activatePreset(presetName) {
     button.classList.toggle("active", button.dataset.preset === presetName);
   });
 
-  renderPreview();
+  renderCurrentView();
 }
 
 presetButtons.forEach((button) => {
@@ -767,6 +1167,373 @@ document.getElementById("copyButton").addEventListener("click", async () => {
 
 /* FORMATTED TEXT */
 
+function getBookParagraphs(text) {
+  return text
+    .split(/\n\s*\n/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+}
+
+const readerFontDecrease = document.getElementById("readerFontDecrease");
+
+const readerFontIncrease = document.getElementById("readerFontIncrease");
+
+const readerFontSize = document.getElementById("readerFontSize");
+
+const readerSpacingDecrease = document.getElementById("readerSpacingDecrease");
+
+const readerSpacingIncrease = document.getElementById("readerSpacingIncrease");
+
+const readerSpacing = document.getElementById("readerSpacing");
+
+const readerResetButton = document.getElementById("readerResetButton");
+
+const readerThemeButtons = document.querySelectorAll(".reader-theme-button");
+
+const readerPreviousChapter = document.getElementById("readerPreviousChapter");
+
+const readerNextChapter = document.getElementById("readerNextChapter");
+
+const readerChapterIndicator = document.getElementById(
+  "readerChapterIndicator"
+);
+
+function updateReaderChapterNavigation() {
+  const chapters = detectedChapters;
+
+  if (!chapters.length) {
+    readerChapterIndicator.textContent = "No chapters";
+
+    readerPreviousChapter.disabled = true;
+
+    readerNextChapter.disabled = true;
+
+    return;
+  }
+
+  const scrollTop = readerContent.scrollTop;
+
+  let currentIndex = 0;
+
+  chapters.forEach((chapter, index) => {
+    const element = document.getElementById(`reader-${chapter.id}`);
+
+    if (!element) {
+      return;
+    }
+
+    if (element.offsetTop <= scrollTop + 100) {
+      currentIndex = index;
+    }
+  });
+
+  readerChapterIndicator.textContent = `Chapter ${currentIndex + 1} of ${
+    chapters.length
+  }`;
+
+  readerPreviousChapter.disabled = currentIndex === 0;
+
+  readerNextChapter.disabled = currentIndex === chapters.length - 1;
+}
+
+readerPreviousChapter.addEventListener("click", () => {
+  if (!detectedChapters.length) {
+    return;
+  }
+
+  const scrollTop = readerContent.scrollTop;
+
+  let currentIndex = 0;
+
+  detectedChapters.forEach((chapter, index) => {
+    const element = document.getElementById(`reader-${chapter.id}`);
+
+    if (element && element.offsetTop <= scrollTop + 100) {
+      currentIndex = index;
+    }
+  });
+
+  const previousIndex = currentIndex - 1;
+
+  if (previousIndex < 0) {
+    return;
+  }
+
+  const target = document.getElementById(
+    `reader-${detectedChapters[previousIndex].id}`
+  );
+
+  if (target) {
+    readerContent.scrollTo({
+      top: target.offsetTop,
+      behavior: "smooth"
+    });
+  }
+});
+
+readerNextChapter.addEventListener("click", () => {
+  if (!detectedChapters.length) {
+    return;
+  }
+
+  const scrollTop = readerContent.scrollTop;
+
+  let currentIndex = 0;
+
+  detectedChapters.forEach((chapter, index) => {
+    const element = document.getElementById(`reader-${chapter.id}`);
+
+    if (element && element.offsetTop <= scrollTop + 100) {
+      currentIndex = index;
+    }
+  });
+
+  const nextIndex = currentIndex + 1;
+
+  if (nextIndex >= detectedChapters.length) {
+    return;
+  }
+
+  const target = document.getElementById(
+    `reader-${detectedChapters[nextIndex].id}`
+  );
+
+  if (target) {
+    readerContent.scrollTo({
+      top: target.offsetTop,
+      behavior: "smooth"
+    });
+  }
+});
+
+function updateReaderControls() {
+  const size = parseFloat(fontSize.value) || 18;
+
+  const spacing = parseFloat(lineSpacing.value) || 1.6;
+
+  readerFontSize.textContent = `${size}px`;
+
+  readerSpacing.textContent = spacing.toFixed(1);
+
+  readerContent.style.fontSize = `${size}px`;
+
+  readerContent.style.lineHeight = spacing;
+}
+
+readerFontDecrease.addEventListener("click", () => {
+  const current = parseFloat(fontSize.value) || 18;
+
+  fontSize.value = Math.max(8, current - 1);
+
+  updateReaderControls();
+  renderReader();
+});
+
+readerFontIncrease.addEventListener("click", () => {
+  const current = parseFloat(fontSize.value) || 18;
+
+  fontSize.value = Math.min(48, current + 1);
+
+  updateReaderControls();
+  renderReader();
+});
+
+readerSpacingDecrease.addEventListener("click", () => {
+  const current = parseFloat(lineSpacing.value) || 1.6;
+
+  lineSpacing.value = Math.max(0.8, current - 0.1).toFixed(1);
+
+  updateReaderControls();
+  renderReader();
+});
+
+readerSpacingIncrease.addEventListener("click", () => {
+  const current = parseFloat(lineSpacing.value) || 1.6;
+
+  lineSpacing.value = Math.min(3, current + 0.1).toFixed(1);
+
+  updateReaderControls();
+  renderReader();
+});
+
+readerResetButton.addEventListener("click", () => {
+  fontSize.value = 18;
+  lineSpacing.value = 1.6;
+  paragraphSpacing.value = 16;
+  previewWidth.value = 800;
+  indent.checked = true;
+
+  updateReaderControls();
+  renderReader();
+
+  showStatus("Reader settings reset.");
+});
+
+readerThemeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const theme = button.dataset.readerTheme;
+
+    document.body.dataset.theme = theme;
+
+    readerThemeButtons.forEach((item) => {
+      item.classList.toggle("active", item === button);
+    });
+
+    localStorage.setItem("textFormatterTheme", theme);
+  });
+});
+
+function renderReader() {
+  const text = currentBook.text || inputText.value;
+
+  readerContent.style.fontSize = (parseFloat(fontSize.value) || 18) + "px";
+
+  readerContent.style.lineHeight = parseFloat(lineSpacing.value) || 1.6;
+
+  readerContent.style.maxWidth =
+    (parseInt(previewWidth.value, 10) || 800) + "px";
+
+  readerTitle.textContent = currentBook.title || "Untitled";
+
+  readerMeta.textContent = currentBook.fileName
+    ? currentBook.fileName
+    : "Text document";
+
+  readerContent.innerHTML = "";
+
+  if (!text.trim()) {
+    const empty = document.createElement("p");
+
+    empty.textContent = "No book is currently open.";
+
+    readerContent.appendChild(empty);
+
+    updateReaderProgress();
+    updateReaderControls();
+
+    return;
+  }
+
+  const paragraphs = getBookParagraphs(text);
+
+  const rawChapters = detectChapters(text);
+
+  let chapterCounter = 0;
+
+  paragraphs.forEach((textParagraph, index) => {
+    const paragraph = document.createElement("div");
+
+    paragraph.className = "preview-paragraph";
+
+    paragraph.style.marginBottom =
+      (parseInt(paragraphSpacing.value, 10) || 0) + "px";
+
+    paragraph.style.textIndent = indent.checked && index > 0 ? "2em" : "0";
+
+    const chapter = rawChapters.find((item) =>
+      textParagraph.startsWith(item.title)
+    );
+
+    if (chapter && detectedChapters[chapterCounter]) {
+      const chapterInfo = detectedChapters[chapterCounter];
+
+      paragraph.id = `reader-${chapterInfo.id}`;
+
+      paragraph.classList.add("preview-chapter");
+
+      paragraph.style.textIndent = "0";
+
+      const title = document.createElement("div");
+
+      title.className = "preview-chapter-title";
+
+      title.textContent = chapter.title;
+
+      paragraph.appendChild(title);
+
+      const remainder = textParagraph.slice(chapter.title.length).trim();
+
+      if (remainder) {
+        const body = document.createElement("div");
+
+        body.textContent = remainder;
+
+        paragraph.appendChild(body);
+      }
+
+      chapterCounter++;
+    } else {
+      paragraph.textContent = textParagraph;
+    }
+
+    readerContent.appendChild(paragraph);
+  });
+
+  updateReaderProgress();
+  updateReaderControls();
+  updateReaderChapterNavigation();
+}
+
+function updateReaderProgress() {
+  if (!readerContent) {
+    return;
+  }
+
+  const maxScroll = readerContent.scrollHeight - readerContent.clientHeight;
+
+  const scrollTop = readerContent.scrollTop;
+
+  let progress = 0;
+
+  if (maxScroll > 0) {
+    progress = scrollTop / maxScroll;
+  }
+
+  progress = Math.max(0, Math.min(1, progress));
+
+  currentBook.position = scrollTop;
+
+  currentBook.progress = progress;
+
+  const percentage = Math.round(progress * 100);
+
+  readerProgressBar.style.width = `${percentage}%`;
+
+  readerProgressText.textContent = `${percentage}%`;
+}
+
+function restoreReaderPosition() {
+  const position = currentBook.position || 0;
+
+  requestAnimationFrame(() => {
+    readerContent.scrollTop = position;
+
+    updateReaderProgress();
+  });
+}
+
+let readerSaveTimer = null;
+
+readerContent.addEventListener("scroll", () => {
+  updateReaderProgress();
+
+  updateReaderChapterNavigation();
+
+  clearTimeout(readerSaveTimer);
+
+  readerSaveTimer = setTimeout(async () => {
+    if (!currentBook.id) {
+      return;
+    }
+
+    try {
+      await saveBook(currentBook);
+    } catch (error) {
+      console.error("Could not save reading position:", error);
+    }
+  }, 500);
+});
+
 function getFormattedText() {
   const width = parseFloat(lineWidth.value) || 40;
 
@@ -879,7 +1646,7 @@ applyButton.addEventListener("click", applyCleanup);
 detectChaptersButton.addEventListener("click", () => {
   prepareChapters(inputText.value);
 
-  renderPreview();
+  renderCurrentView();
 
   if (detectedChapters.length) {
     showStatus(
@@ -897,7 +1664,7 @@ detectChaptersButton.addEventListener("click", () => {
 inputText.addEventListener("input", () => {
   prepareChapters(inputText.value);
 
-  renderPreview();
+  renderCurrentView();
 });
 
 const liveControls = [
@@ -910,7 +1677,11 @@ const liveControls = [
 
 liveControls.forEach((control) => {
   control.addEventListener("input", () => {
-    renderPreview();
+    renderCurrentView();
+
+    if (currentMode === "reader") {
+      renderReader();
+    }
   });
 });
 
@@ -937,22 +1708,48 @@ function isSupportedFile(file) {
 
 /* IMPORT TEXT INTO APP */
 
-function loadImportedText(text, filename) {
+async function loadImportedText(text, filename) {
   if (!text || !text.trim()) {
     showStatus("The file appears to be empty.");
 
     return;
   }
 
-  inputText.value = text;
+  const extension = filename.split(".").pop().toLowerCase();
 
-  inputText.dispatchEvent(
-    new Event("input", {
-      bubbles: true
-    })
-  );
+  currentBook = {
+    id: crypto.randomUUID(),
 
-  showStatus(`Imported ${filename}.`);
+    title: filename.replace(/\.[^/.]+$/, ""),
+
+    author: "",
+
+    type: extension === "docx" ? "docx" : "text",
+
+    fileName: filename,
+
+    text,
+
+    chapters: [],
+
+    position: 0,
+
+    progress: 0,
+
+    lastOpened: Date.now()
+  };
+
+  await saveBook(currentBook);
+
+  inputText.value = currentBook.text;
+
+  prepareChapters(currentBook.text);
+
+  renderCurrentView();
+
+  await renderLibrary();
+
+  showStatus(`Added "${currentBook.title}" to your library.`);
 }
 
 async function importTextFile(file) {
@@ -1137,7 +1934,7 @@ function clearDocument() {
 
   renderChapterNavigation([]);
 
-  renderPreview();
+  renderCurrentView();
 
   showStatus("Document cleared.");
 }
@@ -1182,8 +1979,22 @@ if (savedTheme) {
   setTheme(savedTheme);
 }
 
+/* LIBRARY INITIALIZATION */
+
+addBookButton.addEventListener("click", () => {
+  fileInput.click();
+});
+
+refreshLibraryButton.addEventListener("click", renderLibrary);
+
+openLibraryDB()
+  .then(() => renderLibrary())
+  .catch((error) => {
+    console.error("Could not open book library:", error);
+
+    showStatus("Could not open the book library.");
+  });
+
 /* INITIAL STATE */
 
-prepareChapters(inputText.value);
-
-renderPreview();
+setMode(currentMode);
