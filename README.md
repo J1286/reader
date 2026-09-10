@@ -16,4 +16,3 @@
 ✅ Per-book Reader settings
 ✅ Theme persistence
 ✅ Reload persistence
-✅ No remaining console errors from the issues we've worked through
