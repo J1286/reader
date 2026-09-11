@@ -209,14 +209,54 @@ function getBookText() {
 function getBookParagraphs(
   text = getBookText()
 ) {
-  return text
-    .split(/\n\s*\n/)
-    .map(
-      (paragraph) =>
-        paragraph.trim()
-    )
-    .filter(Boolean);
+  const lines = text.split(/\r?\n/);
+
+  const paragraphs = [];
+  let currentParagraph = [];
+
+  lines.forEach((line) => {
+    const clean = line.trim();
+
+    if (!clean) {
+      if (currentParagraph.length) {
+        paragraphs.push(
+          currentParagraph.join("\n").trim()
+        );
+
+        currentParagraph = [];
+      }
+
+      return;
+    }
+
+    const isChapterHeading =
+      chapterPatterns.some((pattern) =>
+        pattern.test(clean)
+      );
+
+    if (
+      isChapterHeading &&
+      currentParagraph.length
+    ) {
+      paragraphs.push(
+        currentParagraph.join("\n").trim()
+      );
+
+      currentParagraph = [];
+    }
+
+    currentParagraph.push(clean);
+  });
+
+  if (currentParagraph.length) {
+    paragraphs.push(
+      currentParagraph.join("\n").trim()
+    );
+  }
+
+  return paragraphs.filter(Boolean);
 }
+
 
 function getFormattedText() {
   const width =
