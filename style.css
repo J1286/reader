@@ -698,29 +698,52 @@ input[type="range"] {
 .book-card {
   position: relative;
 
-  padding: 18px;
+  display: flex;
+  flex-direction: column;
+
+  padding: 20px;
 
   background: var(--panel-bg);
   border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border-radius: 12px;
 
   cursor: pointer;
 
-  transition: transform 0.15s ease, box-shadow 0.15s ease,
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
     border-color 0.15s ease;
 }
 
 .book-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 
   border-color: var(--accent);
 
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .book-icon {
-  margin-bottom: 10px;
-  font-size: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 54px;
+  height: 68px;
+
+  margin-bottom: 14px;
+
+  background: var(--accent);
+  color: #ffffff;
+
+  border-radius: 4px 7px 7px 4px;
+
+  box-shadow:
+    inset 5px 0 0 rgba(0, 0, 0, 0.12),
+    0 4px 10px rgba(0, 0, 0, 0.12);
+
+  font-size: 26px;
 }
 
 .book-title {
@@ -728,8 +751,12 @@ input[type="range"] {
 
   color: var(--text-color);
 
-  font-size: 16px;
-  font-weight: 700;
+  font-family: Georgia, "Noto Serif CJK TC",
+    "Noto Serif CJK SC", "Times New Roman", serif;
+
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.4;
 
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -739,12 +766,18 @@ input[type="range"] {
   margin-top: 5px;
 
   color: var(--muted-color);
-  font-size: 13px;
+
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .book-progress {
-  height: 5px;
   margin-top: 14px;
+}
+
+.book-progress-track {
+  width: 100%;
+  height: 5px;
 
   background: var(--border-color);
 
@@ -753,11 +786,34 @@ input[type="range"] {
 }
 
 .book-progress-bar {
+  width: 0%;
   height: 100%;
 
   background: var(--accent);
 
   border-radius: inherit;
+
+  transition: width 0.2s ease;
+}
+
+.book-progress-text {
+  margin-top: 5px;
+
+  color: var(--muted-color);
+
+  font-size: 11px;
+  font-weight: 600;
+  text-align: right;
+}
+
+.book-progress-label {
+  margin-top: 5px;
+
+  color: var(--muted-color);
+
+  font-size: 11px;
+  font-weight: 600;
+  text-align: right;
 }
 
 .book-card-actions {
@@ -791,20 +847,28 @@ input[type="range"] {
 
 .reader-header {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 24px;
 
-  margin-bottom: 24px;
+  max-width: 720px;
+  margin: 0 auto 18px;
 }
 
 .reader-header h2 {
-  margin: 0 0 6px;
+  margin: 0 0 5px;
+
+  font-family: Georgia, "Noto Serif CJK TC",
+    "Noto Serif CJK SC", "Times New Roman", serif;
+
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .reader-meta {
   color: var(--reader-muted);
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .reader-actions {
@@ -818,22 +882,30 @@ input[type="range"] {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 18px;
+  gap: 14px;
 
-  margin: 0 auto 20px;
-  padding: 12px 16px;
+  width: fit-content;
+  max-width: 100%;
 
-  background: var(--panel-bg);
+  margin: 0 auto 18px;
+  padding: 7px 10px;
+
+  background: color-mix(
+    in srgb,
+    var(--panel-bg) 75%,
+    transparent
+  );
+
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: 999px;
 
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
 }
 
 .reader-control-group {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
 }
 
 .reader-control-label {
@@ -844,9 +916,11 @@ input[type="range"] {
 }
 
 .reader-controls button {
-  min-width: 38px;
-  min-height: 34px;
-  padding: 5px 10px;
+  min-width: 32px;
+  min-height: 30px;
+  padding: 4px 8px;
+
+  border-radius: 999px;
 }
 
 #readerFontSize,
@@ -872,65 +946,122 @@ input[type="range"] {
 .reader-container {
   display: flex;
   justify-content: center;
+
+  padding: 4px 0;
 }
 
 .reader-content {
-  width: min(760px, 100%);
-  min-height: 70vh;
+  width: min(720px, 100%);
+  height: 75vh;
+  min-height: 500px;
 
-  padding: 60px 70px;
+  padding: 76px 78px;
 
   background: var(--reader-bg);
   color: var(--reader-text);
 
-  border-radius: 10px;
+  border: 1px solid rgba(100, 90, 70, 0.12);
+  border-radius: 4px;
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.07),
+    0 2px 8px rgba(0, 0, 0, 0.04);
+
+  font-family: Georgia, "Noto Serif CJK TC",
+    "Noto Serif CJK SC", "Times New Roman", serif;
 
   font-size: 21px;
-  line-height: 1.9;
+  line-height: 1.85;
 
   overflow-y: auto;
+  scroll-behavior: smooth;
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(120, 120, 120, 0.35) transparent;
 }
 
 .reader-content .preview-paragraph {
-  margin-bottom: 28px;
+  margin: 0 0 1.35em;
+
   white-space: normal;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  word-break: normal;
+
+  text-align: left;
 }
 
 .reader-content .preview-chapter {
-  margin-top: 50px;
+  margin-top: 4.5em;
+  margin-bottom: 2.8em;
+
+  padding-top: 1em;
+
+  scroll-margin-top: 30px;
+}
+
+.reader-content .preview-chapter:first-child {
+  margin-top: 0;
 }
 
 .reader-content .preview-chapter-title {
-  margin-bottom: 28px;
+  margin: 0 0 1.8em;
 
-  font-size: 1.5em;
-  font-weight: 700;
+  font-size: 1.45em;
+  font-weight: 600;
   line-height: 1.3;
+
+  text-align: center;
+  letter-spacing: 0.015em;
+
+  color: var(--reader-text);
+
+  scroll-margin-top: 30px;
+}
+
+.reader-content .preview-chapter-title::after {
+  content: "";
+
+  display: block;
+
+  width: 38px;
+  height: 1px;
+
+  margin: 20px auto 0;
+
+  background: currentColor;
+  opacity: 0.22;
+
+  border-radius: 999px;
 }
 
 .reader-chapter-nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 18px;
+  gap: 12px;
 
-  margin: 0 auto 16px;
+  width: min(720px, 100%);
+  margin: 0 auto 14px;
 }
 
 .reader-chapter-nav button {
-  min-width: 110px;
+  min-width: 100px;
+  padding: 6px 12px;
+
+  border-radius: 999px;
+
+  font-size: 13px;
 }
 
 #readerChapterIndicator {
-  min-width: 130px;
+  min-width: 120px;
 
   text-align: center;
 
-  color: var(--muted-color);
+  color: var(--reader-muted);
 
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .reader-chapter-nav button:disabled {
@@ -938,14 +1069,20 @@ input[type="range"] {
   cursor: not-allowed;
 }
 
+#readerView {
+  padding-bottom: 20px;
+}
+
+/* READER PROGRESS */
+
 .reader-progress-container {
   display: flex;
   align-items: center;
   gap: 12px;
 
-  width: min(760px, 100%);
+  width: min(720px, calc(100% - 40px));
 
-  margin: 18px auto 0;
+  margin: 18px auto 24px;
 }
 
 .reader-progress-bar {
@@ -953,17 +1090,24 @@ input[type="range"] {
 
   height: 6px;
 
-  background: rgba(128, 128, 128, 0.2);
+  background: rgba(128, 128, 128, 0.22);
 
   border-radius: 999px;
+
   overflow: hidden;
 }
 
 .reader-progress-fill {
+  display: block;
+
   width: 0%;
   height: 100%;
 
-  background: #4f7cff;
+  background: var(--reader-text);
+
+  opacity: 0.55;
+
+  border-radius: 999px;
 
   transition: width 0.15s ease;
 }
@@ -973,40 +1117,61 @@ input[type="range"] {
 
   text-align: right;
 
-  color: var(--muted-color);
+  color: var(--reader-muted);
+
   font-size: 13px;
+  font-weight: 600;
 }
 
-/* READER MODE */
+/* READER THEMES */
 
-body[data-mode="reader"] .preview-area {
-  padding: 40px 20px;
-  background: var(--preview-bg);
+:root {
+  --reader-bg: #fffdf8;
+  --reader-text: #292722;
+  --reader-muted: #77736b;
 }
 
-body[data-mode="reader"] .preview-page {
-  width: min(100%, 700px);
-  max-width: 700px;
-  min-height: 0;
-
-  margin: 0 auto;
-  padding: 50px 45px;
-
-  background: var(--preview-bg);
-  color: var(--preview-text);
-
-  box-shadow: none;
-  border-radius: 4px;
+body[data-theme="sepia"] {
+  --reader-bg: #f3ead7;
+  --reader-text: #443b2f;
+  --reader-muted: #776b59;
 }
 
-body[data-mode="reader"] .preview-paragraph {
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: normal;
+body[data-theme="dark"] {
+  --reader-bg: #1c1c1b;
+  --reader-text: #e7e2d8;
+  --reader-muted: #aaa59b;
 }
 
-body[data-mode="reader"] .preview-chapter-title {
-  scroll-margin-top: 30px;
+/* READER THEME BACKGROUND */
+
+body[data-theme="light"] .reader-container,
+body[data-theme="light"] .reader-progress-container {
+  color: var(--reader-text);
+}
+
+body[data-theme="sepia"] .reader-container,
+body[data-theme="sepia"] .reader-progress-container {
+  color: var(--reader-text);
+}
+
+body[data-theme="dark"] .reader-container,
+body[data-theme="dark"] .reader-progress-container {
+  color: var(--reader-text);
+}
+
+body[data-theme="dark"] .reader-content {
+  border-color: rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.35);
+}
+
+body[data-theme="sepia"] .reader-content {
+  border-color: rgba(100, 75, 40, 0.15);
+
+  box-shadow:
+    0 8px 30px rgba(80, 60, 30, 0.08);
 }
 
 /* DARK THEME */
@@ -1131,19 +1296,23 @@ body[data-theme="sepia"] .preview-page.preset-book {
     flex-direction: column;
   }
 
-  .reader-controls {
-    gap: 10px;
-    padding: 10px;
-  }
+.reader-controls {
+  width: 100%;
+  border-radius: 14px;
+  gap: 8px;
+  padding: 8px;
+}
 
-  .reader-control-label {
-    display: none;
-  }
+.reader-control-label {
+  display: none;
+}
 
-  .reader-content {
-    width: 100%;
-    padding: 24px 18px;
-  }
+.reader-content {
+  width: 100%;
+  height: 75vh;
+  min-height: 400px;
+  padding: 30px 20px;
+}
 
   .reader-chapter-nav {
     gap: 8px;

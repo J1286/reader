@@ -4,32 +4,32 @@
 
 const presetSettings = {
   book: {
-    fontSize: 19,
-    lineSpacing: 1.8,
-    paragraphSpacing: 22,
+    fontSize: 14,
+    lineSpacing: 1.55,
+    paragraphSpacing: 14,
     previewWidth: 760,
     indent: true
   },
 
   ereader: {
-    fontSize: 21,
-    lineSpacing: 1.85,
-    paragraphSpacing: 26,
+    fontSize: 16,
+    lineSpacing: 1.55,
+    paragraphSpacing: 12,
     previewWidth: 680,
     indent: true
   },
 
   web: {
-    fontSize: 17,
-    lineSpacing: 1.65,
-    paragraphSpacing: 18,
+    fontSize: 15,
+    lineSpacing: 1.5,
+    paragraphSpacing: 16,
     previewWidth: 900,
     indent: false
   },
 
   manuscript: {
-    fontSize: 15,
-    lineSpacing: 2,
+    fontSize: 14,
+    lineSpacing: 1.7,
     paragraphSpacing: 12,
     previewWidth: 800,
     indent: false
@@ -106,13 +106,16 @@ function renderReader() {
   const text = book?.text || "";
 
   readerContent.style.fontSize =
-  `${parseFloat(appState.reader.fontSize) || 21}px`;
+  `${parseFloat(appState.reader.fontSize) || 18}px`;
 
   readerContent.style.lineHeight =
-  parseFloat(appState.reader.lineSpacing) || 1.9;
+  parseFloat(appState.reader.lineSpacing) || 1.6;
 
   readerContent.style.maxWidth =
-    `${parseInt(previewWidth.value, 10) || 800}px`;
+  `${parseInt(
+    appState.reader.contentWidth,
+    10
+  ) || 720}px`;
 
     readerTitle.textContent =
     book?.title || "Untitled";
@@ -129,9 +132,11 @@ function renderReader() {
 
     readerContent.appendChild(empty);
 
-    updateReaderProgress();
-    updateReaderControls();
-    updateReaderChapterNavigation();
+    requestAnimationFrame(() => {
+      updateReaderProgress();
+      updateReaderControls();
+      updateReaderChapterNavigation();
+    });
 
     return;
   }
@@ -145,14 +150,31 @@ function renderReader() {
 
     paragraph.className = "preview-paragraph";
 
-    paragraph.style.marginBottom = `${
-      parseInt(paragraphSpacing.value, 10) || 0
-    }px`;
+paragraph.style.marginBottom = `${
+  parseInt(paragraphSpacing.value, 10) || 0
+}px`;
 
-    paragraph.style.textIndent =
-      indent.checked && index > 0 ? "2em" : "0";
+const chapter = detectedChapters[chapterCounter];
 
-    const chapter = detectedChapters[chapterCounter];
+const previousParagraph =
+  paragraphs[index - 1] || "";
+
+const previousWasChapter =
+  detectedChapters.some((chapterItem) =>
+    previousParagraph.startsWith(chapterItem.title)
+  );
+
+const isChapter =
+  chapter &&
+  textParagraph.startsWith(chapter.title);
+
+paragraph.style.textIndent =
+  indent.checked &&
+  index > 0 &&
+  !isChapter &&
+  !previousWasChapter
+    ? "2em"
+    : "0";
 
     if (
       chapter &&
@@ -192,18 +214,45 @@ function renderReader() {
     readerContent.appendChild(paragraph);
   });
 
-  // Restore saved reading position after the content has been rendered.
-    readerContent.scrollTop = Math.min(
-    appState.reader.scrollTop || 0,
+    const savedScrollTop =
+  book?.readerState?.scrollTop || 0;
+
+requestAnimationFrame(() => {
+  readerContent.scrollTop = Math.min(
+    savedScrollTop,
     Math.max(
       0,
-      readerContent.scrollHeight - readerContent.clientHeight
+      readerContent.scrollHeight -
+        readerContent.clientHeight
     )
   );
 
   updateReaderProgress();
   updateReaderControls();
   updateReaderChapterNavigation();
+ });
+}
+
+/* =================================================
+   READER POSITION SAVING
+================================================= */
+
+function saveCurrentBookReaderState() {
+  const book = getCurrentBook();
+
+  if (!book) {
+    return;
+  }
+
+  if (!book.readerState) {
+    book.readerState = {};
+  }
+
+  book.readerState.scrollTop =
+    readerContent.scrollTop;
+
+  book.readerState.progress =
+    appState.reader.progress || 0;
 }
 
 /* =================================================
@@ -215,30 +264,40 @@ function updateReaderProgress() {
     return;
   }
 
-  const maxScroll =
-    readerContent.scrollHeight -
+  const scrollTop =
+    readerContent.scrollTop;
+
+  const scrollHeight =
+    readerContent.scrollHeight;
+
+  const clientHeight =
     readerContent.clientHeight;
 
-  const scrollTop = readerContent.scrollTop;
+  const maxScroll = Math.max(
+    0,
+    scrollHeight - clientHeight
+  );
 
-  let progress = 0;
+  const progress =
+    maxScroll > 0
+      ? scrollTop / maxScroll
+      : 0;
 
-  if (maxScroll > 0) {
-    progress = scrollTop / maxScroll;
-  }
+  const percentage = Math.round(
+    Math.max(0, Math.min(1, progress)) * 100
+  );
 
-  progress = Math.max(0, Math.min(1, progress));
+  appState.reader.scrollTop =
+    scrollTop;
 
-  appState.reader.scrollTop = scrollTop;
-  appState.reader.progress = progress;
+  appState.reader.progress =
+    progress;
 
-  saveCurrentBookReaderState();
+  readerProgressBar.style.width =
+    `${percentage}%`;
 
-  const percentage = Math.round(progress * 100);
-
-  readerProgressBar.style.width = `${percentage}%`;
-
-  readerProgressText.textContent = `${percentage}%`;
+  readerProgressText.textContent =
+    `${percentage}%`;
 }
 
 /* =================================================

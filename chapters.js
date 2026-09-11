@@ -249,10 +249,10 @@ readerNextChapter.addEventListener(
 
 function updateReaderControls() {
   const size =
-    parseFloat(appState.reader.fontSize) || 21;
+    parseFloat(appState.reader.fontSize) || 18;
 
   const spacing =
-    parseFloat(appState.reader.lineSpacing) || 1.9;
+    parseFloat(appState.reader.lineSpacing) || 1.6;
 
   readerFontSize.textContent =
     `${size}px`;
@@ -276,7 +276,7 @@ readerFontDecrease.addEventListener(
   "click",
   () => {
     const current =
-      parseFloat(appState.reader.fontSize) || 21;
+      parseFloat(appState.reader.fontSize) || 18;
 
     appState.reader.fontSize =
       Math.max(8, current - 1);
@@ -292,7 +292,7 @@ readerFontIncrease.addEventListener(
   "click",
   () => {
     const current =
-      parseFloat(appState.reader.fontSize) || 21;
+      parseFloat(appState.reader.fontSize) || 18;
 
     appState.reader.fontSize =
       Math.min(48, current + 1);
@@ -312,7 +312,7 @@ readerSpacingDecrease.addEventListener(
   "click",
   () => {
     const current =
-      parseFloat(appState.reader.lineSpacing) || 1.9;
+      parseFloat(appState.reader.lineSpacing) || 1.6;
 
     appState.reader.lineSpacing =
       Math.max(
@@ -336,7 +336,7 @@ readerSpacingIncrease.addEventListener(
   "click",
   () => {
     const current =
-      parseFloat(appState.reader.lineSpacing) || 1.9;
+      parseFloat(appState.reader.lineSpacing) || 1.6;
 
     appState.reader.lineSpacing =
       Math.min(

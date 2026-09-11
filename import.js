@@ -27,20 +27,6 @@ async function loadImportedText(text, filename) {
   addBookToLibrary(book);
   setCurrentBook(book.id);
 
-  /*
-     Compatibility bridge:
-     reader.js, cleanup.js and some older code still use
-     the legacy currentBook object while the application
-     state migration is in progress.
-  */
-  currentBook = {
-    ...book,
-
-    fileName: book.sourceName || "",
-    position: book.reader?.scrollTop || 0,
-    progress: book.reader?.progress || 0
-  };
-
   try {
     await saveBook(book);
   } catch (error) {
@@ -52,16 +38,6 @@ async function loadImportedText(text, filename) {
   inputText.value = book.text;
 
   loadCurrentBookReaderState();
-
-  /*
-     Keep the compatibility object synchronized with the
-     reader state loaded from appState.
-  */
-  currentBook.position =
-    appState.reader.scrollTop || 0;
-
-  currentBook.progress =
-    appState.reader.progress || 0;
 
   renderCurrentView();
   setMode("reader");

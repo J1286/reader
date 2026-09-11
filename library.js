@@ -1,3 +1,4 @@
+
 /* =================================================
    BOOK LIBRARY
 ================================================= */
@@ -229,24 +230,51 @@ async function renderLibrary() {
 
     const progress = document.createElement("div");
 
-    progress.className = "book-progress";
+progress.className = "book-progress";
 
-    const progressBar = document.createElement("div");
+const progressTrack = document.createElement("div");
 
-    progressBar.className = "book-progress-bar";
+progressTrack.className = "book-progress-track";
 
-    const progressValue =
-      book.reader?.progress || 0;
+const progressBar = document.createElement("div");
 
-    progressBar.style.width =
-      `${Math.round(progressValue * 100)}%`;
+progressBar.className = "book-progress-bar";
 
-    progress.appendChild(progressBar);
+const progressValue = Math.max(
+  0,
+  Math.min(
+    1,
+    book.readerState?.progress || 0
+  )
+);
+
+const progressPercent =
+  Math.round(progressValue * 100);
+
+progressBar.style.width =
+  `${progressPercent}%`;
+
+progressTrack.appendChild(progressBar);
+
+const progressText =
+  document.createElement("div");
+
+progressText.className =
+  "book-progress-text";
+
+progressText.textContent =
+  progressPercent === 0
+    ? "Not started"
+    : progressPercent >= 100
+      ? "Finished"
+      : `${progressPercent}% Read`;
+
+progress.appendChild(progressTrack);
+progress.appendChild(progressText);
 
     const actions = document.createElement("div");
 
     actions.className = "book-card-actions";
-
 
     /* ---------- Open ---------- */
 
@@ -348,13 +376,7 @@ async function openBook(bookId) {
       return;
     }
 
-    /*
-       Put the IndexedDB version into the shared
-       application state.
-    */
-
-    const existingBook =
-      getBookById(bookId);
+    const existingBook = getBookById(bookId);
 
     if (existingBook) {
       Object.assign(
@@ -422,9 +444,7 @@ async function updateCurrentBookText(
   }
 
   book.text = text || "";
-
-  book.updatedAt =
-    new Date().toISOString();
+  book.updatedAt = new Date().toISOString();
 
   inputText.value = book.text;
 
@@ -437,6 +457,10 @@ async function updateCurrentBookText(
       console.error(
         "Could not save book text:",
         error
+      );
+
+      showStatus(
+        "Could not save the book."
       );
     }
   }

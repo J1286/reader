@@ -130,9 +130,10 @@ const APP_STORAGE_KEY = "myReaderAppState";
 const APP_VERSION = 1;
 
 const DEFAULT_READER_SETTINGS = {
-  fontSize: 21,
-  lineSpacing: 1.9,
-  theme: "light"
+  fontSize: 18,
+  lineSpacing: 1.6,
+  theme: "light",
+  contentWidth: 720
 };
 
 const DEFAULT_FORMATTER_SETTINGS = {
@@ -156,13 +157,6 @@ const DEFAULT_CLEANUP_SETTINGS = {
 /* =================================================
    APPLICATION STATE
 ================================================= */
-
-/*
-   This is the shared source of truth for the application.
-
-   Other modules should read/write application data here
-   instead of creating their own competing copies.
-*/
 
 const appState = {
   version: APP_VERSION,
@@ -197,9 +191,6 @@ const appState = {
    STATE HELPERS
 ================================================= */
 
-/**
- * Create a reasonably unique book ID.
- */
 function createBookId() {
   return (
     "book-" +
@@ -210,9 +201,6 @@ function createBookId() {
 }
 
 
-/**
- * Return the currently selected book.
- */
 function getCurrentBook() {
   if (!appState.currentBookId) {
     return null;
@@ -226,9 +214,6 @@ function getCurrentBook() {
 }
 
 
-/**
- * Find a book by ID.
- */
 function getBookById(bookId) {
   if (!bookId) {
     return null;
@@ -242,9 +227,6 @@ function getBookById(bookId) {
 }
 
 
-/**
- * Set the current book.
- */
 function setCurrentBook(bookId) {
   const book = getBookById(bookId);
 
@@ -259,13 +241,6 @@ function setCurrentBook(bookId) {
 }
 
 
-/**
- * Create a new book object.
-
-   Keeping the structure centralized is important because
-   library.js, import.js and reader.js all need to understand
-   the same book format.
- */
 function createBook({
   title = "Untitled",
   text = "",
@@ -300,9 +275,6 @@ function createBook({
 }
 
 
-/**
- * Add a book to the library.
- */
 function addBookToLibrary(book) {
   if (!book || !book.id) {
     return null;
@@ -316,9 +288,6 @@ function addBookToLibrary(book) {
 }
 
 
-/**
- * Remove a book from the library.
- */
 function removeBookFromLibrary(bookId) {
   const index = appState.library.findIndex(
     (book) => book.id === bookId
@@ -342,9 +311,6 @@ function removeBookFromLibrary(bookId) {
 }
 
 
-/**
- * Update a book and its timestamp.
- */
 function updateBook(bookId, updates = {}) {
   const book = getBookById(bookId);
 
@@ -360,26 +326,6 @@ function updateBook(bookId, updates = {}) {
 }
 
 
-/**
- * Update the current book's text.
- */
-function updateCurrentBookText(text) {
-  const book = getCurrentBook();
-
-  if (!book) {
-    return null;
-  }
-
-  book.text = text || "";
-  book.updatedAt = new Date().toISOString();
-
-  return book;
-}
-
-
-/**
- * Update the current book's chapters.
- */
 function updateCurrentBookChapters(chapters) {
   const book = getCurrentBook();
 
@@ -401,9 +347,6 @@ function updateCurrentBookChapters(chapters) {
    READER STATE
 ================================================= */
 
-/**
- * Load reader state from the current book.
- */
 function loadCurrentBookReaderState() {
   const book = getCurrentBook();
 
@@ -433,9 +376,6 @@ function loadCurrentBookReaderState() {
 }
 
 
-/**
- * Save the current reader state to the current book.
- */
 function saveCurrentBookReaderState() {
   const book = getCurrentBook();
 
@@ -453,9 +393,6 @@ function saveCurrentBookReaderState() {
 }
 
 
-/**
- * Reset reader position for the current book.
- */
 function resetCurrentBookReaderState() {
   appState.reader.currentChapterIndex = 0;
   appState.reader.scrollTop = 0;
@@ -469,9 +406,6 @@ function resetCurrentBookReaderState() {
    PERSISTENCE
 ================================================= */
 
-/**
- * Save application state to localStorage.
- */
 function saveAppState() {
   try {
     const serialized = JSON.stringify(appState);
@@ -493,9 +427,6 @@ function saveAppState() {
 }
 
 
-/**
- * Load application state from localStorage.
- */
 function loadAppState() {
   try {
     const serialized = localStorage.getItem(
@@ -511,12 +442,6 @@ function loadAppState() {
     if (!savedState || typeof savedState !== "object") {
       return false;
     }
-
-    /*
-       Merge saved state with defaults rather than replacing
-       appState completely. This protects us when we add new
-       state properties in future phases.
-    */
 
     appState.version =
       savedState.version || APP_VERSION;
@@ -546,11 +471,6 @@ function loadAppState() {
       ...DEFAULT_READER_SETTINGS,
       ...(savedState.reader || {})
     };
-
-    /*
-       Make sure every loaded book has the fields expected
-       by the rest of the application.
-    */
 
     appState.library = appState.library.map((book) => ({
       ...book,
@@ -585,11 +505,6 @@ function loadAppState() {
         new Date().toISOString()
     }));
 
-    /*
-       If the saved current book no longer exists,
-       clear the reference instead of leaving stale state.
-    */
-
     if (
       appState.currentBookId &&
       !getBookById(appState.currentBookId)
@@ -609,13 +524,6 @@ function loadAppState() {
 }
 
 
-/**
- * Clear all persisted application data.
-
-   This is intentionally separate from the normal "Clear"
-   input button. It should only be used when we explicitly
-   want to reset the whole application.
- */
 function clearSavedAppState() {
   try {
     localStorage.removeItem(APP_STORAGE_KEY);
@@ -636,12 +544,6 @@ function clearSavedAppState() {
    GENERIC STATE UPDATE
 ================================================= */
 
-/**
- * Save state after a change.
-
-   Keeping this helper small means other modules can simply
-   call stateChanged() whenever they mutate shared state.
- */
 function stateChanged() {
   saveAppState();
 }
@@ -651,10 +553,4 @@ function stateChanged() {
    INITIALIZATION
 ================================================= */
 
-/*
-   Load persisted state immediately.
-
-   This runs after all DOM references have been created but
-   before the other JavaScript files are loaded.
- */
 loadAppState();
