@@ -1477,3 +1477,659 @@ body[data-theme="sepia"] .preview-page.preset-book {
     display: none !important;
   }
 }
+
+/* =================================================
+   MOBILE / PHONE-FIRST LAYOUT
+   Add at the end of style.css
+================================================= */
+
+:root {
+  --mobile-padding: 16px;
+  --mobile-gap: 12px;
+  --touch-size: 44px;
+}
+
+
+/* =================================================
+   GLOBAL MOBILE SAFETY
+================================================= */
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  min-height: var(--touch-size);
+}
+
+
+/* =================================================
+   APP CONTAINER
+================================================= */
+
+.container {
+  width: min(100%, 1200px);
+  margin: 0 auto;
+}
+
+
+/* =================================================
+   PHONE BREAKPOINT
+================================================= */
+
+@media (max-width: 700px) {
+
+  body {
+    margin: 0;
+    padding:
+      env(safe-area-inset-top)
+      env(safe-area-inset-right)
+      env(safe-area-inset-bottom)
+      env(safe-area-inset-left);
+  }
+
+  .container {
+    width: 100%;
+    max-width: none;
+    padding: 0;
+  }
+
+
+  /* =================================================
+     HEADER
+  ================================================= */
+
+  .header {
+    padding: 16px var(--mobile-padding);
+    gap: 16px;
+  }
+
+  .header h1 {
+    font-size: 24px;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+
+  .header p {
+    font-size: 14px;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+
+  /* =================================================
+     MAIN NAVIGATION
+  ================================================= */
+
+  .app-mode {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    width: 100%;
+  }
+
+  .mode-button {
+    min-height: 46px;
+    padding: 8px 6px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+
+  /* =================================================
+     GENERAL SECTIONS
+  ================================================= */
+
+  .app-view {
+    width: 100%;
+  }
+
+  section {
+    margin-bottom: 16px;
+  }
+
+  section > h2 {
+    font-size: 20px;
+  }
+
+  .section-title-row {
+    padding: 0 var(--mobile-padding);
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+
+  /* =================================================
+     LIBRARY
+  ================================================= */
+
+  #libraryView {
+    padding-bottom: 20px;
+  }
+
+  #librarySection {
+    width: 100%;
+  }
+
+  .library-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .library-actions button {
+    min-height: 44px;
+  }
+
+  .library-panel {
+    padding: 0 var(--mobile-padding);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .book-card {
+    width: 100%;
+    min-width: 0;
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .book-title {
+    font-size: 18px;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+  }
+
+  .book-meta {
+    font-size: 13px;
+    overflow-wrap: anywhere;
+  }
+
+  .book-card-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .book-card-actions button {
+    width: 100%;
+    min-height: 44px;
+  }
+
+
+  /* =================================================
+     READER HEADER
+  ================================================= */
+
+  .reader-header {
+    padding: 16px var(--mobile-padding);
+  }
+
+  #readerTitle {
+    font-size: 24px;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+
+  .reader-meta {
+    font-size: 13px;
+  }
+
+
+  /* =================================================
+     READER CONTROLS
+  ================================================= */
+
+  .reader-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 0 var(--mobile-padding) 12px;
+  }
+
+  .reader-control-group {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .reader-control-label {
+    font-size: 12px;
+  }
+
+  .reader-control-group button {
+    min-width: 42px;
+    min-height: 42px;
+    padding: 6px 8px;
+  }
+
+  .reader-theme-button {
+    min-width: 40px !important;
+  }
+
+  #readerResetButton {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+
+  /* =================================================
+     CHAPTER NAVIGATION
+  ================================================= */
+
+  .reader-chapter-nav {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 8px;
+
+    padding:
+      8px
+      var(--mobile-padding);
+
+    background: inherit;
+    backdrop-filter: blur(10px);
+  }
+
+  .reader-chapter-nav button {
+    min-height: 44px;
+    padding: 8px 10px;
+  }
+
+  #readerChapterIndicator {
+    font-size: 12px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+
+  /* =================================================
+     READER
+  ================================================= */
+
+  .reader-container {
+    width: 100%;
+    padding: 0;
+  }
+
+  .reader-content {
+    width: 100% !important;
+    max-width: none !important;
+
+    box-sizing: border-box;
+
+    padding:
+      20px
+      var(--mobile-padding)
+      80px;
+
+    font-size: 18px;
+    line-height: 1.65;
+
+    overflow-x: hidden;
+    overflow-wrap: break-word;
+    word-break: normal;
+
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .reader-content .preview-paragraph {
+    max-width: 100%;
+  }
+
+  .preview-chapter-title {
+    font-size: 1.25em;
+    line-height: 1.3;
+  }
+
+
+  /* =================================================
+     READER PROGRESS
+  ================================================= */
+
+  .reader-progress-container {
+    position: sticky;
+    bottom: 0;
+    z-index: 20;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding:
+      8px
+      var(--mobile-padding)
+      calc(8px + env(safe-area-inset-bottom));
+
+    background: inherit;
+    backdrop-filter: blur(10px);
+  }
+
+  .reader-progress-bar {
+    flex: 1;
+    min-width: 0;
+  }
+
+  #readerProgressText {
+    min-width: 38px;
+    text-align: right;
+    font-size: 12px;
+  }
+
+
+  /* =================================================
+     FORMATTER
+  ================================================= */
+
+  #formatterView {
+    padding-bottom: 24px;
+  }
+
+  #formatterView > section {
+    padding: 0 var(--mobile-padding);
+  }
+
+  #formatterView section > h2 {
+    margin-top: 20px;
+  }
+
+
+  /* =================================================
+     CLEANUP
+  ================================================= */
+
+  .cleanup-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .cleanup-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .checkbox {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .checkbox input {
+    width: 20px;
+    height: 20px;
+  }
+
+  .cleanup-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .cleanup-buttons button {
+    width: 100%;
+  }
+
+  .cleanup-result {
+    margin-top: 12px;
+  }
+
+  #cleanedText {
+    width: 100%;
+    min-height: 240px;
+    box-sizing: border-box;
+  }
+
+
+  /* =================================================
+     READING STYLE
+  ================================================= */
+
+  .style-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .reading-style {
+    width: 100%;
+  }
+
+  .preset-bar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .preset-button {
+    min-height: 44px;
+    width: 100%;
+  }
+
+  .theme-controls {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .theme-controls > span {
+    grid-column: 1 / -1;
+  }
+
+  .theme-button {
+    min-height: 44px;
+    width: 100%;
+  }
+
+
+  /* =================================================
+     CHAPTER PANEL
+  ================================================= */
+
+  .chapter-panel {
+    max-height: 320px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .chapter-item {
+    width: 100%;
+    min-height: 48px;
+    text-align: left;
+    padding: 10px 12px;
+  }
+
+
+  /* =================================================
+     FORMAT SETTINGS
+  ================================================= */
+
+  .toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .setting {
+    width: 100%;
+  }
+
+  .setting input[type="number"] {
+    width: 100%;
+    min-height: 44px;
+    box-sizing: border-box;
+  }
+
+  .setting input[type="range"] {
+    width: 100%;
+    min-height: 36px;
+  }
+
+  .export-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .export-buttons button {
+    width: 100%;
+    min-height: 46px;
+  }
+
+
+  /* =================================================
+     INPUT
+  ================================================= */
+
+  .input-box {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #inputText {
+    width: 100%;
+    min-height: 260px;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+
+  .input-footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .input-hint {
+    grid-column: 1 / -1;
+    font-size: 12px;
+  }
+
+  #browseFileButton,
+  #clearButton {
+    width: 100%;
+    min-height: 44px;
+  }
+
+
+  /* =================================================
+     PREVIEW
+  ================================================= */
+
+  .preview-area {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0;
+  }
+
+  #preview {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+    padding: 20px var(--mobile-padding);
+  }
+
+
+  /* =================================================
+     STATS
+  ================================================= */
+
+  .stats {
+    margin:
+      0
+      var(--mobile-padding)
+      20px;
+
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+
+  /* =================================================
+     STATUS
+  ================================================= */
+
+  .status {
+    margin:
+      0
+      var(--mobile-padding)
+      calc(16px + env(safe-area-inset-bottom));
+
+    font-size: 13px;
+  }
+
+}
+
+
+/* =================================================
+   SMALL PHONES
+================================================= */
+
+@media (max-width: 380px) {
+
+  .header h1 {
+    font-size: 22px;
+  }
+
+  .mode-button {
+    font-size: 12px;
+    padding-left: 3px;
+    padding-right: 3px;
+  }
+
+  .reader-content {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .reader-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .reader-chapter-nav {
+    grid-template-columns: 1fr;
+  }
+
+  #readerChapterIndicator {
+    order: -1;
+  }
+
+  .cleanup-buttons,
+  .export-buttons,
+  .input-footer {
+    grid-template-columns: 1fr;
+  }
+
+  .preset-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .theme-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .theme-controls > span {
+    grid-column: auto;
+  }
+}

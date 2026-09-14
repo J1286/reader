@@ -3,7 +3,10 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
 
   <title>My Reader</title>
   <link rel="stylesheet" href="style.css">  
@@ -58,14 +61,30 @@
 
           <div class="library-actions">
 
-            <button id="addBookButton">
-              + Add Book
-            </button>
+  	    <button id="addBookButton">
+    	      + Add Book
+  	    </button>
 
-            <button id="refreshLibraryButton" class="secondary">
-              Sync
-            </button>
-          </div>
+  	    <button id="backupLibraryButton" class="secondary">
+    	      Backup
+  	    </button>
+
+	    <button id="restoreLibraryButton" class="secondary">
+    	      Restore
+  	    </button>
+
+	    <button id="refreshLibraryButton" class="secondary">
+    	      Sync
+  	    </button>
+
+	  <input
+    	    id="restoreLibraryInput"
+    	    type="file"
+    	    accept=".json,application/json"
+    	    hidden
+  	  >
+	</div>
+
         </div>
 
         <div id="libraryPanel" class="library-panel">
@@ -484,6 +503,7 @@
   <script src="./reader.js"></script>
   <script src="./import.js"></script>
   <script src="./library.js"></script>
+  <script src="./backup.js"></script>
   <script src="./export.js"></script>
   <script src="./app.js"></script>
 

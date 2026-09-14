@@ -14,12 +14,14 @@ const applyButton = document.getElementById("applyButton");
 
 const cleanSpaces = document.getElementById("cleanSpaces");
 const detectParagraphs = document.getElementById("detectParagraphs");
-const joinBrokenLinesCheckbox = document.getElementById("joinBrokenLines");
+const joinBrokenLinesCheckbox =
+  document.getElementById("joinBrokenLines");
 
 const lineWidth = document.getElementById("lineWidth");
 const fontSize = document.getElementById("fontSize");
 const lineSpacing = document.getElementById("lineSpacing");
-const paragraphSpacing = document.getElementById("paragraphSpacing");
+const paragraphSpacing =
+  document.getElementById("paragraphSpacing");
 const previewWidth = document.getElementById("previewWidth");
 const widthValue = document.getElementById("widthValue");
 const indent = document.getElementById("indent");
@@ -29,17 +31,19 @@ const stats = document.getElementById("stats");
 const status = document.getElementById("status");
 
 const chapterPanel = document.getElementById("chapterPanel");
-const detectChaptersButton = document.getElementById("detectChaptersButton");
+const detectChaptersButton =
+  document.getElementById("detectChaptersButton");
 
-const presetButtons = document.querySelectorAll(".preset-button");
-const clearButton = document.getElementById("clearButton");
+const presetButtons =
+  document.querySelectorAll(".preset-button");
+
+const clearButton =
+  document.getElementById("clearButton");
 
 
 /* =================================================
    DOCUMENT STATE
 ================================================= */
-
-let currentBook = createEmptyBook();
 
 function createEmptyBook() {
   return {
@@ -52,6 +56,9 @@ function createEmptyBook() {
   };
 }
 
+let currentBook = createEmptyBook();
+
+
 /* ---------- Reader ---------- */
 
 const readerView = document.getElementById("readerView");
@@ -60,66 +67,77 @@ const readerContent = document.getElementById("readerContent");
 const readerTitle = document.getElementById("readerTitle");
 const readerMeta = document.getElementById("readerMeta");
 
-const readerProgressBar = document.getElementById("readerProgressBar");
-const readerProgressText = document.getElementById("readerProgressText");
+const readerProgressBar =
+  document.getElementById("readerProgressBar");
 
-const readerFontDecrease = document.getElementById("readerFontDecrease");
-const readerFontIncrease = document.getElementById("readerFontIncrease");
-const readerFontSize = document.getElementById("readerFontSize");
+const readerProgressText =
+  document.getElementById("readerProgressText");
 
-const readerSpacingDecrease = document.getElementById(
-  "readerSpacingDecrease"
-);
+const readerFontDecrease =
+  document.getElementById("readerFontDecrease");
 
-const readerSpacingIncrease = document.getElementById(
-  "readerSpacingIncrease"
-);
+const readerFontIncrease =
+  document.getElementById("readerFontIncrease");
 
-const readerSpacing = document.getElementById("readerSpacing");
-const readerResetButton = document.getElementById("readerResetButton");
+const readerFontSize =
+  document.getElementById("readerFontSize");
 
-const readerThemeButtons = document.querySelectorAll(
-  ".reader-theme-button"
-);
+const readerSpacingDecrease =
+  document.getElementById("readerSpacingDecrease");
 
-const readerPreviousChapter = document.getElementById(
-  "readerPreviousChapter"
-);
+const readerSpacingIncrease =
+  document.getElementById("readerSpacingIncrease");
 
-const readerNextChapter = document.getElementById(
-  "readerNextChapter"
-);
+const readerSpacing =
+  document.getElementById("readerSpacing");
 
-const readerChapterIndicator = document.getElementById(
-  "readerChapterIndicator"
-);
+const readerResetButton =
+  document.getElementById("readerResetButton");
+
+const readerThemeButtons =
+  document.querySelectorAll(".reader-theme-button");
+
+const readerPreviousChapter =
+  document.getElementById("readerPreviousChapter");
+
+const readerNextChapter =
+  document.getElementById("readerNextChapter");
+
+const readerChapterIndicator =
+  document.getElementById("readerChapterIndicator");
 
 
 /* ---------- Library ---------- */
 
-const libraryView = document.getElementById("libraryView");
-const libraryPanel = document.getElementById("libraryPanel");
+const libraryView =
+  document.getElementById("libraryView");
 
-const addBookButton = document.getElementById("addBookButton");
-const refreshLibraryButton = document.getElementById(
-  "refreshLibraryButton"
-);
+const libraryPanel =
+  document.getElementById("libraryPanel");
 
-const browseFileButton = document.getElementById(
-  "browseFileButton"
-);
+const addBookButton =
+  document.getElementById("addBookButton");
 
-const fileInput = document.getElementById("fileInput");
-const dropZone = document.getElementById("dropZone");
+const refreshLibraryButton =
+  document.getElementById("refreshLibraryButton");
+
+const browseFileButton =
+  document.getElementById("browseFileButton");
+
+const fileInput =
+  document.getElementById("fileInput");
+
+const dropZone =
+  document.getElementById("dropZone");
 
 
 /* ---------- Application Navigation ---------- */
 
-const modeButtons = document.querySelectorAll(".mode-button");
+const modeButtons =
+  document.querySelectorAll(".mode-button");
 
-const formatterView = document.getElementById(
-  "formatterView"
-);
+const formatterView =
+  document.getElementById("formatterView");
 
 
 /* =================================================
@@ -232,10 +250,15 @@ function setCurrentBook(bookId) {
 
   if (!book) {
     appState.currentBookId = null;
+
+    currentBook = createEmptyBook();
+
     return null;
   }
 
   appState.currentBookId = book.id;
+
+  currentBook = book;
 
   return book;
 }
@@ -284,14 +307,17 @@ function addBookToLibrary(book) {
 
   appState.currentBookId = book.id;
 
+  currentBook = book;
+
   return book;
 }
 
 
 function removeBookFromLibrary(bookId) {
-  const index = appState.library.findIndex(
-    (book) => book.id === bookId
-  );
+  const index =
+    appState.library.findIndex(
+      (book) => book.id === bookId
+    );
 
   if (index === -1) {
     return false;
@@ -301,6 +327,8 @@ function removeBookFromLibrary(bookId) {
 
   if (appState.currentBookId === bookId) {
     appState.currentBookId = null;
+
+    currentBook = createEmptyBook();
 
     appState.reader.currentChapterIndex = 0;
     appState.reader.scrollTop = 0;
@@ -320,7 +348,12 @@ function updateBook(bookId, updates = {}) {
 
   Object.assign(book, updates);
 
-  book.updatedAt = new Date().toISOString();
+  book.updatedAt =
+    new Date().toISOString();
+
+  if (bookId === appState.currentBookId) {
+    currentBook = book;
+  }
 
   return book;
 }
@@ -333,11 +366,13 @@ function updateCurrentBookChapters(chapters) {
     return null;
   }
 
-  book.chapters = Array.isArray(chapters)
-    ? chapters
-    : [];
+  book.chapters =
+    Array.isArray(chapters)
+      ? chapters
+      : [];
 
-  book.updatedAt = new Date().toISOString();
+  book.updatedAt =
+    new Date().toISOString();
 
   return book;
 }
@@ -357,7 +392,8 @@ function loadCurrentBookReaderState() {
     return;
   }
 
-  const savedReader = book.reader || {};
+  const savedReader = book.reader || book.readerState ||
+    {};
 
   appState.reader.currentChapterIndex =
     Number.isFinite(savedReader.chapterIndex)
@@ -384,12 +420,20 @@ function saveCurrentBookReaderState() {
   }
 
   book.reader = {
-    chapterIndex: appState.reader.currentChapterIndex,
-    scrollTop: appState.reader.scrollTop,
-    progress: appState.reader.progress
+    chapterIndex:
+      appState.reader.currentChapterIndex || 0,
+
+    scrollTop:
+      appState.reader.scrollTop || 0,
+
+    progress:
+      appState.reader.progress || 0
   };
 
-  book.updatedAt = new Date().toISOString();
+  delete book.readerState;
+
+  book.updatedAt =
+    new Date().toISOString();
 }
 
 
@@ -408,7 +452,8 @@ function resetCurrentBookReaderState() {
 
 function saveAppState() {
   try {
-    const serialized = JSON.stringify(appState);
+    const serialized =
+      JSON.stringify(appState);
 
     localStorage.setItem(
       APP_STORAGE_KEY,
@@ -429,25 +474,32 @@ function saveAppState() {
 
 function loadAppState() {
   try {
-    const serialized = localStorage.getItem(
-      APP_STORAGE_KEY
-    );
+    const serialized =
+      localStorage.getItem(
+        APP_STORAGE_KEY
+      );
 
     if (!serialized) {
       return false;
     }
 
-    const savedState = JSON.parse(serialized);
+    const savedState =
+      JSON.parse(serialized);
 
-    if (!savedState || typeof savedState !== "object") {
+    if (
+      !savedState ||
+      typeof savedState !== "object"
+    ) {
       return false;
     }
 
     appState.version =
-      savedState.version || APP_VERSION;
+      savedState.version ||
+      APP_VERSION;
 
     appState.mode =
-      savedState.mode || "library";
+      savedState.mode ||
+      "library";
 
     appState.library =
       Array.isArray(savedState.library)
@@ -455,7 +507,8 @@ function loadAppState() {
         : [];
 
     appState.currentBookId =
-      savedState.currentBookId || null;
+      savedState.currentBookId ||
+      null;
 
     appState.formatter = {
       ...DEFAULT_FORMATTER_SETTINGS,
@@ -472,45 +525,73 @@ function loadAppState() {
       ...(savedState.reader || {})
     };
 
-    appState.library = appState.library.map((book) => ({
-      ...book,
+    /* Normalize every stored book */
+    appState.library =
+      appState.library.map((book) => {
+        const legacyReader =
+          book.readerState || {};
 
-      id: book.id || createBookId(),
+        const existingReader =
+          book.reader || {};
 
-      title: book.title || "Untitled",
+        return {
+          ...book,
 
-      text: book.text || "",
+          id:
+            book.id ||
+            createBookId(),
 
-      type: book.type || "txt",
+          title:
+            book.title ||
+            "Untitled",
 
-      sourceName: book.sourceName || "",
+          text:
+            book.text ||
+            "",
 
-      chapters: Array.isArray(book.chapters)
-        ? book.chapters
-        : [],
+          type:
+            book.type ||
+            "txt",
 
-      reader: {
-        chapterIndex: 0,
-        scrollTop: 0,
-        progress: 0,
-        ...(book.reader || {})
-      },
+          sourceName:
+            book.sourceName ||
+            "",
 
-      createdAt:
-        book.createdAt ||
-        new Date().toISOString(),
+          chapters:
+            Array.isArray(book.chapters)
+              ? book.chapters
+              : [],
 
-      updatedAt:
-        book.updatedAt ||
-        new Date().toISOString()
-    }));
+          reader: {
+  	    chapterIndex: 0,
+    	    scrollTop: 0,
+  	    progress: 0,
+
+	    ...(book.readerState || book.reader || {})
+	  },
+
+          createdAt:
+            book.createdAt ||
+            new Date().toISOString(),
+
+          updatedAt:
+            book.updatedAt ||
+            new Date().toISOString()
+        };
+      });
 
     if (
       appState.currentBookId &&
-      !getBookById(appState.currentBookId)
+      !getBookById(
+        appState.currentBookId
+      )
     ) {
       appState.currentBookId = null;
     }
+
+    currentBook =
+      getCurrentBook() ||
+      createEmptyBook();
 
     return true;
   } catch (error) {
@@ -526,7 +607,9 @@ function loadAppState() {
 
 function clearSavedAppState() {
   try {
-    localStorage.removeItem(APP_STORAGE_KEY);
+    localStorage.removeItem(
+      APP_STORAGE_KEY
+    );
 
     return true;
   } catch (error) {

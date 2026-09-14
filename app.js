@@ -1,22 +1,38 @@
 /* =================================================
-APP MODES
+   APP MODES
 ================================================= */
 
 let currentMode = appState.mode || "library";
 
-  function setMode(mode) {
-    currentMode = mode;
-    appState.mode = mode;
-
-  libraryView.classList.toggle("hidden", mode !== "library");
-  readerView.classList.toggle("hidden", mode !== "reader");
-  formatterView.classList.toggle("hidden", mode !== "formatter");
+async function setMode(mode) {
+  appState.mode = mode;
 
   modeButtons.forEach((button) => {
-    button.classList.toggle("active", button.dataset.mode === mode);
-    });
+    button.classList.toggle(
+      "active",
+      button.dataset.mode === mode
+    );
+  });
 
-  stateChanged();
+  libraryView.classList.toggle(
+    "hidden",
+    mode !== "library"
+  );
+
+  readerView.classList.toggle(
+    "hidden",
+    mode !== "reader"
+  );
+
+  formatterView.classList.toggle(
+    "hidden",
+    mode !== "formatter"
+  );
+
+  if (mode === "library") {
+    await syncLibraryState();
+    await renderLibrary();
+  }
 
   if (mode === "reader") {
     renderReader();
@@ -25,13 +41,16 @@ let currentMode = appState.mode || "library";
   if (mode === "formatter") {
     renderCurrentView();
   }
+
+  stateChanged();
 }
 
-  modeButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      setMode(button.dataset.mode);
-    });
+
+modeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    setMode(button.dataset.mode);
   });
+});
 
 
 /* =================================================
