@@ -3,40 +3,22 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
   <title>My Reader</title>
   <link rel="stylesheet" href="style.css">
 
   <link rel="manifest" href="./manifest.json">
 
-<meta
-  name="theme-color"
-  content="#6b4f35"
->
+  <meta name="theme-color" content="#6b4f35">
 
-<meta
-  name="mobile-web-app-capable"
-  content="yes"
->
+  <meta name="mobile-web-app-capable" content="yes">
 
-<meta
-  name="apple-mobile-web-app-capable"
-  content="yes"
->
+  <meta name="apple-mobile-web-app-capable" content="yes">
 
-<meta
-  name="apple-mobile-web-app-status-bar-style"
-  content="default"
->
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
-<meta
-  name="apple-mobile-web-app-title"
-  content="My Reader"
->  
+  <meta name="apple-mobile-web-app-title" content="My Reader">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.11.0/mammoth.browser.min.js" defer></script>
 
@@ -51,35 +33,73 @@
 
     <header class="header">
 
-      <div>
-        <h1>📚 My Reader</h1>
+      <button id="menuButton" class="menu-button" type="button" aria-label="Open menu" aria-expanded="false">
+        ☰
+      </button>
 
-        <p>
-          Read, organize and format your personal books.
-        </p>
+      <div class="app-title">
+        <h1>📖 My Reader</h1>
+        <p>Your personal reading space</p>
       </div>
-
-      <nav class="app-mode" aria-label="Main navigation">
-
-        <button class="mode-button active" data-mode="library">
-          📚 Library
-        </button>
-
-        <button class="mode-button" data-mode="reader">
-          📖 Reader
-        </button>
-
-        <button class="mode-button" data-mode="formatter">
-          🛠️ Formatter
-        </button>
-
-      </nav>
 
     </header>
 
+    <aside id="sideMenu" class="side-menu" aria-hidden="true">
+      <div class="side-menu-header">
+
+        <strong>📚 My Reader</strong>
+
+        <button id="closeMenuButton" class="close-menu-button" type="button" aria-label="Close menu">
+          ×
+        </button>
+
+      </div>
+
+      <nav class="side-menu-nav" aria-label="Main navigation">
+
+        <button class="menu-item" data-mode="library" type="button">
+          <span class="menu-icon">📚</span>
+          <span>Library</span>
+        </button>
+
+        <button class="menu-item active" data-mode="reader" type="button">
+          <span class="menu-icon">📖</span>
+          <span>Reader</span>
+        </button>
+
+        <button class="menu-item" data-mode="formatter" type="button">
+          <span class="menu-icon">🛠️</span>
+          <span>Tools</span>
+        </button>
+      </nav>
+
+      <div class="side-menu-future">
+        <div class="side-menu-divider"></div>
+        <div class="future-item">
+          🔖
+          <span>Bookmarks</span>
+          <small>Coming later</small>
+        </div>
+
+        <div class="future-item">
+          🔍
+          <span>Search</span>
+          <small>Coming later</small>
+        </div>
+
+        <div class="future-item">
+          ⚙️
+          <span>Settings</span>
+          <small>Coming later</small>
+        </div>
+      </div>
+    </aside>
+
+    <div id="menuBackdrop" class="menu-backdrop"></div>
+
     <!-- LIBRARY VIEW -->
 
-    <div id="libraryView" class="app-view">
+    <div id="libraryView" class="app-view hidden">
 
       <section id="librarySection">
 
@@ -89,29 +109,24 @@
 
           <div class="library-actions">
 
-  	    <button id="addBookButton">
-    	      + Add Book
-  	    </button>
+            <button id="addBookButton">
+              + Add Book
+            </button>
 
-  	    <button id="backupLibraryButton" class="secondary">
-    	      Backup
-  	    </button>
+            <button id="backupLibraryButton" class="secondary">
+              Backup
+            </button>
 
-	    <button id="restoreLibraryButton" class="secondary">
-    	      Restore
-  	    </button>
+            <button id="restoreLibraryButton" class="secondary">
+              Restore
+            </button>
 
-	    <button id="refreshLibraryButton" class="secondary">
-    	      Sync
-  	    </button>
+            <button id="refreshLibraryButton" class="secondary">
+              Sync
+            </button>
 
-	  <input
-    	    id="restoreLibraryInput"
-    	    type="file"
-    	    accept=".json,application/json"
-    	    hidden
-  	  >
-	</div>
+            <input id="restoreLibraryInput" type="file" accept=".json,application/json" hidden>
+          </div>
 
         </div>
 
@@ -126,7 +141,7 @@
 
     <!-- READER VIEW -->
 
-    <div id="readerView" class="app-view hidden">
+    <div id="readerView" class="app-view">
 
       <section class="reader-header">
 
@@ -138,9 +153,19 @@
           </div>
         </div>
 
+        <div class="reader-actions">
+          <button id="readerFullscreenButton" class="secondary" type="button">
+            ⛶ Full Screen
+          </button>
+        </div>
+
+        <button id="readerSettingsButton" class="reader-settings-button" type="button" aria-label="Reading settings" aria-expanded="false">
+          Aa
+        </button>
+
       </section>
 
-      <section class="reader-controls">
+      <section id="readerControls" class="reader-controls reader-controls-hidden">
 
         <div class="reader-control-group">
 
@@ -229,13 +254,10 @@
 
       <div class="reader-progress-container">
         <div class="reader-progress-bar">
-          <div
-            id="readerProgressBar"
-            class="reader-progress-fill"
-          ></div>
+          <div id="readerProgressBar" class="reader-progress-fill"></div>
         </div>
 
-        <span id="readerProgressText">0%</span> 
+        <span id="readerProgressText">0%</span>
       </div>
 
     </div>
@@ -527,7 +549,7 @@
   <script src="./state.js"></script>
   <script src="./cleanup.js"></script>
   <script src="./chapters.js"></script>
-  <script src="./formatter.js"></script>  
+  <script src="./formatter.js"></script>
   <script src="./reader.js"></script>
   <script src="./import.js"></script>
   <script src="./library.js"></script>
@@ -535,26 +557,80 @@
   <script src="./export.js"></script>
   <script src="./app.js"></script>
 
-<script>
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker
-        .register("./sw.js")
-        .then((registration) => {
-          console.log(
-            "My Reader service worker registered:",
-            registration.scope
-          );
-        })
-        .catch((error) => {
-          console.error(
-            "My Reader service worker registration failed:",
-            error
-          );
-        });
+  <script>
+    const menuButton = document.getElementById("menuButton");
+    const closeMenuButton = document.getElementById("closeMenuButton");
+    const sideMenu = document.getElementById("sideMenu");
+    const menuBackdrop = document.getElementById("menuBackdrop");
+
+    function openMenu() {
+      sideMenu.classList.add("open");
+      menuBackdrop.classList.add("open");
+      sideMenu.setAttribute("aria-hidden", "false");
+      menuButton.setAttribute("aria-expanded", "true");
+    }
+
+    function closeMenu() {
+      sideMenu.classList.remove("open");
+      menuBackdrop.classList.remove("open");
+      sideMenu.setAttribute("aria-hidden", "true");
+      menuButton.setAttribute("aria-expanded", "false");
+    }
+    menuButton.addEventListener("click", openMenu);
+    closeMenuButton.addEventListener("click", closeMenu);
+    menuBackdrop.addEventListener("click", closeMenu);
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeMenu();
+      }
     });
-  }
-</script>
+    document.querySelectorAll(".menu-item").forEach((button) => {
+      button.addEventListener("click", () => {
+        closeMenu();
+      });
+    });
+  </script>
+
+  <script>
+    const readerSettingsButton =
+      document.getElementById("readerSettingsButton");
+    const readerControls =
+      document.getElementById("readerControls");
+    if (readerSettingsButton && readerControls) {
+      readerSettingsButton.addEventListener("click", () => {
+        const isOpen = !readerControls.classList.contains("reader-controls-hidden");
+        readerControls.classList.toggle(
+          "reader-controls-hidden",
+          isOpen
+        );
+        readerSettingsButton.setAttribute(
+          "aria-expanded",
+          String(!isOpen)
+        );
+      });
+    }
+  </script>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("./sw.js")
+          .then((registration) => {
+            console.log(
+              "My Reader service worker registered:",
+              registration.scope
+            );
+          })
+          .catch((error) => {
+            console.error(
+              "My Reader service worker registration failed:",
+              error
+            );
+          });
+      });
+    }
+  </script>
 
 </body>
 
