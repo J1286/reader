@@ -2,7 +2,7 @@
    MY READER SERVICE WORKER
 ================================================= */
 
-const CACHE_NAME = "my-reader-v1";
+const CACHE_NAME = "my-reader-v2";
 
 const APP_SHELL = [
   "./",
