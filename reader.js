@@ -60,10 +60,7 @@ function activatePreset(presetName) {
   preview.classList.add(`preset-${presetName}`);
 
   presetButtons.forEach((button) => {
-    button.classList.toggle(
-      "active",
-      button.dataset.preset === presetName
-    );
+    button.classList.toggle("active", button.dataset.preset === presetName);
   });
 
   renderCurrentView();
@@ -96,7 +93,6 @@ presetButtons.forEach((button) => {
   });
 });
 
-
 /* =================================================
    READER RENDERING
 ================================================= */
@@ -110,31 +106,27 @@ function renderReader() {
 
   loadCurrentBookReaderState();
 
-  readerContent.style.fontSize =
-    `${parseFloat(appState.reader.fontSize) || 18}px`;
+  readerContent.style.fontSize = `${
+    parseFloat(appState.reader.fontSize) || 18
+  }px`;
 
   readerContent.style.lineHeight =
     parseFloat(appState.reader.lineSpacing) || 1.6;
 
-  readerContent.style.maxWidth =
-    `${parseInt(
-      appState.reader.contentWidth,
-      10
-    ) || 720}px`;
+  readerContent.style.maxWidth = `${
+    parseInt(appState.reader.contentWidth, 10) || 720
+  }px`;
 
-  readerTitle.textContent =
-    book?.title || "Untitled";
+  readerTitle.textContent = book?.title || "Untitled";
 
-  readerMeta.textContent =
-    book?.sourceName || "Text document";
+  readerMeta.textContent = book?.sourceName || "Text document";
 
   readerContent.innerHTML = "";
 
   if (!text.trim()) {
     const empty = document.createElement("p");
 
-    empty.textContent =
-      "No book is currently open.";
+    empty.textContent = "No book is currently open.";
 
     readerContent.appendChild(empty);
 
@@ -149,137 +141,80 @@ function renderReader() {
     return;
   }
 
-  const paragraphs =
-    getBookParagraphs(text);
+  const paragraphs = getBookParagraphs(text);
 
   let chapterCounter = 0;
 
-  paragraphs.forEach(
-    (textParagraph, index) => {
-      const paragraph =
-        document.createElement("div");
+  paragraphs.forEach((textParagraph, index) => {
+    const paragraph = document.createElement("div");
 
-      paragraph.className =
-        "preview-paragraph";
+    paragraph.className = "preview-paragraph";
 
-      paragraph.style.marginBottom =
-        `${
-          parseInt(
-            paragraphSpacing.value,
-            10
-          ) || 0
-        }px`;
+    paragraph.style.marginBottom = `${
+      parseInt(paragraphSpacing.value, 10) || 0
+    }px`;
 
-      const chapter =
-        detectedChapters[chapterCounter];
+    const chapter = detectedChapters[chapterCounter];
 
-      const previousParagraph =
-        paragraphs[index - 1] || "";
+    const previousParagraph = paragraphs[index - 1] || "";
 
-      const previousWasChapter =
-        detectedChapters.some(
-          (chapterItem) =>
-            previousParagraph.startsWith(
-              chapterItem.title
-            )
-        );
+    const previousWasChapter = detectedChapters.some((chapterItem) =>
+      previousParagraph.startsWith(chapterItem.title)
+    );
 
-      const isChapter =
-        chapter &&
-        textParagraph.startsWith(
-          chapter.title
-        );
+    const isChapter = chapter && textParagraph.startsWith(chapter.title);
 
-      paragraph.style.textIndent =
-        indent.checked &&
-        index > 0 &&
-        !isChapter &&
-        !previousWasChapter
-          ? "2em"
-          : "0";
+    paragraph.style.textIndent =
+      indent.checked && index > 0 && !isChapter && !previousWasChapter
+        ? "2em"
+        : "0";
 
-      if (
-        chapter &&
-        textParagraph.startsWith(
-          chapter.title
-        )
-      ) {
-        paragraph.id =
-          `reader-${chapter.id}`;
+    if (chapter && textParagraph.startsWith(chapter.title)) {
+      paragraph.id = `reader-${chapter.id}`;
 
-        paragraph.classList.add(
-          "preview-chapter"
-        );
+      paragraph.classList.add("preview-chapter");
 
-        paragraph.style.textIndent =
-          "0";
+      paragraph.style.textIndent = "0";
 
-        const title =
-          document.createElement("div");
+      const title = document.createElement("div");
 
-        title.className =
-          "preview-chapter-title";
+      title.className = "preview-chapter-title";
 
-        title.textContent =
-          chapter.title;
+      title.textContent = chapter.title;
 
-        paragraph.appendChild(title);
+      paragraph.appendChild(title);
 
-        const remainder =
-          textParagraph
-            .slice(
-              chapter.title.length
-            )
-            .trim();
+      const remainder = textParagraph.slice(chapter.title.length).trim();
 
-        if (remainder) {
-          const body =
-            document.createElement("div");
+      if (remainder) {
+        const body = document.createElement("div");
 
-          body.textContent =
-            remainder;
+        body.textContent = remainder;
 
-          paragraph.appendChild(body);
-        }
-
-        chapterCounter++;
-      } else {
-        paragraph.textContent =
-          textParagraph;
+        paragraph.appendChild(body);
       }
 
-      readerContent.appendChild(
-        paragraph
-      );
+      chapterCounter++;
+    } else {
+      paragraph.textContent = textParagraph;
     }
-  );
 
-  const savedScrollTop =
-    Number.isFinite(
-      Number(appState.reader.scrollTop)
-    )
-      ? Number(appState.reader.scrollTop)
-      : 0;
+    readerContent.appendChild(paragraph);
+  });
+
+  const savedScrollTop = Number.isFinite(Number(appState.reader.scrollTop))
+    ? Number(appState.reader.scrollTop)
+    : 0;
 
   requestAnimationFrame(() => {
-    const maxScroll =
-      Math.max(
-        0,
-        readerContent.scrollHeight -
-          readerContent.clientHeight
-      );
+    const maxScroll = Math.max(
+      0,
+      readerContent.scrollHeight - readerContent.clientHeight
+    );
 
-    const restoredScrollTop =
-      Math.min(
-        Math.max(
-          0,
-          savedScrollTop
-        ),
-        maxScroll
-      );
+    const restoredScrollTop = Math.min(Math.max(0, savedScrollTop), maxScroll);
 
-    readerContent.scrollTop =
-      restoredScrollTop;
+    readerContent.scrollTop = restoredScrollTop;
 
     updateReaderProgress();
 
@@ -291,7 +226,6 @@ function renderReader() {
   });
 }
 
-
 /* =================================================
    READER PROGRESS
 ================================================= */
@@ -301,48 +235,27 @@ function updateReaderProgress() {
     return;
   }
 
-  const scrollTop =
-    readerContent.scrollTop;
+  const scrollTop = readerContent.scrollTop;
 
-  const scrollHeight =
-    readerContent.scrollHeight;
+  const scrollHeight = readerContent.scrollHeight;
 
-  const clientHeight =
-    readerContent.clientHeight;
+  const clientHeight = readerContent.clientHeight;
 
-  const maxScroll =
-    Math.max(
-      0,
-      scrollHeight - clientHeight
-    );
+  const maxScroll = Math.max(0, scrollHeight - clientHeight);
 
   const progress =
-    maxScroll > 0
-      ? Math.max(
-          0,
-          Math.min(
-            1,
-            scrollTop / maxScroll
-          )
-        )
-      : 0;
+    maxScroll > 0 ? Math.max(0, Math.min(1, scrollTop / maxScroll)) : 0;
 
-  const percentage =
-    Math.round(progress * 100);
+  const percentage = Math.round(progress * 100);
 
-  appState.reader.scrollTop =
-    scrollTop;
+  appState.reader.scrollTop = scrollTop;
 
-  appState.reader.progress =
-    progress;
+  appState.reader.progress = progress;
 
-  readerProgressBar.style.width =
-    `${percentage}%`;
+  readerProgressBar.style.width = `${percentage}%`;
 
-  readerProgressText.textContent =
-    `${percentage}%`;
+  readerProgressText.textContent = `${percentage}%`;
 }
-
 
 /* =================================================
    READER POSITION SAVING
@@ -362,49 +275,28 @@ async function persistReaderPosition() {
     return false;
   }
 
-  const scrollTop =
-    readerContent.scrollTop;
+  const scrollTop = readerContent.scrollTop;
 
-  const scrollHeight =
-    readerContent.scrollHeight;
+  const scrollHeight = readerContent.scrollHeight;
 
-  const clientHeight =
-    readerContent.clientHeight;
+  const clientHeight = readerContent.clientHeight;
 
-  const maxScroll =
-    Math.max(
-      0,
-      scrollHeight - clientHeight
-    );
+  const maxScroll = Math.max(0, scrollHeight - clientHeight);
 
   const progress =
-    maxScroll > 0
-      ? Math.max(
-          0,
-          Math.min(
-            1,
-            scrollTop / maxScroll
-          )
-        )
-      : 0;
+    maxScroll > 0 ? Math.max(0, Math.min(1, scrollTop / maxScroll)) : 0;
 
-  const chapterIndex =
-    Number.isFinite(
-      appState.reader.currentChapterIndex
-    )
-      ? appState.reader.currentChapterIndex
-      : 0;
+  const chapterIndex = Number.isFinite(appState.reader.currentChapterIndex)
+    ? appState.reader.currentChapterIndex
+    : 0;
 
   /* ---------- Update global reader state ---------- */
 
-  appState.reader.scrollTop =
-    scrollTop;
+  appState.reader.scrollTop = scrollTop;
 
-  appState.reader.progress =
-    progress;
+  appState.reader.progress = progress;
 
-  appState.reader.currentChapterIndex =
-    chapterIndex;
+  appState.reader.currentChapterIndex = chapterIndex;
 
   /* ---------- Update actual book ---------- */
 
@@ -414,11 +306,9 @@ async function persistReaderPosition() {
     progress
   };
 
-  book.updatedAt =
-    new Date().toISOString();
+  book.updatedAt = new Date().toISOString();
 
-  currentBook =
-    book;
+  currentBook = book;
 
   try {
     await saveBook(book);
@@ -426,35 +316,42 @@ async function persistReaderPosition() {
     stateChanged();
 
     return true;
-
   } catch (error) {
-    console.error(
-      "Could not save reading position:",
-      error
-    );
+    console.error("Could not save reading position:", error);
 
     return false;
   }
 }
 
+readerContent.addEventListener("scroll", () => {
+  updateReaderProgress();
+  updateReaderChapterNavigation();
 
-readerContent.addEventListener(
-  "scroll",
-  () => {
-    updateReaderProgress();
-    updateReaderChapterNavigation();
-
-    if (restoringReaderPosition) {
-      return;
-    }
-
-    clearTimeout(readerSaveTimer);
-
-    readerSaveTimer = setTimeout(
-      async () => {
-        await persistReaderPosition();
-      },
-      300
-    );
+  if (restoringReaderPosition) {
+    return;
   }
+
+  clearTimeout(readerSaveTimer);
+
+  readerSaveTimer = setTimeout(async () => {
+    await persistReaderPosition();
+  }, 300);
+});
+
+/* =================================================
+   READER FULLSCREEN
+================================================= */
+
+const readerFullscreenButton = document.getElementById(
+  "readerFullscreenButton"
 );
+
+if (readerFullscreenButton) {
+  readerFullscreenButton.addEventListener("click", () => {
+    const isFullscreen = document.body.classList.toggle("reader-fullscreen");
+
+    readerFullscreenButton.textContent = isFullscreen
+      ? "✕ Exit Full Screen"
+      : "⛶ Full Screen";
+  });
+}
