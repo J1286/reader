@@ -6,6 +6,7 @@ let currentMode = appState.mode || "library";
 
 async function setMode(mode) {
   appState.mode = mode;
+  currentMode = mode;
 
   modeButtons.forEach((button) => {
     button.classList.toggle(
@@ -339,4 +340,8 @@ LIBRARY INITIALIZATION
 INITIAL STATE
 ================================================= */
 
-setMode(appState.mode || "library");
+const isStandalone =
+  window.matchMedia("(display-mode: standalone)").matches ||
+  window.navigator.standalone === true;
+
+setMode(isStandalone ? "library" : (appState.mode || "library"));

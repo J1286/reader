@@ -2477,3 +2477,69 @@ body.reader-fullscreen .reader-content {
     padding: 30px var(--mobile-padding) 80px;
   }
 }
+
+/* =================================================
+   PWA UPDATE NOTICE
+================================================= */
+
+.update-notice {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  max-width: calc(100% - 32px);
+  padding: 12px 14px 12px 18px;
+
+  background: #222;
+  color: #fff;
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+
+  z-index: 9999;
+
+  font-size: 14px;
+}
+
+.update-notice button {
+  flex-shrink: 0;
+
+  padding: 7px 12px;
+
+  border: 0;
+  border-radius: 8px;
+
+  background: #fff;
+  color: #111;
+
+  font: inherit;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.update-notice button:hover {
+  background: #eee;
+}
+
+.update-notice.hidden {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .update-notice {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    transform: none;
+
+    justify-content: space-between;
+  }
+}

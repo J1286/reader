@@ -543,6 +543,12 @@
     <!-- GLOBAL STATUS -->
 
     <div id="status" class="status"></div>
+    <div id="updateNotice" class="update-notice hidden">
+      <span>A new version of My Reader is available.</span>
+      <button id="updateButton" type="button">
+        Reload
+      </button>
+    </div>
 
   </main>
 
@@ -586,32 +592,9 @@
     });
     // MENU NAVIGATION
     document.querySelectorAll(".menu-item").forEach((button) => {
-      button.addEventListener("click", () => {
+      button.addEventListener("click", async () => {
         const mode = button.dataset.mode;
-        const libraryView = document.getElementById("libraryView");
-        const readerView = document.getElementById("readerView");
-        const formatterView = document.getElementById("formatterView");
-        // Hide all views
-        libraryView.classList.add("hidden");
-        readerView.classList.add("hidden");
-        formatterView.classList.add("hidden");
-        // Remove active state from all menu buttons
-        document.querySelectorAll(".menu-item").forEach((item) => {
-          item.classList.remove("active");
-        });
-        // Show selected view
-        if (mode === "library") {
-          libraryView.classList.remove("hidden");
-        }
-        if (mode === "reader") {
-          readerView.classList.remove("hidden");
-        }
-        if (mode === "formatter") {
-          formatterView.classList.remove("hidden");
-        }
-        // Mark selected menu item active
-        button.classList.add("active");
-        // Close side menu
+        await setMode(mode);
         closeMenu();
       });
     });
@@ -647,6 +630,44 @@
               "My Reader service worker registered:",
               registration.scope
             );
+
+            function showUpdateNotice(worker) {
+              const updateNotice =
+                document.getElementById("updateNotice");
+              const updateButton =
+                document.getElementById("updateButton");
+              if (!updateNotice || !updateButton) {
+                return;
+              }
+              updateNotice.classList.remove("hidden");
+              updateButton.onclick = () => {
+                worker.postMessage("SKIP_WAITING");
+              };
+            }
+            if (registration.waiting) {
+              showUpdateNotice(registration.waiting);
+            }
+            registration.addEventListener(
+              "updatefound",
+              () => {
+                const newWorker =
+                  registration.installing;
+                if (!newWorker) {
+                  return;
+                }
+                newWorker.addEventListener(
+                  "statechange",
+                  () => {
+                    if (
+                      newWorker.state === "installed" &&
+                      navigator.serviceWorker.controller
+                    ) {
+                      showUpdateNotice(newWorker);
+                    }
+                  }
+                );
+              }
+            );
           })
           .catch((error) => {
             console.error(
@@ -655,6 +676,17 @@
             );
           });
       });
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener(
+        "controllerchange",
+        () => {
+          if (refreshing) {
+            return;
+          }
+          refreshing = true;
+          window.location.reload();
+        }
+      );
     }
   </script>
 

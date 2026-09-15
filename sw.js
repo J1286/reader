@@ -1,71 +1,51 @@
-/* =================================================
-   MY READER SERVICE WORKER
-================================================= */
-
-const CACHE_NAME = "my-reader-v2";
+const CACHE_NAME = "my-reader-v3";
 
 const APP_SHELL = [
-  "./",
-  "./index.html",
-  "./style.css",
-
-  "./state.js",
-  "./cleanup.js",
-  "./chapters.js",
-  "./formatter.js",
-  "./reader.js",
-  "./import.js",
-  "./library.js",
-  "./export.js",
-  "./app.js",
-
-  "./manifest.json"
+  "/reader/",
+  "/reader/index.html",
+  "/reader/style.css",
+  "/reader/app.js",
+  "/reader/state.js",
+  "/reader/library.js",
+  "/reader/reader.js",
+  "/reader/formatter.js",
+  "/reader/chapters.js",
+  "/reader/cleanup.js",
+  "/reader/import.js",
+  "/reader/export.js",
+  "/reader/backup.js",
+  "/reader/manifest.json",
+  "/reader/icon-001.png",
+  "/reader/icon-001.png"
 ];
 
-
-/* =================================================
-   INSTALL
-================================================= */
-
-self.addEventListener("install", (event) => {
+self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        return cache.addAll(APP_SHELL);
-      })
-      .then(() => {
-        return self.skipWaiting();
-      })
+    caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL))
   );
 });
 
-
-/* =================================================
-   ACTIVATE
-================================================= */
-
-self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    caches.keys()
-      .then((keys) => {
-        return Promise.all(
-          keys
-            .filter((key) => key !== CACHE_NAME)
-            .map((key) => caches.delete(key))
-        );
-      })
-      .then(() => {
-        return self.clients.claim();
-      })
-  );
+self.addEventListener("message", event => {
+  if (event.data === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
 });
 
+self.addEventListener("activate", event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys
+          .filter(key => key !== CACHE_NAME)
+          .map(key => caches.delete(key))
+      )
+    )
+  );
 
-/* =================================================
-   FETCH
-================================================= */
+  self.clients.claim();
+});
 
-self.addEventListener("fetch", (event) => {
+self.addEventListener("fetch", event => {
   const request = event.request;
 
   if (request.method !== "GET") {
@@ -73,40 +53,26 @@ self.addEventListener("fetch", (event) => {
   }
 
   event.respondWith(
-    caches.match(request)
-      .then((cachedResponse) => {
-        if (cachedResponse) {
-          return cachedResponse;
+    caches.match(request).then(cachedResponse => {
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+
+      return fetch(request).then(networkResponse => {
+        if (
+          networkResponse &&
+          networkResponse.status === 200 &&
+          networkResponse.type === "basic"
+        ) {
+          const responseToCache = networkResponse.clone();
+
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(request, responseToCache);
+          });
         }
 
-        return fetch(request)
-          .then((response) => {
-            if (
-              !response ||
-              response.status !== 200 ||
-              response.type === "opaque"
-            ) {
-              return response;
-            }
-
-            const responseClone =
-              response.clone();
-
-            caches.open(CACHE_NAME)
-              .then((cache) => {
-                cache.put(
-                  request,
-                  responseClone
-                );
-              });
-
-            return response;
-          })
-          .catch(() => {
-            return caches.match(
-              "./index.html"
-            );
-          });
-      })
+        return networkResponse;
+      });
+    })
   );
 });
