@@ -584,8 +584,34 @@
         closeMenu();
       }
     });
+    // MENU NAVIGATION
     document.querySelectorAll(".menu-item").forEach((button) => {
       button.addEventListener("click", () => {
+        const mode = button.dataset.mode;
+        const libraryView = document.getElementById("libraryView");
+        const readerView = document.getElementById("readerView");
+        const formatterView = document.getElementById("formatterView");
+        // Hide all views
+        libraryView.classList.add("hidden");
+        readerView.classList.add("hidden");
+        formatterView.classList.add("hidden");
+        // Remove active state from all menu buttons
+        document.querySelectorAll(".menu-item").forEach((item) => {
+          item.classList.remove("active");
+        });
+        // Show selected view
+        if (mode === "library") {
+          libraryView.classList.remove("hidden");
+        }
+        if (mode === "reader") {
+          readerView.classList.remove("hidden");
+        }
+        if (mode === "formatter") {
+          formatterView.classList.remove("hidden");
+        }
+        // Mark selected menu item active
+        button.classList.add("active");
+        // Close side menu
         closeMenu();
       });
     });
