@@ -2,7 +2,7 @@
   "name": "My Reader",
   "short_name": "Reader",
   "description": "A personal offline reader and library.",
-  "start_url": "/reader/,
+  "start_url": "/reader/",
   "scope": "/reader/",
   "display": "standalone",
   "orientation": "portrait-primary",
