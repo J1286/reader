@@ -14,9 +14,7 @@ const APP_SHELL = [
   "/reader/import.js",
   "/reader/export.js",
   "/reader/backup.js",
-  "/reader/manifest.json",
-  "/reader/icon-001.png",
-  "/reader/icon-001.png"
+  "/reader/manifest.json"
 ];
 
 self.addEventListener("install", event => {
