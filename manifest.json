@@ -12,22 +12,22 @@
   "dir": "ltr",
   "icons": [
     {
-      "src": "/reader/icon-001.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/reader/icon-001.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/reader/icon-001.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    }
+  "src": "/reader/icons/icon-001.png",
+  "sizes": "192x192",
+  "type": "image/png",
+  "purpose": "any"
+  },
+  {
+  "src": "/reader/icons/icon-001.png",
+  "sizes": "512x512",
+  "type": "image/png",
+  "purpose": "any"
+  },
+  {
+  "src": "/reader/icons/icon-001.png",
+  "sizes": "512x512",
+  "type": "image/png",
+  "purpose": "maskable"
+  }
   ]
 }
