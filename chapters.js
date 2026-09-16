@@ -168,8 +168,6 @@ detectChaptersButton.addEventListener("click", () => {
    READER CHAPTER NAVIGATION
 ================================================= */
 
-let navigatingToReaderChapter = false;
-
 function getCurrentReaderChapterIndex() {
   if (!detectedChapters.length) {
     return 0;
@@ -203,16 +201,20 @@ function getCurrentReaderChapterIndex() {
 
 
 function updateReaderChapterNavigation() {
+
+  if (!readerChapterIndicator) {
+    return;
+  }
+
   if (!detectedChapters.length) {
+
     readerChapterIndicator.textContent = "No chapters";
 
     readerPreviousChapter.disabled = true;
     readerNextChapter.disabled = true;
 
-    return;
-  }
+    appState.reader.currentChapterIndex = 0;
 
-  if (navigatingToReaderChapter) {
     return;
   }
 
@@ -240,9 +242,6 @@ function updateReaderChapterNavigation() {
 ================================================= */
 
 function goToReaderChapter(index) {
-  if (!detectedChapters.length) {
-    return;
-  }
 
   if (
     index < 0 ||
@@ -261,12 +260,12 @@ function goToReaderChapter(index) {
     return;
   }
 
-  navigatingToReaderChapter = true;
-
   appState.reader.currentChapterIndex = index;
 
-  readerChapterIndicator.textContent =
-    `Chapter ${index + 1} of ${detectedChapters.length}`;
+  if (readerChapterIndicator) {
+    readerChapterIndicator.textContent =
+      `Chapter ${index + 1} of ${detectedChapters.length}`;
+  }
 
   readerPreviousChapter.disabled =
     index === 0;
@@ -276,51 +275,12 @@ function goToReaderChapter(index) {
 
   updateChapterListSelection();
 
-  const readerRect =
-    readerContent.getBoundingClientRect();
-
-  const targetRect =
-    target.getBoundingClientRect();
-
-  const topPadding = 32;
-
-  const scrollAmount =
-    targetRect.top -
-    readerRect.top -
-    topPadding;
-
-  readerContent.scrollBy({
-    top: scrollAmount,
+  readerContent.scrollTo({
+    top: target.offsetTop,
     behavior: "smooth"
   });
 
   stateChanged();
-
-  setTimeout(() => {
-    navigatingToReaderChapter = false;
-
-    appState.reader.currentChapterIndex = index;
-
-    readerChapterIndicator.textContent =
-      `Chapter ${index + 1} of ${detectedChapters.length}`;
-
-    readerPreviousChapter.disabled =
-      index === 0;
-
-    readerNextChapter.disabled =
-      index === detectedChapters.length - 1;
-
-    updateChapterListSelection();
-  }, 600);
-}
-
-
-/* =================================================
-   CHAPTER LIST
-================================================= */
-
-function goToReaderChapterFromList(index) {
-  goToReaderChapter(index);
 }
 
 
@@ -331,6 +291,7 @@ function goToReaderChapterFromList(index) {
 readerPreviousChapter.addEventListener(
   "click",
   () => {
+
     const currentIndex =
       Number.isFinite(appState.reader.currentChapterIndex)
         ? appState.reader.currentChapterIndex
@@ -340,9 +301,11 @@ readerPreviousChapter.addEventListener(
   }
 );
 
+
 readerNextChapter.addEventListener(
   "click",
   () => {
+
     const currentIndex =
       Number.isFinite(appState.reader.currentChapterIndex)
         ? appState.reader.currentChapterIndex
