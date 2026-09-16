@@ -1,15 +1,15 @@
-const CACHE_NAME = "my-reader-v3";
+const CACHE_NAME = "my-reader-v4";
 
 const APP_SHELL = [
   "/reader/",
   "/reader/index.html",
   "/reader/style.css",
+  "/reader/chapters.js",
+  "/reader/reader.js",
   "/reader/app.js",
   "/reader/state.js",
   "/reader/library.js",
-  "/reader/reader.js",
   "/reader/formatter.js",
-  "/reader/chapters.js",
   "/reader/cleanup.js",
   "/reader/import.js",
   "/reader/export.js",
