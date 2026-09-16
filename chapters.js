@@ -165,10 +165,8 @@ detectChaptersButton.addEventListener("click", () => {
 
 
 /* =================================================
-READER CHAPTER NAVIGATION
+   READER CHAPTER NAVIGATION
 ================================================= */
-
-let navigatingToReaderChapter = false;
 
 function getCurrentReaderChapterIndex() {
   if (!detectedChapters.length) {
@@ -180,33 +178,35 @@ function getCurrentReaderChapterIndex() {
 
   let currentIndex = 0;
 
-  detectedChapters.forEach((chapter, index) => {
+  for (let index = 0; index < detectedChapters.length; index++) {
+    const chapter = detectedChapters[index];
+
     const element = document.getElementById(
       `reader-${chapter.id}`
     );
 
     if (!element) {
-      return;
+      continue;
     }
 
     if (element.offsetTop <= scrollTop + threshold) {
       currentIndex = index;
+    } else {
+      break;
     }
-  });
+  }
 
   return currentIndex;
 }
 
+
 function updateReaderChapterNavigation() {
   if (!detectedChapters.length) {
     readerChapterIndicator.textContent = "No chapters";
+
     readerPreviousChapter.disabled = true;
     readerNextChapter.disabled = true;
-    appState.reader.currentChapterIndex = 0;
-    return;
-  }
 
-  if (navigatingToReaderChapter) {
     return;
   }
 
@@ -224,10 +224,16 @@ function updateReaderChapterNavigation() {
 
   readerNextChapter.disabled =
     currentIndex === detectedChapters.length - 1;
+
+  updateChapterListSelection();
 }
 
 
 function goToReaderChapter(index) {
+  if (!detectedChapters.length) {
+    return;
+  }
+
   if (
     index < 0 ||
     index >= detectedChapters.length
@@ -245,21 +251,38 @@ function goToReaderChapter(index) {
     return;
   }
 
+  /*
+   * Remember the chapter immediately.
+   * This makes Previous / Next work immediately
+   * after selecting a chapter.
+   */
   appState.reader.currentChapterIndex = index;
 
+  readerChapterIndicator.textContent =
+    `Chapter ${index + 1} of ${detectedChapters.length}`;
+
+  readerPreviousChapter.disabled =
+    index === 0;
+
+  readerNextChapter.disabled =
+    index === detectedChapters.length - 1;
+
+  updateChapterListSelection();
+
+  /*
+   * Scroll the reader to the selected chapter.
+   */
   readerContent.scrollTo({
     top: target.offsetTop,
     behavior: "smooth"
   });
-
-  updateReaderChapterNavigation();
 
   stateChanged();
 }
 
 
 /* =================================================
-CHAPTER LIST
+   CHAPTER LIST
 ================================================= */
 
 function goToReaderChapterFromList(index) {
@@ -268,24 +291,25 @@ function goToReaderChapterFromList(index) {
 
 
 /* =================================================
-PREVIOUS / NEXT
+   PREVIOUS / NEXT
 ================================================= */
 
 readerPreviousChapter.addEventListener(
   "click",
   () => {
     const currentIndex =
-      getCurrentReaderChapterIndex();
+      appState.reader.currentChapterIndex || 0;
 
     goToReaderChapter(currentIndex - 1);
   }
 );
 
+
 readerNextChapter.addEventListener(
   "click",
   () => {
     const currentIndex =
-      getCurrentReaderChapterIndex();
+      appState.reader.currentChapterIndex || 0;
 
     goToReaderChapter(currentIndex + 1);
   }
