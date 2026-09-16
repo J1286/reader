@@ -308,6 +308,7 @@ RESTORE SAVED THEME
 appState.reader.theme || "light";
 
   setTheme(savedTheme);
+  restoreFormatterSettings();
 
 /* =================================================
 LIBRARY INITIALIZATION
