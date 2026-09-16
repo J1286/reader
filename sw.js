@@ -17,11 +17,17 @@ const APP_SHELL = [
   "/reader/manifest.json"
 ];
 
+/* INSTALL */
+
 self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL))
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll(APP_SHELL);
+    })
   );
 });
+
+/* MESSAGE */
 
 self.addEventListener("message", event => {
   if (event.data === "SKIP_WAITING") {
@@ -29,52 +35,55 @@ self.addEventListener("message", event => {
   }
 });
 
+/* ACTIVATE */
+
 self.addEventListener("activate", event => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
+    caches.keys().then(keys => {
+      return Promise.all(
         keys
           .filter(key => key !== CACHE_NAME)
           .map(key => caches.delete(key))
-      )
-    )
+      );
+    })
   );
 
   self.clients.claim();
 });
 
-self.addEventListener("fetch", event => {
+/* FETCH */
+
+self.addEventListener("fetch", handleFetch);
+
+function handleFetch(event) {
   const request = event.request;
 
   if (request.method !== "GET") {
     return;
   }
 
-  self.addEventListener("fetch", (event) => {
-  const request = event.request;
+  event.respondWith(getCachedResponse(request));
+}
 
-  if (request.method !== "GET") {
-    return;
+async function getCachedResponse(request) {
+  const cachedResponse = await caches.match(request);
+
+  if (cachedResponse) {
+    return cachedResponse;
   }
 
-  event.respondWith(
-    fetch(request)
-      .then((response) => {
-        if (
-          response &&
-          response.status === 200 &&
-          response.type !== "opaque"
-        ) {
-          const responseClone = response.clone();
+  const networkResponse = await fetch(request);
 
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(request, responseClone);
-          });
-        }
+  if (
+    networkResponse &&
+    networkResponse.status === 200 &&
+    networkResponse.type === "basic"
+  ) {
+    const responseToCache = networkResponse.clone();
 
-        return response;
-      })
-      .catch(() => caches.match(request))
-   );
- });
-});
+    const cache = await caches.open(CACHE_NAME);
+    await cache.put(request, responseToCache);
+  }
+
+  return networkResponse;
+}
