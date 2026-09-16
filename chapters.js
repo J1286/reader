@@ -50,13 +50,23 @@ function detectChapters(text) {
 }
 
 
-function prepareChapters(text) {
+function prepareChapters(text, persist = true) {
   const detected = detectChapters(text);
 
   detectedChapters = detected.map((chapter, index) => ({
     ...chapter,
     id: `chapter-${index + 1}`
   }));
+
+  const book = getCurrentBook();
+
+  if (book && persist) {
+    book.chapters = detectedChapters.map((chapter) => ({
+      title: chapter.title,
+      lineIndex: chapter.lineIndex,
+      id: chapter.id
+    }));
+  }
 
   renderChapterNavigation(detectedChapters);
 }
@@ -103,13 +113,15 @@ function renderChapterNavigation(chapters) {
       );
 
       if (target) {
-        target.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
+        readerContent.scrollTo({
+  	  top: target.offsetTop,
+  	  behavior: "smooth"
+	});
 
         appState.reader.currentChapterIndex = index;
-
+	
+	updateReaderProgress();
+	updateReaderChapterNavigation();
         stateChanged();
       }
     });

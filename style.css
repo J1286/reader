@@ -1747,31 +1747,40 @@ button {
   ================================================= */
 
   .reader-content {
-    width: 100% !important;
-    max-width: none !important;
+  width: min(720px, 100%);
+  height: 75vh;
+  min-height: 500px;
 
-    box-sizing: border-box;
+  padding: 76px 78px;
 
-    padding: 20px var(--mobile-padding) 80px;
+  background: var(--reader-bg);
+  color: var(--reader-text);
 
-    font-size: 18px;
-    line-height: 1.65;
+  border: 1px solid rgba(100, 90, 70, 0.12);
+  border-radius: 4px;
 
-    height: auto;
-    min-height: 0;
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.07),
+    0 2px 8px rgba(0, 0, 0, 0.04);
 
-    overflow-y: visible;
-    overflow-x: hidden;
+  font-family: Georgia, "Noto Serif CJK TC", "Noto Serif CJK SC",
+    "Times New Roman", serif;
 
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
+  font-size: 21px;
+  line-height: 1.85;
 
-    overflow-wrap: break-word;
-    word-break: normal;
+  overflow-y: auto;
+  overflow-x: hidden;
 
-    -webkit-overflow-scrolling: touch;
-  }
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  touch-action: pan-y;
+
+  scroll-behavior: smooth;
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(120, 120, 120, 0.35) transparent;
+}
 
   .reader-content .preview-paragraph {
     max-width: 100%;

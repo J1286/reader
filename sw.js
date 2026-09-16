@@ -50,27 +50,31 @@ self.addEventListener("fetch", event => {
     return;
   }
 
+  self.addEventListener("fetch", (event) => {
+  const request = event.request;
+
+  if (request.method !== "GET") {
+    return;
+  }
+
   event.respondWith(
-    caches.match(request).then(cachedResponse => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-
-      return fetch(request).then(networkResponse => {
+    fetch(request)
+      .then((response) => {
         if (
-          networkResponse &&
-          networkResponse.status === 200 &&
-          networkResponse.type === "basic"
+          response &&
+          response.status === 200 &&
+          response.type !== "opaque"
         ) {
-          const responseToCache = networkResponse.clone();
+          const responseClone = response.clone();
 
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(request, responseToCache);
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(request, responseClone);
           });
         }
 
-        return networkResponse;
-      });
-    })
-  );
+        return response;
+      })
+      .catch(() => caches.match(request))
+   );
+ });
 });

@@ -104,6 +104,19 @@ function renderReader() {
 
   const text = book?.text || "";
 
+  if (book) {
+  if (Array.isArray(book.chapters) && book.chapters.length) {
+    detectedChapters = book.chapters.map((chapter, index) => ({
+      ...chapter,
+      id: chapter.id || `chapter-${index + 1}`
+    }));
+
+    renderChapterNavigation(detectedChapters);
+  } else {
+    prepareChapters(text, true);
+  }
+}
+
   loadCurrentBookReaderState();
 
   readerContent.style.fontSize = `${
