@@ -245,31 +245,16 @@ function goToReaderChapter(index) {
     return;
   }
 
-  navigatingToReaderChapter = true;
-
   appState.reader.currentChapterIndex = index;
-
-  readerChapterIndicator.textContent =
-    `Chapter ${index + 1} of ${detectedChapters.length}`;
-
-  readerPreviousChapter.disabled =
-    index === 0;
-
-  readerNextChapter.disabled =
-    index === detectedChapters.length - 1;
-
-  stateChanged();
 
   readerContent.scrollTo({
     top: target.offsetTop,
     behavior: "smooth"
   });
- 
-  setTimeout(() => {
-    navigatingToReaderChapter = false;
 
-    updateReaderChapterNavigation();
-  }, 600);
+  updateReaderChapterNavigation();
+
+  stateChanged();
 }
 
 
