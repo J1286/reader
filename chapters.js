@@ -108,28 +108,53 @@ function renderChapterNavigation(chapters) {
     button.append(number, title);
 
     button.addEventListener("click", () => {
-      const target = document.getElementById(
-        `reader-${chapter.id}`
-      );
-
-      if (target) {
-        readerContent.scrollTo({
-  	  top: target.offsetTop,
-  	  behavior: "smooth"
-	});
-
-        appState.reader.currentChapterIndex = index;
-	
-	updateReaderProgress();
-	updateReaderChapterNavigation();
-        stateChanged();
-      }
+      goToReaderChapter(index);
     });
 
     chapterPanel.appendChild(button);
   });
+
+  updateChapterListSelection();
 }
 
+/* =================================================
+   CHAPTER LIST SELECTION
+================================================= */
+
+function updateChapterListSelection() {
+  if (!chapterPanel || !detectedChapters.length) {
+    return;
+  }
+
+  const currentIndex =
+    Number.isFinite(appState.reader.currentChapterIndex)
+      ? appState.reader.currentChapterIndex
+      : 0;
+
+  const chapterButtons =
+    chapterPanel.querySelectorAll(".chapter-item");
+
+  chapterButtons.forEach((button, index) => {
+    const isActive = index === currentIndex;
+
+    button.classList.toggle("active", isActive);
+
+    button.setAttribute(
+      "aria-current",
+      isActive ? "true" : "false"
+    );
+  });
+
+  const activeButton =
+    chapterButtons[currentIndex];
+
+  if (activeButton) {
+    activeButton.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest"
+    });
+  }
+}
 
 /* =================================================
    CHAPTER BUTTON
@@ -147,7 +172,6 @@ detectChaptersButton.addEventListener("click", () => {
     showStatus("No obvious chapter headings found.");
   }
 });
-
 
 /* =================================================
    READER CHAPTER NAVIGATION
@@ -178,7 +202,6 @@ function getCurrentReaderChapterIndex() {
   return currentIndex;
 }
 
-
 function updateReaderChapterNavigation() {
   if (!detectedChapters.length) {
     readerChapterIndicator.textContent = "No chapters";
@@ -187,6 +210,8 @@ function updateReaderChapterNavigation() {
     readerNextChapter.disabled = true;
 
     appState.reader.currentChapterIndex = 0;
+
+    updateChapterListSelection();
 
     return;
   }
@@ -205,8 +230,13 @@ function updateReaderChapterNavigation() {
 
   readerNextChapter.disabled =
     currentIndex === detectedChapters.length - 1;
+
+  updateChapterListSelection();
 }
 
+/* =================================================
+   GO TO CHAPTER
+================================================= */
 
 function goToReaderChapter(index) {
   if (
@@ -228,6 +258,8 @@ function goToReaderChapter(index) {
 
   appState.reader.currentChapterIndex = index;
 
+  updateChapterListSelection();
+
   stateChanged();
 
   readerContent.scrollTo({
@@ -236,6 +268,9 @@ function goToReaderChapter(index) {
   });
 }
 
+/* =================================================
+   PREVIOUS / NEXT
+================================================= */
 
 readerPreviousChapter.addEventListener(
   "click",
@@ -245,7 +280,6 @@ readerPreviousChapter.addEventListener(
     );
   }
 );
-
 
 readerNextChapter.addEventListener(
   "click",
