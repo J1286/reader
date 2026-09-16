@@ -791,6 +791,8 @@ async function openBook(bookId) {
       return;
     }
 
+	prepareChapters(book.text || "");
+
     book.lastOpened =
       Date.now();
 
