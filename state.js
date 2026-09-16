@@ -452,12 +452,18 @@ function resetCurrentBookReaderState() {
 
 function saveAppState() {
   try {
-    const serialized =
-      JSON.stringify(appState);
+    const stateToSave = {
+      version: appState.version,
+      mode: appState.mode,
+      currentBookId: appState.currentBookId,
+      formatter: appState.formatter,
+      cleanup: appState.cleanup,
+      reader: appState.reader
+    };
 
     localStorage.setItem(
       APP_STORAGE_KEY,
-      serialized
+      JSON.stringify(stateToSave)
     );
 
     return true;
@@ -501,11 +507,6 @@ function loadAppState() {
       savedState.mode ||
       "library";
 
-    appState.library =
-      Array.isArray(savedState.library)
-        ? savedState.library
-        : [];
-
     appState.currentBookId =
       savedState.currentBookId ||
       null;
@@ -524,61 +525,6 @@ function loadAppState() {
       ...DEFAULT_READER_SETTINGS,
       ...(savedState.reader || {})
     };
-
-    /* Normalize every stored book */
-    appState.library =
-      appState.library.map((book) => {
-        const legacyReader =
-          book.readerState || {};
-
-        const existingReader =
-          book.reader || {};
-
-        return {
-          ...book,
-
-          id:
-            book.id ||
-            createBookId(),
-
-          title:
-            book.title ||
-            "Untitled",
-
-          text:
-            book.text ||
-            "",
-
-          type:
-            book.type ||
-            "txt",
-
-          sourceName:
-            book.sourceName ||
-            "",
-
-          chapters:
-            Array.isArray(book.chapters)
-              ? book.chapters
-              : [],
-
-          reader: {
-  	    chapterIndex: 0,
-    	    scrollTop: 0,
-  	    progress: 0,
-
-	    ...(book.readerState || book.reader || {})
-	  },
-
-          createdAt:
-            book.createdAt ||
-            new Date().toISOString(),
-
-          updatedAt:
-            book.updatedAt ||
-            new Date().toISOString()
-        };
-      });
 
     if (
       appState.currentBookId &&
