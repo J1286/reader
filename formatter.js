@@ -2,6 +2,26 @@
     CHARACTER / CJK HELPERS
  ================================================= */
 
+function restoreFormatterSettings() {
+  fontSize.value =
+    appState.formatter.fontSize;
+
+  lineSpacing.value =
+    appState.formatter.lineSpacing;
+
+  paragraphSpacing.value =
+    appState.formatter.paragraphSpacing;
+
+  previewWidth.value =
+    appState.formatter.previewWidth;
+
+  indent.checked =
+    appState.formatter.indent;
+
+  widthValue.textContent =
+    previewWidth.value;
+}
+
 function isCJK(char) {
   if (!char) {
     return false;
