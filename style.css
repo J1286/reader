@@ -1180,6 +1180,38 @@ input[type="range"] {
   font-size: 13px;
 }
 
+.reader-chapter-select {
+  flex: 1;
+  min-width: 0;
+  max-width: 500px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color, #d6d0c7);
+  border-radius: 8px;
+  background: var(--surface-color, #fff);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.reader-chapter-select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .reader-chapter-nav {
+    gap: 8px;
+  }
+
+  .reader-chapter-nav button {
+    white-space: nowrap;
+  }
+
+  .reader-chapter-select {
+    max-width: none;
+  }
+}
+
 #readerChapterIndicator {
   min-width: 120px;
 
