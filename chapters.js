@@ -283,11 +283,19 @@ function goToReaderChapter(index) {
 ================================================= */
 
 readerPreviousChapter.addEventListener("click", () => {
-  goToReaderChapter(getCurrentReaderChapterIndex() - 1);
+  const currentIndex = getCurrentReaderChapterIndex();
+
+  if (currentIndex > 0) {
+    goToReaderChapter(currentIndex - 1);
+  }
 });
 
 readerNextChapter.addEventListener("click", () => {
-  goToReaderChapter(getCurrentReaderChapterIndex() + 1);
+  const currentIndex = getCurrentReaderChapterIndex();
+
+  if (currentIndex < detectedChapters.length - 1) {
+    goToReaderChapter(currentIndex + 1);
+  }
 });
 
 readerChapterSelect.addEventListener("change", () => {
