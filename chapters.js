@@ -16,6 +16,8 @@ const chapterPatterns = [
 ];
 
 let detectedChapters = [];
+let navigatingToReaderChapter = false;
+
 
 /* =================================================
    CHAPTER DETECTION
@@ -171,23 +173,21 @@ function getCurrentReaderChapterIndex() {
     return 0;
   }
 
-  const readerRect = readerContent.getBoundingClientRect();
+  const scrollTop = readerContent.scrollTop;
+  const threshold = 40;
 
   let currentIndex = 0;
 
   detectedChapters.forEach((chapter, index) => {
-    const element = document.getElementById(`reader-${chapter.id}`);
+    const element = document.getElementById(
+      `reader-${chapter.id}`
+    );
 
     if (!element) {
       return;
     }
 
-    const elementRect = element.getBoundingClientRect();
-
-    const chapterTop =
-      elementRect.top - readerRect.top + readerContent.scrollTop;
-
-    if (chapterTop <= readerContent.scrollTop + 120) {
+    if (element.offsetTop <= scrollTop + threshold) {
       currentIndex = index;
     }
   });
@@ -198,55 +198,39 @@ function getCurrentReaderChapterIndex() {
 
 function updateReaderChapterNavigation() {
   if (!detectedChapters.length) {
-    readerChapterSelect.innerHTML = "";
-
-    const option = document.createElement("option");
-    option.value = "";
-    option.textContent = "No chapters";
-
-    readerChapterSelect.appendChild(option);
-
-    readerChapterSelect.disabled = true;
-
+    readerChapterIndicator.textContent = "No chapters";
     readerPreviousChapter.disabled = true;
     readerNextChapter.disabled = true;
-
     appState.reader.currentChapterIndex = 0;
-
     return;
   }
 
-  const currentIndex = getCurrentReaderChapterIndex();
+  if (navigatingToReaderChapter) {
+    return;
+  }
 
-  appState.reader.currentChapterIndex = currentIndex;
+  const currentIndex =
+    getCurrentReaderChapterIndex();
 
-  readerChapterSelect.innerHTML = "";
+  appState.reader.currentChapterIndex =
+    currentIndex;
 
-  detectedChapters.forEach((chapter, index) => {
-    const option = document.createElement("option");
+  readerChapterIndicator.textContent =
+    `Chapter ${currentIndex + 1} of ${detectedChapters.length}`;
 
-    option.value = String(index);
+  readerPreviousChapter.disabled =
+    currentIndex === 0;
 
-    option.textContent = `${index + 1}. ${chapter.title}`;
-
-    readerChapterSelect.appendChild(option);
-  });
-
-  readerChapterSelect.disabled = false;
-
-  readerChapterSelect.value = String(currentIndex);
-
-  readerPreviousChapter.disabled = currentIndex === 0;
-
-  readerNextChapter.disabled = currentIndex === detectedChapters.length - 1;
+  readerNextChapter.disabled =
+    currentIndex === detectedChapters.length - 1;
 }
+
 
 /* =================================================
    GO TO CHAPTER
 ================================================= */
 
 function goToReaderChapter(index) {
-
   if (
     index < 0 ||
     index >= detectedChapters.length
@@ -264,28 +248,28 @@ function goToReaderChapter(index) {
     return;
   }
 
-  appState.reader.currentChapterIndex = index;
+  navigatingToReaderChapter = true;
 
-  updateReaderChapterNavigation(); 
+  appState.reader.currentChapterIndex = index;
+  readerChapterIndicator.textContent =
+    `Chapter ${index + 1} of ${detectedChapters.length}`;
+
+  readerPreviousChapter.disabled = index === 0;
+  readerNextChapter.disabled =
+    index === detectedChapters.length - 1;
+
   stateChanged();
 
-  const readerRect =
-    readerContent.getBoundingClientRect();
-
-  const targetRect =
-    target.getBoundingClientRect();
-
-  const topPadding = 32;
-
-  const scrollAmount =
-    targetRect.top -
-    readerRect.top -
-    topPadding;
-
-  readerContent.scrollBy({
-    top: scrollAmount,
+  readerContent.scrollTo({
+    top: target.offsetTop,
     behavior: "smooth"
   });
+
+  setTimeout(() => {
+    navigatingToReaderChapter = false;
+
+    updateReaderChapterNavigation();
+  }, 500);
 }
 
 
