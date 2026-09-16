@@ -171,20 +171,23 @@ function getCurrentReaderChapterIndex() {
     return 0;
   }
 
-  const scrollTop = readerContent.scrollTop;
+  const readerRect = readerContent.getBoundingClientRect();
 
   let currentIndex = 0;
 
   detectedChapters.forEach((chapter, index) => {
-    const element = document.getElementById(
-      `reader-${chapter.id}`
-    );
+    const element = document.getElementById(`reader-${chapter.id}`);
 
     if (!element) {
       return;
     }
 
-    if (element.offsetTop <= scrollTop + 40) {
+    const elementRect = element.getBoundingClientRect();
+
+    const chapterTop =
+      elementRect.top - readerRect.top + readerContent.scrollTop;
+
+    if (chapterTop <= readerContent.scrollTop + 120) {
       currentIndex = index;
     }
   });
