@@ -176,15 +176,22 @@ function getCurrentReaderChapterIndex() {
   let currentIndex = 0;
 
   detectedChapters.forEach((chapter, index) => {
-    const element = document.getElementById(`reader-${chapter.id}`);
+    const element = document.getElementById(
+      `reader-${chapter.id}`
+    );
 
-    if (element && element.offsetTop <= scrollTop + 120) {
+    if (!element) {
+      return;
+    }
+
+    if (element.offsetTop <= scrollTop + 40) {
       currentIndex = index;
     }
   });
 
   return currentIndex;
 }
+
 
 function updateReaderChapterNavigation() {
   if (!detectedChapters.length) {
@@ -256,6 +263,7 @@ function goToReaderChapter(index) {
 
   appState.reader.currentChapterIndex = index;
 
+  updateReaderChapterNavigation(); 
   stateChanged();
 
   const readerRect =
