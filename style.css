@@ -415,6 +415,19 @@ button.secondary:hover {
   background: var(--button-hover);
 }
 
+.chapter-item.active {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.chapter-item.active:hover {
+  background: var(--accent-hover);
+}
+
+.chapter-item.active .chapter-number {
+  color: rgba(255, 255, 255, 0.75);
+}
+
 .chapter-number {
   display: inline-block;
 
