@@ -17,7 +17,6 @@ const chapterPatterns = [
 
 let detectedChapters = [];
 
-
 /* =================================================
    CHAPTER DETECTION
 ================================================= */
@@ -34,9 +33,7 @@ function detectChapters(text) {
       return;
     }
 
-    const matched = chapterPatterns.some((pattern) =>
-      pattern.test(clean)
-    );
+    const matched = chapterPatterns.some((pattern) => pattern.test(clean));
 
     if (matched) {
       chapters.push({
@@ -48,7 +45,6 @@ function detectChapters(text) {
 
   return chapters;
 }
-
 
 function prepareChapters(text, persist = true) {
   const detected = detectChapters(text);
@@ -70,7 +66,6 @@ function prepareChapters(text, persist = true) {
 
   renderChapterNavigation(detectedChapters);
 }
-
 
 /* =================================================
    CHAPTER PANEL
@@ -126,27 +121,21 @@ function updateChapterListSelection() {
     return;
   }
 
-  const currentIndex =
-    Number.isFinite(appState.reader.currentChapterIndex)
-      ? appState.reader.currentChapterIndex
-      : 0;
+  const currentIndex = Number.isFinite(appState.reader.currentChapterIndex)
+    ? appState.reader.currentChapterIndex
+    : 0;
 
-  const chapterButtons =
-    chapterPanel.querySelectorAll(".chapter-item");
+  const chapterButtons = chapterPanel.querySelectorAll(".chapter-item");
 
   chapterButtons.forEach((button, index) => {
     const isActive = index === currentIndex;
 
     button.classList.toggle("active", isActive);
 
-    button.setAttribute(
-      "aria-current",
-      isActive ? "true" : "false"
-    );
+    button.setAttribute("aria-current", isActive ? "true" : "false");
   });
 
-  const activeButton =
-    chapterButtons[currentIndex];
+  const activeButton = chapterButtons[currentIndex];
 
   if (activeButton) {
     activeButton.scrollIntoView({
@@ -187,14 +176,9 @@ function getCurrentReaderChapterIndex() {
   let currentIndex = 0;
 
   detectedChapters.forEach((chapter, index) => {
-    const element = document.getElementById(
-      `reader-${chapter.id}`
-    );
+    const element = document.getElementById(`reader-${chapter.id}`);
 
-    if (
-      element &&
-      element.offsetTop <= scrollTop + 120
-    ) {
+    if (element && element.offsetTop <= scrollTop + 120) {
       currentIndex = index;
     }
   });
@@ -204,34 +188,47 @@ function getCurrentReaderChapterIndex() {
 
 function updateReaderChapterNavigation() {
   if (!detectedChapters.length) {
-    readerChapterIndicator.textContent = "No chapters";
+    readerChapterSelect.innerHTML = "";
+
+    const option = document.createElement("option");
+    option.value = "";
+    option.textContent = "No chapters";
+
+    readerChapterSelect.appendChild(option);
+
+    readerChapterSelect.disabled = true;
 
     readerPreviousChapter.disabled = true;
     readerNextChapter.disabled = true;
 
     appState.reader.currentChapterIndex = 0;
 
-    updateChapterListSelection();
-
     return;
   }
 
-  const currentIndex =
-    getCurrentReaderChapterIndex();
+  const currentIndex = getCurrentReaderChapterIndex();
 
-  appState.reader.currentChapterIndex =
-    currentIndex;
+  appState.reader.currentChapterIndex = currentIndex;
 
-  readerChapterIndicator.textContent =
-    `Chapter ${currentIndex + 1} of ${detectedChapters.length}`;
+  readerChapterSelect.innerHTML = "";
 
-  readerPreviousChapter.disabled =
-    currentIndex === 0;
+  detectedChapters.forEach((chapter, index) => {
+    const option = document.createElement("option");
 
-  readerNextChapter.disabled =
-    currentIndex === detectedChapters.length - 1;
+    option.value = String(index);
 
-  updateChapterListSelection();
+    option.textContent = `${index + 1}. ${chapter.title}`;
+
+    readerChapterSelect.appendChild(option);
+  });
+
+  readerChapterSelect.disabled = false;
+
+  readerChapterSelect.value = String(currentIndex);
+
+  readerPreviousChapter.disabled = currentIndex === 0;
+
+  readerNextChapter.disabled = currentIndex === detectedChapters.length - 1;
 }
 
 /* =================================================
@@ -239,18 +236,13 @@ function updateReaderChapterNavigation() {
 ================================================= */
 
 function goToReaderChapter(index) {
-  if (
-    index < 0 ||
-    index >= detectedChapters.length
-  ) {
+  if (index < 0 || index >= detectedChapters.length) {
     return;
   }
 
   const chapter = detectedChapters[index];
 
-  const target = document.getElementById(
-    `reader-${chapter.id}`
-  );
+  const target = document.getElementById(`reader-${chapter.id}`);
 
   if (!target) {
     return;
@@ -272,157 +264,106 @@ function goToReaderChapter(index) {
    PREVIOUS / NEXT
 ================================================= */
 
-readerPreviousChapter.addEventListener(
-  "click",
-  () => {
-    goToReaderChapter(
-      getCurrentReaderChapterIndex() - 1
-    );
-  }
-);
+readerPreviousChapter.addEventListener("click", () => {
+  goToReaderChapter(getCurrentReaderChapterIndex() - 1);
+});
 
-readerNextChapter.addEventListener(
-  "click",
-  () => {
-    goToReaderChapter(
-      getCurrentReaderChapterIndex() + 1
-    );
-  }
-);
+readerNextChapter.addEventListener("click", () => {
+  goToReaderChapter(getCurrentReaderChapterIndex() + 1);
+});
 
+readerChapterSelect.addEventListener("change", () => {
+  const index = parseInt(readerChapterSelect.value, 10);
+
+  if (Number.isNaN(index)) {
+    return;
+  }
+
+  goToReaderChapter(index);
+});
 
 /* =================================================
    READER CONTROLS
 ================================================= */
 
 function updateReaderControls() {
-  const size =
-    parseFloat(appState.reader.fontSize) || 18;
+  const size = parseFloat(appState.reader.fontSize) || 18;
 
-  const spacing =
-    parseFloat(appState.reader.lineSpacing) || 1.6;
+  const spacing = parseFloat(appState.reader.lineSpacing) || 1.6;
 
-  readerFontSize.textContent =
-    `${size}px`;
+  readerFontSize.textContent = `${size}px`;
 
-  readerSpacing.textContent =
-    spacing.toFixed(1);
+  readerSpacing.textContent = spacing.toFixed(1);
 
-  readerContent.style.fontSize =
-    `${size}px`;
+  readerContent.style.fontSize = `${size}px`;
 
-  readerContent.style.lineHeight =
-    spacing;
+  readerContent.style.lineHeight = spacing;
 }
-
 
 /* =================================================
    READER FONT SIZE
 ================================================= */
 
-readerFontDecrease.addEventListener(
-  "click",
-  () => {
-    const current =
-      parseFloat(appState.reader.fontSize) || 18;
+readerFontDecrease.addEventListener("click", () => {
+  const current = parseFloat(appState.reader.fontSize) || 18;
 
-    appState.reader.fontSize =
-      Math.max(8, current - 1);
+  appState.reader.fontSize = Math.max(8, current - 1);
 
-    stateChanged();
+  stateChanged();
 
-    renderReader();
-  }
-);
+  renderReader();
+});
 
+readerFontIncrease.addEventListener("click", () => {
+  const current = parseFloat(appState.reader.fontSize) || 18;
 
-readerFontIncrease.addEventListener(
-  "click",
-  () => {
-    const current =
-      parseFloat(appState.reader.fontSize) || 18;
+  appState.reader.fontSize = Math.min(48, current + 1);
 
-    appState.reader.fontSize =
-      Math.min(48, current + 1);
+  stateChanged();
 
-    stateChanged();
-
-    renderReader();
-  }
-);
-
+  renderReader();
+});
 
 /* =================================================
    READER LINE SPACING
 ================================================= */
 
-readerSpacingDecrease.addEventListener(
-  "click",
-  () => {
-    const current =
-      parseFloat(appState.reader.lineSpacing) || 1.6;
+readerSpacingDecrease.addEventListener("click", () => {
+  const current = parseFloat(appState.reader.lineSpacing) || 1.6;
 
-    appState.reader.lineSpacing =
-      Math.max(
-        0.8,
-        current - 0.1
-      );
+  appState.reader.lineSpacing = Math.max(0.8, current - 0.1);
 
-    appState.reader.lineSpacing =
-      Number(
-        appState.reader.lineSpacing.toFixed(1)
-      );
+  appState.reader.lineSpacing = Number(appState.reader.lineSpacing.toFixed(1));
 
-    stateChanged();
+  stateChanged();
 
-    renderReader();
-  }
-);
+  renderReader();
+});
 
+readerSpacingIncrease.addEventListener("click", () => {
+  const current = parseFloat(appState.reader.lineSpacing) || 1.6;
 
-readerSpacingIncrease.addEventListener(
-  "click",
-  () => {
-    const current =
-      parseFloat(appState.reader.lineSpacing) || 1.6;
+  appState.reader.lineSpacing = Math.min(3, current + 0.1);
 
-    appState.reader.lineSpacing =
-      Math.min(
-        3,
-        current + 0.1
-      );
+  appState.reader.lineSpacing = Number(appState.reader.lineSpacing.toFixed(1));
 
-    appState.reader.lineSpacing =
-      Number(
-        appState.reader.lineSpacing.toFixed(1)
-      );
+  stateChanged();
 
-    stateChanged();
-
-    renderReader();
-  }
-);
-
+  renderReader();
+});
 
 /* =================================================
    READER RESET
 ================================================= */
 
-readerResetButton.addEventListener(
-  "click",
-  () => {
-    appState.reader.fontSize =
-      DEFAULT_READER_SETTINGS.fontSize;
+readerResetButton.addEventListener("click", () => {
+  appState.reader.fontSize = DEFAULT_READER_SETTINGS.fontSize;
 
-    appState.reader.lineSpacing =
-      DEFAULT_READER_SETTINGS.lineSpacing;
+  appState.reader.lineSpacing = DEFAULT_READER_SETTINGS.lineSpacing;
 
-    stateChanged();
+  stateChanged();
 
-    renderReader();
+  renderReader();
 
-    showStatus(
-      "Reader settings reset."
-    );
-  }
-);
+  showStatus("Reader settings reset.");
+});
