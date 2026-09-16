@@ -236,13 +236,19 @@ function updateReaderChapterNavigation() {
 ================================================= */
 
 function goToReaderChapter(index) {
-  if (index < 0 || index >= detectedChapters.length) {
+
+  if (
+    index < 0 ||
+    index >= detectedChapters.length
+  ) {
     return;
   }
 
   const chapter = detectedChapters[index];
 
-  const target = document.getElementById(`reader-${chapter.id}`);
+  const target = document.getElementById(
+    `reader-${chapter.id}`
+  );
 
   if (!target) {
     return;
@@ -250,15 +256,27 @@ function goToReaderChapter(index) {
 
   appState.reader.currentChapterIndex = index;
 
-  updateChapterListSelection();
-
   stateChanged();
 
-  readerContent.scrollTo({
-    top: target.offsetTop,
+  const readerRect =
+    readerContent.getBoundingClientRect();
+
+  const targetRect =
+    target.getBoundingClientRect();
+
+  const topPadding = 32;
+
+  const scrollAmount =
+    targetRect.top -
+    readerRect.top -
+    topPadding;
+
+  readerContent.scrollBy({
+    top: scrollAmount,
     behavior: "smooth"
   });
 }
+
 
 /* =================================================
    PREVIOUS / NEXT
