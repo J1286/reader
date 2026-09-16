@@ -168,6 +168,8 @@ detectChaptersButton.addEventListener("click", () => {
    READER CHAPTER NAVIGATION
 ================================================= */
 
+let navigatingToReaderChapter = false;
+
 function getCurrentReaderChapterIndex() {
   if (!detectedChapters.length) {
     return 0;
@@ -210,6 +212,10 @@ function updateReaderChapterNavigation() {
     return;
   }
 
+  if (navigatingToReaderChapter) {
+    return;
+  }
+
   const currentIndex =
     getCurrentReaderChapterIndex();
 
@@ -228,6 +234,10 @@ function updateReaderChapterNavigation() {
   updateChapterListSelection();
 }
 
+
+/* =================================================
+   GO TO CHAPTER
+================================================= */
 
 function goToReaderChapter(index) {
   if (!detectedChapters.length) {
@@ -251,11 +261,8 @@ function goToReaderChapter(index) {
     return;
   }
 
-  /*
-   * Remember the chapter immediately.
-   * This makes Previous / Next work immediately
-   * after selecting a chapter.
-   */
+  navigatingToReaderChapter = true;
+
   appState.reader.currentChapterIndex = index;
 
   readerChapterIndicator.textContent =
@@ -269,15 +276,29 @@ function goToReaderChapter(index) {
 
   updateChapterListSelection();
 
-  /*
-   * Scroll the reader to the selected chapter.
-   */
   readerContent.scrollTo({
     top: target.offsetTop,
     behavior: "smooth"
   });
 
   stateChanged();
+
+  setTimeout(() => {
+    navigatingToReaderChapter = false;
+
+    appState.reader.currentChapterIndex = index;
+
+    readerChapterIndicator.textContent =
+      `Chapter ${index + 1} of ${detectedChapters.length}`;
+
+    readerPreviousChapter.disabled =
+      index === 0;
+
+    readerNextChapter.disabled =
+      index === detectedChapters.length - 1;
+
+    updateChapterListSelection();
+  }, 500);
 }
 
 
@@ -298,7 +319,9 @@ readerPreviousChapter.addEventListener(
   "click",
   () => {
     const currentIndex =
-      appState.reader.currentChapterIndex || 0;
+      Number.isFinite(appState.reader.currentChapterIndex)
+        ? appState.reader.currentChapterIndex
+        : 0;
 
     goToReaderChapter(currentIndex - 1);
   }
@@ -309,7 +332,9 @@ readerNextChapter.addEventListener(
   "click",
   () => {
     const currentIndex =
-      appState.reader.currentChapterIndex || 0;
+      Number.isFinite(appState.reader.currentChapterIndex)
+        ? appState.reader.currentChapterIndex
+        : 0;
 
     goToReaderChapter(currentIndex + 1);
   }
@@ -333,6 +358,7 @@ function updateReaderControls() {
 
   readerContent.style.lineHeight = spacing;
 }
+
 
 /* =================================================
    READER FONT SIZE
