@@ -103,9 +103,6 @@ const readerPreviousChapter =
 const readerNextChapter =
   document.getElementById("readerNextChapter");
 
-const readerChapterIndicator =
-  document.getElementById("readerChapterIndicator");
-
 
 /* ---------- Library ---------- */
 
