@@ -47,7 +47,8 @@ function activatePreset(presetName) {
   lineSpacing.value = settings.lineSpacing;
   paragraphSpacing.value = settings.paragraphSpacing;
   previewWidth.value = settings.previewWidth;
-  indent.checked = settings.indent;
+  // Keep the preset's indentation behavior internally.
+  appState.formatter.indent = settings.indent;
 
   preview.classList.remove(
     "preset-book",
@@ -59,38 +60,32 @@ function activatePreset(presetName) {
 
   preview.classList.add(`preset-${presetName}`);
 
-  presetButtons.forEach((button) => {
-    button.classList.toggle("active", button.dataset.preset === presetName);
-  });
+  if (presetSelect) {
+    presetSelect.value = presetName;
+  }
 
   renderCurrentView();
 }
 
-presetButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const preset = button.dataset.preset;
+presetSelect?.addEventListener("change", () => {
+  const preset = presetSelect.value;
 
-    if (preset === "custom") {
-      preview.classList.remove(
-        "preset-book",
-        "preset-ereader",
-        "preset-web",
-        "preset-manuscript"
-      );
+  if (preset === "custom") {
+    preview.classList.remove(
+      "preset-book",
+      "preset-ereader",
+      "preset-web",
+      "preset-manuscript"
+    );
 
-      preview.classList.add("preset-custom");
+    preview.classList.add("preset-custom");
+    appState.formatter.preset = "custom";
+    stateChanged();
+    renderCurrentView();
+    return;
+  }
 
-      presetButtons.forEach((item) => {
-        item.classList.toggle("active", item === button);
-      });
-
-      renderCurrentView();
-
-      return;
-    }
-
-    activatePreset(preset);
-  });
+  activatePreset(preset);
 });
 
 /* =================================================
@@ -178,7 +173,7 @@ function renderReader() {
     const isChapter = chapter && textParagraph.startsWith(chapter.title);
 
     paragraph.style.textIndent =
-      indent.checked && index > 0 && !isChapter && !previousWasChapter
+      appState.formatter.indent && index > 0 && !isChapter && !previousWasChapter
         ? "2em"
         : "0";
 

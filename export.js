@@ -85,7 +85,7 @@ document.getElementById("wordButton").addEventListener("click", async () => {
             after: (parseInt(paragraphSpacing.value, 10) || 16) * 10
           },
 
-          indent: indent.checked
+          indent: appState.formatter.indent
             ? {
                 firstLine: 720
               }

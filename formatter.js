@@ -15,9 +15,6 @@ function restoreFormatterSettings() {
   previewWidth.value =
     appState.formatter.previewWidth;
 
-  indent.checked =
-    appState.formatter.indent;
-
   widthValue.textContent =
     previewWidth.value;
 }
@@ -352,7 +349,7 @@ function renderPreview(text = getBookText()) {
         }px`;
 
       paragraph.style.textIndent =
-        indent.checked && index > 0
+        appState.formatter.indent && index > 0
           ? "2em"
           : "0";
 

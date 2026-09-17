@@ -24,8 +24,6 @@ const paragraphSpacing =
   document.getElementById("paragraphSpacing");
 const previewWidth = document.getElementById("previewWidth");
 const widthValue = document.getElementById("widthValue");
-const indent = document.getElementById("indent");
-
 const preview = document.getElementById("preview");
 const stats = document.getElementById("stats");
 const status = document.getElementById("status");
@@ -34,8 +32,14 @@ const chapterPanel = document.getElementById("chapterPanel");
 const detectChaptersButton =
   document.getElementById("detectChaptersButton");
 
-const presetButtons =
-  document.querySelectorAll(".preset-button");
+const presetSelect =
+  document.getElementById("presetSelect");
+
+const formatToggle =
+  document.getElementById("formatToggle");
+
+const formatOptions =
+  document.getElementById("formatOptions");
 
 const clearButton =
   document.getElementById("clearButton");

@@ -205,21 +205,12 @@ MANUAL SETTINGS → CUSTOM
   fontSize,
   lineSpacing,
   paragraphSpacing,
-  previewWidth,
-  indent
+  previewWidth
 ].forEach((control) => {
   control.addEventListener("input", () => {
-    const customButton =
-      document.querySelector(
-        '[data-preset="custom"]'
-      );
-
-    presetButtons.forEach((button) => {
-      button.classList.toggle(
-        "active",
-        button === customButton
-      );
-    });
+    if (presetSelect) {
+      presetSelect.value = "custom";
+    }
 
     preview.classList.remove(
       "preset-book",
@@ -253,9 +244,6 @@ MANUAL SETTINGS → CUSTOM
         10
       ) || 800;
 
-    appState.formatter.indent =
-      indent.checked;
-
     appState.formatter.preset =
       "custom";
 
@@ -263,6 +251,24 @@ MANUAL SETTINGS → CUSTOM
 
     stateChanged();
   });
+});
+
+
+/* =================================================
+FORMAT OPTIONS TOGGLE
+================================================= */
+
+formatToggle?.addEventListener("click", () => {
+  const isOpen = formatToggle.getAttribute("aria-expanded") === "true";
+  const nextOpen = !isOpen;
+
+  formatToggle.setAttribute("aria-expanded", String(nextOpen));
+  formatOptions?.classList.toggle("hidden", !nextOpen);
+
+  const icon = formatToggle.querySelector(".toggle-icon");
+  if (icon) {
+    icon.textContent = nextOpen ? "▾" : "▸";
+  }
 });
 
 

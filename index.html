@@ -333,42 +333,28 @@
             <h2>Reading style</h2>
 
             <div class="preset-bar">
-              <button class="preset-button active" data-preset="book">
-                Book
-              </button>
-
-              <button class="preset-button" data-preset="ereader">
-                E-reader
-              </button>
-
-              <button class="preset-button" data-preset="web">
-                Web
-              </button>
-
-              <button class="preset-button" data-preset="manuscript">
-                Manuscript
-              </button>
-
-              <button class="preset-button" data-preset="custom">
-                Custom
-              </button>
+              <select id="presetSelect" class="preset-select" aria-label="Reading style">
+                <option value="book">Book</option>
+                <option value="ereader">E-reader</option>
+                <option value="web">Web</option>
+                <option value="manuscript">Manuscript</option>
+                <option value="custom">Custom</option>
+              </select>
             </div>
           </div>
 
           <div class="theme-controls">
 
-            <span>Theme:</span>
-
-            <button class="theme-button active" data-theme="light" title="Light theme">
-              ☀️ Light
+            <button class="theme-button active" data-theme="light" title="Light theme" aria-label="Light theme">
+              ☀️
             </button>
 
-            <button class="theme-button" data-theme="dark" title="Dark theme">
-              🌙 Dark
+            <button class="theme-button" data-theme="dark" title="Dark theme" aria-label="Dark theme">
+              🌙
             </button>
 
-            <button class="theme-button" data-theme="sepia" title="Sepia reading theme">
-              📖 Sepia
+            <button class="theme-button" data-theme="sepia" title="Sepia reading theme" aria-label="Sepia reading theme">
+              📖
             </button>
           </div>
         </div>
@@ -396,13 +382,16 @@
 
       <!-- FORMAT -->
 
-      <section>
-        <h2>Format</h2>
-        <div class="toolbar">
+      <section class="format-section">
+        <button id="formatToggle" class="section-toggle" type="button" aria-expanded="false" aria-controls="formatOptions">
+          <span>Format</span>
+          <span class="toggle-icon" aria-hidden="true">▸</span>
+        </button>
+
+        <div id="formatOptions" class="format-options hidden">
+          <div class="toolbar">
           <div class="setting">
-            <label for="lineWidth">
-              Line width
-            </label>
+            <label for="lineWidth" class="icon-label" title="Line width" aria-label="Line width">↔</label>
 
             <input id="lineWidth" type="number" value="40" min="10" max="200">
 
@@ -410,9 +399,7 @@
           </div>
 
           <div class="setting">
-            <label for="fontSize">
-              Font size
-            </label>
+            <label for="fontSize" class="icon-label" title="Font size" aria-label="Font size">A</label>
 
             <input id="fontSize" type="number" value="18" min="8" max="48">
 
@@ -421,18 +408,14 @@
 
           <div class="setting">
 
-            <label for="lineSpacing">
-              Line spacing
-            </label>
+            <label for="lineSpacing" class="icon-label" title="Line spacing" aria-label="Line spacing">↕</label>
 
             <input id="lineSpacing" type="number" value="1.6" min="0.8" max="3" step="0.1">
           </div>
 
           <div class="setting">
 
-            <label for="paragraphSpacing">
-              Paragraph spacing
-            </label>
+            <label for="paragraphSpacing" class="icon-label" title="Paragraph spacing" aria-label="Paragraph spacing">¶</label>
 
             <input id="paragraphSpacing" type="number" value="16" min="0" max="100">
 
@@ -441,9 +424,7 @@
 
           <div class="setting">
 
-            <label for="previewWidth">
-              Preview width
-            </label>
+            <label for="previewWidth" class="icon-label" title="Preview width" aria-label="Preview width">▣</label>
 
             <input id="previewWidth" type="range" min="500" max="1100" value="800">
 
@@ -451,13 +432,6 @@
               800px
             </span>
           </div>
-
-          <label class="checkbox">
-
-            <input id="indent" type="checkbox" checked>
-
-            First-line indent
-          </label>
 
           <div class="export-buttons">
 
@@ -478,6 +452,7 @@
             </button>
           </div>
         </div>
+      </div>
       </section>
 
       <!-- INPUT -->
