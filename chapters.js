@@ -202,13 +202,22 @@ function getCurrentReaderChapterIndex() {
 
 function updateReaderChapterNavigation() {
 
-  if (!readerChapterIndicator) {
+  if (!readerChapterSelect) {
     return;
   }
 
   if (!detectedChapters.length) {
 
-    readerChapterIndicator.textContent = "No chapters";
+    readerChapterSelect.innerHTML = "";
+
+    const option = document.createElement("option");
+
+    option.value = "";
+    option.textContent = "No chapters";
+
+    readerChapterSelect.appendChild(option);
+
+    readerChapterSelect.disabled = true;
 
     readerPreviousChapter.disabled = true;
     readerNextChapter.disabled = true;
@@ -224,8 +233,24 @@ function updateReaderChapterNavigation() {
   appState.reader.currentChapterIndex =
     currentIndex;
 
-  readerChapterIndicator.textContent =
-    `Chapter ${currentIndex + 1} of ${detectedChapters.length}`;
+  readerChapterSelect.disabled = false;
+
+  if (readerChapterSelect.options.length !== detectedChapters.length) {
+
+    readerChapterSelect.innerHTML = "";
+
+    detectedChapters.forEach((chapter, index) => {
+
+      const option = document.createElement("option");
+
+      option.value = index;
+      option.textContent = chapter.title;
+
+      readerChapterSelect.appendChild(option);
+    });
+  }
+
+  readerChapterSelect.value = String(currentIndex);
 
   readerPreviousChapter.disabled =
     currentIndex === 0;
@@ -262,10 +287,9 @@ function goToReaderChapter(index) {
 
   appState.reader.currentChapterIndex = index;
 
-  if (readerChapterIndicator) {
-    readerChapterIndicator.textContent =
-      `Chapter ${index + 1} of ${detectedChapters.length}`;
-  }
+  if (readerChapterSelect) {
+     readerChapterSelect.value = String(index);
+   }
 
   readerPreviousChapter.disabled =
     index === 0;
@@ -282,6 +306,26 @@ function goToReaderChapter(index) {
 
   stateChanged();
 }
+
+
+/* =================================================
+   CHAPTER SELECTOR
+================================================= */
+
+readerChapterSelect.addEventListener(
+  "change",
+  () => {
+
+    const index =
+      Number(readerChapterSelect.value);
+
+    if (!Number.isFinite(index)) {
+      return;
+    }
+
+    goToReaderChapter(index);
+  }
+);
 
 
 /* =================================================
