@@ -1,4 +1,4 @@
-const CACHE_NAME = "my-reader-v8.7";
+const CACHE_NAME = "my-reader-v8.8";
 
 const APP_SHELL = [
   "/reader/",
