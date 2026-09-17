@@ -992,7 +992,7 @@ input[type="range"] {
 }
 
 .reader-controls-hidden {
-  display: none;
+  display: none !important;
 }
 
 /* =========================================================
@@ -1820,31 +1820,42 @@ body.reader-fullscreen .reader-content {
   /* READER HEADER */
 
   .reader-header {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
 
     width: 100%;
 
-    padding: 16px var(--mobile-padding);
+    margin: 0 auto 4px;
+    padding: 6px var(--mobile-padding);
   }
 
   #readerTitle {
-    font-size: 24px;
-    line-height: 1.25;
+    min-width: 0;
+    margin: 0;
 
-    overflow-wrap: anywhere;
+    font-size: 19px;
+    line-height: 1.2;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
-  .reader-meta {
-    font-size: 13px;
+  .reader-meta,
+  .reader-actions {
+    display: none;
   }
 
   /* READER SETTINGS */
 
   .reader-settings-button {
-    position: absolute;
-    top: 12px;
-    right: var(--mobile-padding);
+    position: static;
+    flex: 0 0 40px;
+
+    width: 40px;
+    height: 40px;
+    min-height: 40px;
   }
 
   /* READER CONTROLS */
@@ -1855,9 +1866,9 @@ body.reader-fullscreen .reader-content {
 
     width: 100%;
 
-    gap: 10px;
+    gap: 8px;
 
-    padding: 0 var(--mobile-padding) 12px;
+    padding: 4px var(--mobile-padding) 8px;
 
     border: 0;
     border-radius: 0;
@@ -1901,13 +1912,13 @@ body.reader-fullscreen .reader-content {
     z-index: 20;
 
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: auto minmax(0, 1fr) auto;
 
     width: 100%;
 
-    gap: 8px;
+    gap: 6px;
 
-    padding: 8px var(--mobile-padding);
+    padding: 4px var(--mobile-padding);
 
     background: var(--page-bg);
 
@@ -1915,8 +1926,15 @@ body.reader-fullscreen .reader-content {
   }
 
   .reader-chapter-nav button {
-    min-height: 44px;
-    padding: 8px 10px;
+    min-height: 36px;
+    padding: 5px 9px;
+    font-size: 12px;
+  }
+
+  .reader-chapter-select {
+    min-height: 36px;
+    padding: 5px 8px;
+    font-size: 12px;
   }
 
 
@@ -2295,7 +2313,7 @@ body.reader-fullscreen .reader-content {
   }
 
   .reader-chapter-nav {
-    grid-template-columns: 1fr;
+    grid-template-columns: auto minmax(0, 1fr) auto;
   }
 
   .cleanup-buttons,
