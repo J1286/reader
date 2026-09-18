@@ -3069,3 +3069,47 @@ body.reader-fullscreen .reader-content {
     font-size: 20px;
   }
 }
+
+/* =========================================================
+   LIBRARY BOOKSHELF BACKGROUND
+========================================================= */
+
+#libraryView {
+  position: relative;
+  min-height: calc(100vh - 94px);
+  padding: 18px 18px 28px;
+  border-radius: 16px;
+  overflow: hidden;
+  background-image:
+    linear-gradient(rgba(18, 10, 5, 0.20), rgba(18, 10, 5, 0.34)),
+    url("./assets/bookshelf-bg.png");
+  background-size: cover;
+  background-position: center top;
+  background-attachment: scroll;
+}
+
+#libraryView #librarySection {
+  position: relative;
+  z-index: 1;
+}
+
+#libraryView .section-title-row {
+  color: #fff8ed;
+}
+
+#libraryView .section-title-row h2 {
+  text-shadow: 0 2px 7px rgba(0, 0, 0, 0.55);
+}
+
+#libraryView .library-panel {
+  padding-top: 8px;
+}
+
+@media (max-width: 640px) {
+  #libraryView {
+    min-height: calc(100vh - 76px);
+    padding: 10px 10px 22px;
+    border-radius: 12px;
+    background-position: center top;
+  }
+}
