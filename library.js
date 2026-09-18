@@ -428,13 +428,10 @@ async function renderLibrary() {
       const cover = document.createElement("div");
       cover.className = "book-cover";
 
-      if (book.coverImage) {
-        cover.style.backgroundImage = `url(${JSON.stringify(book.coverImage)})`;
-        cover.classList.add("has-cover-image");
-      } else {
-        const hue = getBookCoverHue(book.title || book.id);
-        cover.style.setProperty("--cover-hue", hue);
-      }
+      // Use a shared vintage cover until a book has its own cover image.
+      const coverImage = book.coverImage || "./assets/default-book-cover.png";
+      cover.style.backgroundImage = `url(${JSON.stringify(coverImage)})`;
+      cover.classList.add("has-cover-image");
 
       const coverOverlay = document.createElement("div");
       coverOverlay.className = "book-cover-overlay";
