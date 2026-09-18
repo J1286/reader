@@ -391,357 +391,165 @@ async function syncLibraryState() {
 
 async function renderLibrary() {
   try {
-    const books =
-      await getAllBooks();
+    const books = await getAllBooks();
 
     appState.library = books;
 
     if (
       appState.currentBookId &&
-      !getBookById(
-        appState.currentBookId
-      )
+      !getBookById(appState.currentBookId)
     ) {
       appState.currentBookId = null;
-      currentBook =
-        createEmptyBook();
+      currentBook = createEmptyBook();
     }
 
     libraryPanel.innerHTML = "";
 
     if (!books.length) {
-      const empty =
-        document.createElement(
-          "div"
-        );
-
-      empty.className =
-        "library-empty";
-
-      empty.textContent =
-        "No books in your library yet.";
-
-      libraryPanel.appendChild(
-        empty
-      );
-
+      const empty = document.createElement("div");
+      empty.className = "library-empty";
+      empty.textContent = "No books in your library yet.";
+      libraryPanel.appendChild(empty);
       return;
     }
 
     books.sort((a, b) => {
-      return (
-        (b.lastOpened || 0) -
-        (a.lastOpened || 0)
-      );
+      return (b.lastOpened || 0) - (a.lastOpened || 0);
     });
 
     books.forEach((book) => {
-      const card =
-        document.createElement(
-          "article"
-        );
+      const card = document.createElement("article");
+      card.className = "book-card";
+      card.setAttribute("role", "button");
+      card.setAttribute("tabindex", "0");
+      card.setAttribute("aria-label", `Open ${book.title || "Untitled"}`);
 
-      card.className =
-        "book-card";
+      /* ---------- Cover ---------- */
+      const cover = document.createElement("div");
+      cover.className = "book-cover";
 
+      if (book.coverImage) {
+        cover.style.backgroundImage = `url(${JSON.stringify(book.coverImage)})`;
+        cover.classList.add("has-cover-image");
+      } else {
+        const hue = getBookCoverHue(book.title || book.id);
+        cover.style.setProperty("--cover-hue", hue);
+      }
 
-      /* ---------- Icon ---------- */
+      const coverOverlay = document.createElement("div");
+      coverOverlay.className = "book-cover-overlay";
 
-      const icon =
-        document.createElement(
-          "div"
-        );
+      const title = document.createElement("div");
+      title.className = "book-title";
+      title.textContent = book.title || "Untitled";
 
-      icon.className =
-        "book-icon";
+      const progress = document.createElement("div");
+      progress.className = "book-progress";
 
-      icon.textContent =
-        book.type === "docx"
-          ? "📘"
-          : "📖";
+      const progressTrack = document.createElement("div");
+      progressTrack.className = "book-progress-track";
 
+      const progressBar = document.createElement("div");
+      progressBar.className = "book-progress-bar";
 
-      /* ---------- Title ---------- */
-
-      const title =
-        document.createElement(
-          "div"
-        );
-
-      title.className =
-        "book-title";
-
-      title.textContent =
-        book.title ||
-        "Untitled";
-
-
-      /* ---------- Metadata ---------- */
-
-      const meta =
-        document.createElement(
-          "div"
-        );
-
-      meta.className =
-        "book-meta";
-
-      meta.textContent =
-        book.sourceName ||
-        "Text document";
-
-
-      /* ---------- Type ---------- */
-
-      const type =
-        document.createElement(
-          "span"
-        );
-
-      type.className =
-        "book-type";
-
-      type.textContent =
-        book.type ||
-        "text";
-
-
-      /* ---------- Progress ---------- */
-
-      const progress =
-        document.createElement(
-          "div"
-        );
-
-      progress.className =
-        "book-progress";
-
-      const progressTrack =
-        document.createElement(
-          "div"
-        );
-
-      progressTrack.className =
-        "book-progress-track";
-
-      const progressBar =
-        document.createElement(
-          "div"
-        );
-
-      progressBar.className =
-        "book-progress-bar";
-
-      const progressValue =
-        Math.max(
-          0,
-          Math.min(
-            1,
-            Number(
-  	      book.reader?.progress
-	    ) || 0
-          )
-        );
-
-      const progressPercent =
-        Math.round(
-          progressValue * 100
-        );
-
-      progressBar.style.width =
-        `${progressPercent}%`;
-
-      progressTrack.appendChild(
-        progressBar
+      const progressValue = Math.max(
+        0,
+        Math.min(1, Number(book.reader?.progress) || 0)
       );
+      const progressPercent = Math.round(progressValue * 100);
+      progressBar.style.width = `${progressPercent}%`;
 
-      const progressText =
-        document.createElement(
-          "div"
-        );
+      progressTrack.appendChild(progressBar);
 
-      progressText.className =
-        "book-progress-text";
+      const progressText = document.createElement("span");
+      progressText.className = "book-progress-text";
+      progressText.textContent = `${progressPercent}%`;
 
-      progressText.textContent =
-        progressPercent === 0
-          ? "Not started"
-          : progressPercent >= 100
-            ? "Finished"
-            : `${progressPercent}% Read`;
+      progress.appendChild(progressTrack);
+      progress.appendChild(progressText);
 
-      progress.appendChild(
-        progressTrack
-      );
-
-      progress.appendChild(
-        progressText
-      );
-
-
-      /* ---------- Actions ---------- */
-
-      const actions =
-        document.createElement(
-          "div"
-        );
-
-      actions.className =
-        "book-card-actions";
-
-
-      /* ---------- Open ---------- */
-
-      const openButton =
-        document.createElement(
-          "button"
-        );
-
-      openButton.type =
-        "button";
-
-      openButton.textContent =
-        "Open";
-
-      openButton.addEventListener(
-        "click",
-        (event) => {
-          event.stopPropagation();
-
-          openBook(book.id);
-        }
-      );
-
+      coverOverlay.appendChild(title);
+      coverOverlay.appendChild(progress);
+      cover.appendChild(coverOverlay);
 
       /* ---------- Delete ---------- */
+      const deleteButton = document.createElement("button");
+      deleteButton.type = "button";
+      deleteButton.className = "book-delete-button";
+      deleteButton.setAttribute("aria-label", `Delete ${book.title || "Untitled"}`);
+      deleteButton.title = "Delete book";
+      deleteButton.textContent = "×";
 
-      const deleteButton =
-        document.createElement(
-          "button"
+      deleteButton.addEventListener("click", async (event) => {
+        event.stopPropagation();
+
+        const confirmed = confirm(
+          `Delete "${book.title}" from your library?`
         );
 
-      deleteButton.type =
-        "button";
+        if (!confirmed) {
+          return;
+        }
 
-      deleteButton.className =
-        "secondary";
+        try {
+          await deleteBook(book.id);
+          removeBookFromLibrary(book.id);
+          stateChanged();
 
-      deleteButton.textContent =
-        "Delete";
-
-      deleteButton.addEventListener(
-        "click",
-        async (event) => {
-          event.stopPropagation();
-
-          const confirmed =
-            confirm(
-              `Delete "${book.title}" from your library?`
-            );
-
-          if (!confirmed) {
-            return;
+          if (appState.currentBookId === null) {
+            inputText.value = "";
+            detectedChapters = [];
+            renderCurrentView();
           }
 
-          try {
-            await deleteBook(
-              book.id
-            );
-
-            removeBookFromLibrary(
-              book.id
-            );
-
-            stateChanged();
-
-            if (
-              appState.currentBookId ===
-              null
-            ) {
-              inputText.value = "";
-
-              detectedChapters = [];
-
-              renderCurrentView();
-            }
-
-            await renderLibrary();
-
-            showStatus(
-              "Book deleted."
-            );
-          } catch (error) {
-            console.error(
-              "Could not delete book:",
-              error
-            );
-
-            showStatus(
-              "Could not delete that book."
-            );
-          }
+          await renderLibrary();
+          showStatus("Book deleted.");
+        } catch (error) {
+          console.error("Could not delete book:", error);
+          showStatus("Could not delete that book.");
         }
-      );
+      });
 
+      card.appendChild(cover);
+      card.appendChild(deleteButton);
 
-      actions.appendChild(
-        openButton
-      );
-
-      actions.appendChild(
-        deleteButton
-      );
-
-
-      /* ---------- Card ---------- */
-
-      card.appendChild(icon);
-      card.appendChild(title);
-      card.appendChild(meta);
-      card.appendChild(type);
-      card.appendChild(progress);
-      card.appendChild(actions);
-
-      card.addEventListener(
-        "click",
-        () => {
-          openBook(book.id);
+      const open = () => openBook(book.id);
+      card.addEventListener("click", open);
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          open();
         }
-      );
+      });
 
-      libraryPanel.appendChild(
-        card
-      );
+      libraryPanel.appendChild(card);
     });
   } catch (error) {
-    console.error(
-      "Could not render library:",
-      error
-    );
+    console.error("Could not render library:", error);
 
     libraryPanel.innerHTML = "";
 
-    const empty =
-      document.createElement(
-        "div"
-      );
+    const empty = document.createElement("div");
+    empty.className = "library-empty";
+    empty.textContent = "Could not load your library.";
+    libraryPanel.appendChild(empty);
 
-    empty.className =
-      "library-empty";
-
-    empty.textContent =
-      "Could not load your library.";
-
-    libraryPanel.appendChild(
-      empty
-    );
-
-    showStatus(
-      "Could not load your library."
-    );
+    showStatus("Could not load your library.");
   }
 }
 
+
+function getBookCoverHue(value) {
+  const text = String(value || "book");
+  let hash = 0;
+
+  for (let i = 0; i < text.length; i += 1) {
+    hash = ((hash << 5) - hash) + text.charCodeAt(i);
+    hash |= 0;
+  }
+
+  return Math.abs(hash) % 360;
+}
 
 /* =================================================
    OPEN BOOK

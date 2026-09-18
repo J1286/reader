@@ -2817,3 +2817,255 @@ body.reader-fullscreen .reader-content {
   .export-buttons { grid-column: 1 / -1; display: flex; width: 100%; gap: 5px; }
   .export-buttons button { flex: 1; width: auto; min-height: 32px; padding: 5px 6px; }
 }
+
+/* =========================================================
+   LIBRARY REDESIGN
+========================================================= */
+
+.library-actions {
+  align-items: center;
+  gap: 7px;
+}
+
+.library-add-button {
+  min-height: 40px;
+  padding: 7px 12px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.library-sync-button {
+  width: 40px;
+  height: 40px;
+  min-height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.library-hidden-action {
+  display: none !important;
+}
+
+.library-panel {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.book-card {
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.book-card:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.book-cover {
+  --cover-hue: 215;
+  position: relative;
+  aspect-ratio: 0.72;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 7px 9px 9px 7px;
+  background:
+    radial-gradient(circle at 70% 25%, hsla(var(--cover-hue), 80%, 78%, 0.32), transparent 28%),
+    linear-gradient(150deg, hsl(var(--cover-hue), 48%, 36%), hsl(calc(var(--cover-hue) + 35), 42%, 13%));
+  box-shadow: inset 6px 0 0 rgba(255, 255, 255, 0.12),
+    0 5px 14px rgba(0, 0, 0, 0.18);
+  background-size: cover;
+  background-position: center;
+}
+
+.book-cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.02) 35%, rgba(0, 0, 0, 0.7) 100%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 5px);
+  pointer-events: none;
+}
+
+.book-cover.has-cover-image::before {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.02) 30%, rgba(0, 0, 0, 0.72) 100%);
+}
+
+.book-cover-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 13px 12px 11px;
+  color: #fff;
+}
+
+.book-title {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0 0 10px;
+  color: #fff;
+  font-family: Georgia, "Noto Serif CJK TC", "Noto Serif CJK SC", "Times New Roman", serif;
+  font-size: clamp(15px, 2.2vw, 19px);
+  font-weight: 650;
+  line-height: 1.22;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.book-progress {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+}
+
+.book-progress-track {
+  flex: 1;
+  width: auto;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.32);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.book-progress-bar {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.book-progress-text {
+  flex: 0 0 auto;
+  margin: 0;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  text-align: right;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+}
+
+.book-delete-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 3;
+  width: 30px;
+  height: 30px;
+  min-height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.38);
+  color: #fff;
+  font-size: 22px;
+  line-height: 1;
+  backdrop-filter: blur(3px);
+}
+
+.book-delete-button:hover {
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.menu-lamp {
+  width: 31px;
+  height: 31px;
+  overflow: visible;
+}
+
+.menu-button .lamp-arm,
+.menu-button .lamp-neck {
+  fill: currentColor;
+  opacity: 0.8;
+}
+
+.menu-button .lamp-shade {
+  fill: currentColor;
+}
+
+.menu-button .lamp-glow {
+  fill: currentColor;
+  opacity: 0.18;
+}
+
+.menu-button .lamp-bulb {
+  fill: currentColor;
+  filter: drop-shadow(0 0 5px currentColor);
+}
+
+@media (max-width: 700px) {
+  .header {
+    min-height: 58px;
+    flex-direction: row;
+    align-items: center;
+    padding: 9px var(--mobile-padding);
+  }
+
+  .app-title {
+    padding: 0 52px;
+  }
+
+  .library-actions {
+    width: auto;
+    flex: 0 0 auto;
+  }
+
+  .library-add-button {
+    min-height: 38px;
+    padding: 6px 10px;
+  }
+
+  .library-sync-button {
+    width: 38px;
+    height: 38px;
+    min-height: 38px;
+  }
+
+  .library-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    padding: 0 var(--mobile-padding);
+  }
+
+  .book-cover-overlay {
+    padding: 11px 9px 9px;
+  }
+
+  .book-title {
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  .book-progress {
+    gap: 5px;
+  }
+
+  .book-progress-text {
+    font-size: 10px;
+  }
+
+  .book-delete-button {
+    top: 6px;
+    right: 6px;
+    width: 28px;
+    height: 28px;
+    min-height: 28px;
+    font-size: 20px;
+  }
+}
