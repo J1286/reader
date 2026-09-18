@@ -1,4 +1,4 @@
-const CACHE_NAME = "my-reader-v9.4";
+const CACHE_NAME = "my-reader-v8.10";
 
 const APP_SHELL = [
   "/reader/",
@@ -14,7 +14,8 @@ const APP_SHELL = [
   "/reader/import.js",
   "/reader/export.js",
   "/reader/backup.js",
-  "/reader/manifest.json"
+  "/reader/manifest.json",
+  "/reader/assets/bookshelf-bg.png"
 ];
 
 /* INSTALL */
