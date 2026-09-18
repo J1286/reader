@@ -2540,3 +2540,280 @@ body.reader-fullscreen .reader-content {
   text-align: center;
   cursor: help;
 }
+
+/* =========================================================
+   FORMAT UI / MOBILE-FRIENDLY CONTROLS
+========================================================= */
+
+/* Keep reading style and themes together. */
+.reading-style {
+  flex: 1;
+}
+
+.preset-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.preset-select {
+  min-width: 180px;
+}
+
+.preset-bar .theme-controls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.preset-bar .theme-button {
+  width: 38px;
+  min-width: 38px;
+  height: 38px;
+  padding: 4px;
+}
+
+.format-help-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 6px;
+}
+
+.help-button {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.format-help {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 16px;
+  margin: 0 0 8px;
+  padding: 8px 10px;
+  background: var(--button-hover);
+  border: 1px solid var(--border-color);
+  border-radius: 7px;
+  color: var(--muted-color);
+  font-size: 12px;
+}
+
+.format-help strong {
+  color: var(--text-color);
+  margin-right: 3px;
+}
+
+.format-help.hidden {
+  display: none;
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.step-button {
+  width: 28px;
+  height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  line-height: 1;
+}
+
+.stepper input[type="number"] {
+  width: 52px;
+  padding: 6px 4px;
+  text-align: center;
+}
+
+.format-options .setting {
+  gap: 5px;
+}
+
+.format-options .setting span {
+  min-width: 34px;
+}
+
+.export-buttons {
+  flex: 1 0 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+  margin-left: 0;
+  margin-top: 2px;
+}
+
+.export-buttons button {
+  min-height: 32px;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+@media (min-width: 701px) {
+  .format-options .toolbar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 18px;
+  }
+
+  .format-options .setting {
+    min-width: 0;
+  }
+
+  .preview-width-setting {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 700px) {
+  .style-toolbar {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .reading-style {
+    width: 100%;
+  }
+
+  .preset-bar {
+    width: 100%;
+    display: flex;
+  }
+
+  .preset-bar .preset-select {
+    flex: 1;
+    min-width: 0;
+    width: auto;
+  }
+
+  .preset-bar .theme-controls {
+    flex-shrink: 0;
+  }
+
+  .preset-bar .theme-button {
+    width: 36px;
+    min-width: 36px;
+    height: 38px;
+  }
+
+  .format-options .toolbar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 10px;
+  }
+
+  .format-options .setting {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .format-options .setting .icon-label {
+    flex-shrink: 0;
+  }
+
+  .stepper input[type="number"] {
+    width: 44px;
+  }
+
+  .step-button {
+    width: 27px;
+  }
+
+  .preview-width-setting {
+    grid-column: 1 / -1;
+  }
+
+  .preview-width-setting input[type="range"] {
+    flex: 1;
+    min-width: 70px;
+  }
+
+  .export-buttons {
+    grid-column: 1 / -1;
+    display: flex;
+    width: 100%;
+    gap: 5px;
+  }
+
+  .export-buttons button {
+    flex: 1;
+    width: auto;
+    min-height: 32px;
+    padding: 5px 6px;
+  }
+}
+
+/* =========================================================
+   FORMAT UI / MOBILE-FRIENDLY CONTROLS
+========================================================= */
+
+.reading-style { flex: 1; }
+.preset-bar { display: flex; align-items: center; gap: 8px; }
+.preset-bar .theme-controls { display: flex; align-items: center; gap: 5px; }
+.preset-bar .theme-button { width: 38px; min-width: 38px; height: 38px; padding: 4px; }
+
+.format-help-row { display: flex; justify-content: flex-end; margin-bottom: 6px; }
+.help-button {
+  width: 24px; height: 24px; padding: 0; display: inline-flex;
+  align-items: center; justify-content: center; border-radius: 50%;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+}
+.format-help {
+  display: flex; flex-wrap: wrap; gap: 7px 16px; margin: 0 0 8px; padding: 8px 10px;
+  background: var(--button-hover); border: 1px solid var(--border-color);
+  border-radius: 7px; color: var(--muted-color); font-size: 12px;
+}
+.format-help strong { color: var(--text-color); margin-right: 3px; }
+.format-help.hidden { display: none; }
+
+.stepper { display: inline-flex; align-items: center; gap: 3px; }
+.step-button {
+  width: 28px; height: 32px; padding: 0; display: inline-flex;
+  align-items: center; justify-content: center; font-size: 17px; line-height: 1;
+}
+.stepper input[type="number"] { width: 52px; padding: 6px 4px; text-align: center; }
+.format-options .setting { gap: 5px; }
+.format-options .setting span { min-width: 34px; }
+
+.export-buttons {
+  flex: 1 0 100%; display: flex; justify-content: flex-end; gap: 5px;
+  margin-left: 0; margin-top: 2px;
+}
+.export-buttons button { min-height: 32px; padding: 5px 10px; font-size: 12px; }
+
+@media (min-width: 701px) {
+  .format-options .toolbar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 18px; }
+  .format-options .setting { min-width: 0; }
+  .preview-width-setting { grid-column: 1 / -1; }
+}
+
+@media (max-width: 700px) {
+  .style-toolbar { flex-direction: column; gap: 8px; }
+  .reading-style { width: 100%; }
+  .preset-bar { width: 100%; }
+  .preset-bar .preset-select { flex: 1; min-width: 0; width: auto; }
+  .preset-bar .theme-controls { flex-shrink: 0; }
+  .preset-bar .theme-button { width: 36px; min-width: 36px; height: 38px; }
+
+  .format-options .toolbar { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 10px; }
+  .format-options .setting { width: 100%; min-width: 0; }
+  .format-options .setting .icon-label { flex-shrink: 0; }
+  .stepper input[type="number"] { width: 44px; }
+  .step-button { width: 27px; }
+  .preview-width-setting { grid-column: 1 / -1; }
+  .preview-width-setting input[type="range"] { flex: 1; min-width: 70px; }
+
+  .export-buttons { grid-column: 1 / -1; display: flex; width: 100%; gap: 5px; }
+  .export-buttons button { flex: 1; width: auto; min-height: 32px; padding: 5px 6px; }
+}

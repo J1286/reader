@@ -352,3 +352,41 @@ const isStandalone =
   window.navigator.standalone === true;
 
 setMode(isStandalone ? "library" : (appState.mode || "library"));
+
+/* =================================================
+FORMAT STEPPERS + HELP
+================================================= */
+
+document.querySelectorAll(".step-button").forEach((button) => {
+  button.addEventListener("click", () => {
+    const target = document.getElementById(button.dataset.stepTarget);
+    if (!target) return;
+
+    const step = parseFloat(button.dataset.step) || 1;
+    const current = parseFloat(target.value) || 0;
+    const min = parseFloat(target.min);
+    const max = parseFloat(target.max);
+    const decimals = (target.step || "1").includes(".")
+      ? (target.step.split(".")[1] || "").length
+      : 0;
+
+    let next = current + step;
+    if (!Number.isNaN(min)) next = Math.max(min, next);
+    if (!Number.isNaN(max)) next = Math.min(max, next);
+
+    target.value = Number(next.toFixed(decimals));
+    target.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+});
+
+const formatHelpButton = document.getElementById("formatHelpButton");
+const formatHelp = document.getElementById("formatHelp");
+
+formatHelpButton?.addEventListener("click", () => {
+  const isOpen = formatHelpButton.getAttribute("aria-expanded") === "true";
+  const nextOpen = !isOpen;
+
+  formatHelpButton.setAttribute("aria-expanded", String(nextOpen));
+  formatHelp?.classList.toggle("hidden", !nextOpen);
+  formatHelp?.setAttribute("aria-hidden", String(!nextOpen));
+});
