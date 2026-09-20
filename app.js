@@ -8,6 +8,20 @@ async function setMode(mode) {
   appState.mode = mode;
   currentMode = mode;
 
+  const appTitle = document.getElementById("appTitle");
+  if (appTitle) {
+    const titles = {
+      library: { text: "𝔐𝔶 𝔏𝔦𝔟𝔯𝔞𝔯𝔶", aria: "My Library", className: "library-title" },
+      reader: { text: "Reader", aria: "Reader", className: "" },
+      formatter: { text: "Tools", aria: "Tools", className: "" }
+    };
+
+    const title = titles[mode] || titles.library;
+    appTitle.textContent = title.text;
+    appTitle.setAttribute("aria-label", title.aria);
+    appTitle.classList.toggle("library-title", title.className === "library-title");
+  }
+
   modeButtons.forEach((button) => {
     button.classList.toggle(
       "active",
