@@ -3171,3 +3171,173 @@ body.reader-fullscreen .reader-content {
     font-size: 22px;
   }
 }
+
+/* =========================================================
+   LIBRARY FINAL LAYOUT
+========================================================= */
+
+#libraryView {
+  padding: 18px 18px 28px;
+}
+
+#libraryView .section-title-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 48px;
+  margin-bottom: 12px;
+}
+
+#libraryView .library-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Keep books comfortably sized */
+#libraryView .library-panel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding: 0 6%;
+}
+
+/* Book itself */
+#libraryView .book-card {
+  position: relative;
+  width: 100%;
+  max-width: 240px;
+  margin: 0 auto;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+/* Actual cover */
+#libraryView .book-cover {
+  width: 100%;
+  aspect-ratio: 0.72;
+  border-radius: 7px 10px 10px 7px;
+}
+
+/* Put title around 1/3 from the top */
+#libraryView .book-cover-overlay {
+  justify-content: flex-start;
+  padding: 30% 10px 10px;
+}
+
+/* Larger progress bar */
+#libraryView .book-progress-track {
+  height: 8px;
+}
+
+/* Keep progress near bottom */
+#libraryView .book-progress {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+}
+
+/* Delete button */
+#libraryView .book-delete-button {
+  top: 8px;
+  right: 8px;
+}
+
+/* Move library title beside lamp */
+.app-title {
+  width: auto;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.app-title h1 {
+  font-family: "Old English Text MT", "UnifrakturCook",
+    "UnifrakturMaguntia", Georgia, serif;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.app-title p {
+  display: none;
+}
+
+/* Header positioning */
+.header {
+  justify-content: flex-start;
+  padding-left: 82px;
+}
+
+/* Buttons belong at top-right */
+#libraryView .library-actions {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+}
+
+/* Larger screens can fit 3 books */
+@media (min-width: 760px) {
+  #libraryView .library-panel {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  #libraryView .library-panel {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Phone */
+@media (max-width: 640px) {
+
+  #libraryView {
+    padding: 10px 10px 22px;
+  }
+
+  .header {
+    padding-left: 76px;
+    min-height: 58px;
+  }
+
+  .app-title h1 {
+    font-size: 25px;
+  }
+
+  #libraryView .library-actions {
+    top: 10px;
+    right: 10px;
+  }
+
+  #libraryView .library-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    padding: 0 4%;
+  }
+
+  #libraryView .book-card {
+    max-width: 190px;
+  }
+
+  #libraryView .book-cover-overlay {
+    padding: 30% 8px 8px;
+  }
+
+  #libraryView .book-title {
+    font-size: 13px;
+  }
+
+  #libraryView .book-progress {
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+  }
+
+  #libraryView .book-progress-track {
+    height: 7px;
+  }
+}
