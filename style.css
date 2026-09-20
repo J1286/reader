@@ -2850,8 +2850,9 @@ body.reader-fullscreen .reader-content {
 }
 
 .library-panel {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 170px));
+  justify-content: center;
+  gap: 18px;
 }
 
 .book-card {
@@ -3110,6 +3111,7 @@ body.reader-fullscreen .reader-content {
     min-height: calc(100vh - 76px);
     padding: 10px 10px 22px;
     border-radius: 12px;
+    background-size: 100% 100%;
     background-position: center top;
   }
 }
@@ -3283,6 +3285,7 @@ body.reader-fullscreen .reader-content {
 @media (min-width: 760px) {
   #libraryView .library-panel {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+   justify-content: center;
   }
 }
 
@@ -3305,7 +3308,7 @@ body.reader-fullscreen .reader-content {
   }
 
   .app-title h1 {
-    font-size: 25px;
+    font-size: 28px;
   }
 
   #libraryView .library-actions {
@@ -3313,10 +3316,12 @@ body.reader-fullscreen .reader-content {
     right: 10px;
   }
 
-  #libraryView .library-panel {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    padding: 0 4%;
+  #libraryView 
+   .library-panel {
+    grid-template-columns: repeat(2, minmax(0, 160px));
+    justify-content: center;
+    gap: 14px;
+    padding: 0 10px;
   }
 
   #libraryView .book-card {
@@ -3332,12 +3337,12 @@ body.reader-fullscreen .reader-content {
   }
 
   #libraryView .book-progress {
-    left: 8px;
-    right: 8px;
-    bottom: 8px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
   }
 
   #libraryView .book-progress-track {
-    height: 7px;
+    height: 9px;
   }
 }
