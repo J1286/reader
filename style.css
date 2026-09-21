@@ -152,55 +152,44 @@ button.secondary:hover {
 .header {
   display: flex;
   align-items: center;
-  gap: 14px;
+  justify-content: space-between;
+  gap: 20px;
 
   min-height: 64px;
   margin-bottom: 12px;
-  padding: 8px 12px;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
-.menu-button {
-  flex: 0 0 auto;
+.app-mode {
+  display: flex;
+  gap: 6px;
+}
+
+.mode-button {
+  padding: 8px 14px;
 }
 
 .app-title {
-  flex: 1 1 auto;
-  min-width: 0;
-
-  width: auto;
-  margin: 0;
-  padding: 0;
-
-  text-align: left;
+  width: 100%;
+  padding: 0 60px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .app-title h1 {
   margin: 0;
 
-  font-size: 24px;
-  font-weight: 600;
-  line-height: 1.1;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.app-title h1.library-title {
-  font-family:
-    "Old English Text MT",
-    "Lucida Blackletter",
-    "UnifrakturCook",
-    "UnifrakturMaguntia",
-    serif;
-
-  font-size: 29px;
-  letter-spacing: 0.01em;
+  font-size: 20px;
+  font-weight: 650;
+  line-height: 1.2;
 }
 
 .app-title p {
   margin: 3px 0 0;
+
   color: var(--muted-color);
+
   font-size: 12px;
 }
 
@@ -768,6 +757,171 @@ input[type="range"] {
 
   color: var(--accent);
   font-size: 13px;
+}
+
+/* =========================================================
+   LIBRARY
+========================================================= */
+
+.library-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.library-panel {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+
+  gap: 14px;
+}
+
+.library-empty {
+  grid-column: 1 / -1;
+  padding: 35px 20px;
+
+  background: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+
+  color: var(--muted-color);
+  text-align: center;
+}
+
+.book-card {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 20px;
+
+  background: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-3px);
+
+  border-color: var(--accent);
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.book-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 54px;
+  height: 68px;
+
+  margin-bottom: 14px;
+
+  background: var(--accent);
+  color: #ffffff;
+
+  border-radius: 4px 7px 7px 4px;
+
+  box-shadow: inset 5px 0 0 rgba(0, 0, 0, 0.12), 0 4px 10px rgba(0, 0, 0, 0.12);
+
+  font-size: 26px;
+}
+
+.book-title {
+  overflow: hidden;
+
+  color: var(--text-color);
+
+  font-family: Georgia, "Noto Serif CJK TC", "Noto Serif CJK SC",
+    "Times New Roman", serif;
+
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.4;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.book-meta {
+  margin-top: 5px;
+
+  color: var(--muted-color);
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.book-progress {
+  margin-top: 14px;
+}
+
+.book-progress-track {
+  width: 100%;
+  height: 5px;
+
+  background: var(--border-color);
+
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.book-progress-bar {
+  width: 0%;
+  height: 100%;
+
+  background: var(--accent);
+
+  border-radius: inherit;
+
+  transition: width 0.2s ease;
+}
+
+.book-progress-text,
+.book-progress-label {
+  margin-top: 5px;
+
+  color: var(--muted-color);
+
+  font-size: 11px;
+  font-weight: 600;
+  text-align: right;
+}
+
+.book-card-actions {
+  display: flex;
+  gap: 6px;
+
+  margin-top: 12px;
+}
+
+.book-card-actions button {
+  padding: 6px 9px;
+  font-size: 12px;
+}
+
+.book-type {
+  display: inline-block;
+
+  margin-top: 8px;
+  padding: 3px 7px;
+
+  border-radius: 4px;
+
+  background: var(--button-hover);
+  color: var(--muted-color);
+
+  font-size: 11px;
+  text-transform: uppercase;
 }
 
 /* =========================================================
@@ -2666,24 +2820,18 @@ body.reader-fullscreen .reader-content {
 }
 
 /* =========================================================
-   LIBRARY
+   LIBRARY REDESIGN
 ========================================================= */
 
 .library-actions {
-  display: flex;
   align-items: center;
   gap: 7px;
-
-  flex: 0 0 auto;
-  margin-left: auto;
 }
 
 .library-add-button {
   min-height: 40px;
   padding: 7px 12px;
-
   border-radius: 9px;
-
   font-size: 13px;
   font-weight: 650;
 }
@@ -2692,11 +2840,8 @@ body.reader-fullscreen .reader-content {
   width: 40px;
   height: 40px;
   min-height: 40px;
-
   padding: 0;
-
   border-radius: 50%;
-
   font-size: 22px;
   line-height: 1;
 }
@@ -2705,30 +2850,340 @@ body.reader-fullscreen .reader-content {
   display: none !important;
 }
 
-.library-empty {
-  grid-column: 1 / -1;
-
-  padding: 35px 20px;
-
-  background: var(--panel-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-
-  color: var(--muted-color);
-  text-align: center;
+.library-panel {
+  grid-template-columns: repeat(2, minmax(0, 170px));
+  justify-content: center;
+  gap: 18px;
 }
 
+.book-card {
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.book-card:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.book-cover {
+  --cover-hue: 215;
+  position: relative;
+  aspect-ratio: 0.72;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 7px 9px 9px 7px;
+  background:
+    radial-gradient(circle at 70% 25%, hsla(var(--cover-hue), 80%, 78%, 0.32), transparent 28%),
+    linear-gradient(150deg, hsl(var(--cover-hue), 48%, 36%), hsl(calc(var(--cover-hue) + 35), 42%, 13%));
+  box-shadow: inset 6px 0 0 rgba(255, 255, 255, 0.12),
+    0 5px 14px rgba(0, 0, 0, 0.18);
+  background-size: cover;
+  background-position: center;
+}
+
+.book-cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.02) 35%, rgba(0, 0, 0, 0.7) 100%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 5px);
+  pointer-events: none;
+}
+
+.book-cover.has-cover-image::before {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.02) 30%, rgba(0, 0, 0, 0.72) 100%);
+}
+
+.book-cover-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 13px 12px 11px;
+  color: #fff;
+}
+
+.book-title {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0 0 10px;
+  color: #fff;
+  font-family: Georgia, "Noto Serif CJK TC", "Noto Serif CJK SC", "Times New Roman", serif;
+  font-size: clamp(15px, 2.2vw, 19px);
+  font-weight: 650;
+  line-height: 1.22;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.book-progress {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+}
+
+.book-progress-track {
+  flex: 1;
+  width: auto;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.32);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.book-progress-bar {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.book-progress-text {
+  flex: 0 0 auto;
+  margin: 0;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  text-align: right;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+}
+
+.book-delete-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 3;
+  width: 30px;
+  height: 30px;
+  min-height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.38);
+  color: #fff;
+  font-size: 22px;
+  line-height: 1;
+  backdrop-filter: blur(3px);
+}
+
+.book-delete-button:hover {
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.menu-lamp {
+  width: 31px;
+  height: 31px;
+  overflow: visible;
+}
+
+.menu-button .lamp-arm,
+.menu-button .lamp-neck {
+  fill: currentColor;
+  opacity: 0.8;
+}
+
+.menu-button .lamp-shade {
+  fill: currentColor;
+}
+
+.menu-button .lamp-glow {
+  fill: currentColor;
+  opacity: 0.18;
+}
+
+.menu-button .lamp-bulb {
+  fill: currentColor;
+  filter: drop-shadow(0 0 5px currentColor);
+}
+
+@media (max-width: 700px) {
+  .header {
+    min-height: 58px;
+    flex-direction: row;
+    align-items: center;
+    padding: 9px var(--mobile-padding);
+  }
+
+  .app-title {
+    padding: 0 52px;
+  }
+
+  .library-actions {
+    width: auto;
+    flex: 0 0 auto;
+  }
+
+  .library-add-button {
+    min-height: 38px;
+    padding: 6px 10px;
+  }
+
+  .library-sync-button {
+    width: 38px;
+    height: 38px;
+    min-height: 38px;
+  }
+
+  .library-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    padding: 0 var(--mobile-padding);
+  }
+
+  .book-cover-overlay {
+    padding: 11px 9px 9px;
+  }
+
+  .book-title {
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  .book-progress {
+    gap: 5px;
+  }
+
+  .book-progress-text {
+    font-size: 10px;
+  }
+
+  .book-delete-button {
+    top: 6px;
+    right: 6px;
+    width: 28px;
+    height: 28px;
+    min-height: 28px;
+    font-size: 20px;
+  }
+}
 
 /* =========================================================
-   LIBRARY BOOKSHELF
+   LIBRARY BOOKSHELF BACKGROUND
 ========================================================= */
 
 #libraryView {
   position: relative;
-
   min-height: calc(100vh - 94px);
   padding: 18px 18px 28px;
+  border-radius: 16px;
+  overflow: hidden;
+  background-image:
+    linear-gradient(rgba(18, 10, 5, 0.20), rgba(18, 10, 5, 0.34)),
+    url("./assets/bookshelf-bg.png");
+  background-size: cover;
+  background-position: center top;
+  background-attachment: scroll;
+}
 
+#libraryView #librarySection {
+  position: relative;
+  z-index: 1;
+}
+
+#libraryView .section-title-row {
+  color: #fff8ed;
+}
+
+#libraryView .section-title-row h2 {
+  text-shadow: 0 2px 7px rgba(0, 0, 0, 0.55);
+}
+
+#libraryView .library-panel {
+  padding-top: 8px;
+}
+
+@media (max-width: 640px) {
+  #libraryView {
+    min-height: calc(100vh - 76px);
+    padding: 10px 10px 22px;
+    border-radius: 12px;
+    background-size: 100% 100%;
+    background-position: center top;
+  }
+}
+
+
+/* =========================================================
+   LIBRARY HEADER TITLE
+========================================================= */
+
+.header {
+  justify-content: flex-start;
+}
+
+.app-title {
+  width: auto;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+  text-align: left;
+}
+
+.app-title h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.app-title h1.library-title {
+  font-family: "Old English Text MT", "Lucida Blackletter", "UnifrakturCook", "UnifrakturMaguntia", serif;
+  font-size: 29px;
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 700px) {
+  .header {
+    min-height: 58px;
+    flex-direction: row;
+    align-items: center;
+    padding: 9px var(--mobile-padding);
+    gap: 12px;
+  }
+
+  .app-title {
+    flex: 0 1 auto;
+    padding: 0;
+  }
+
+  .app-title h1 {
+    font-size: 21px;
+  }
+
+  .app-title h1.library-title {
+    font-size: 25px;
+  }
+}
+
+@media (max-width: 380px) {
+  .app-title h1.library-title {
+    font-size: 22px;
+  }
+}
+
+/* =========================================================
+   LIBRARY BOOKSHELF
+========================================================= *
+
+#libraryView {
+  position: relative;
+  min-height: calc(100vh - 94px);
+  padding: 18px 18px 28px;
   border-radius: 16px;
   overflow: hidden;
 
@@ -2739,6 +3194,7 @@ body.reader-fullscreen .reader-content {
     ),
     url("./assets/bookshelf-bg.png");
 
+  /* Keep the shelf proportions consistent */
   background-size: 100% auto;
   background-repeat: no-repeat;
   background-position: center top;
@@ -2749,6 +3205,7 @@ body.reader-fullscreen .reader-content {
   z-index: 1;
 }
 
+/* BOOK GRID */
 #libraryView .library-panel {
   display: grid;
 
@@ -2764,11 +3221,7 @@ body.reader-fullscreen .reader-content {
   padding: 115px 40px 40px;
 }
 
-
-/* =========================================================
-   BOOK CARD
-========================================================= */
-
+/* BOOK */
 #libraryView .book-card {
   position: relative;
 
@@ -2780,187 +3233,72 @@ body.reader-fullscreen .reader-content {
 
   background: transparent;
   border: 0;
-  border-radius: 10px;
   box-shadow: none;
 
   cursor: pointer;
 }
 
-#libraryView .book-card:hover {
-  transform: translateY(-2px);
-
-  border-color: transparent;
-  box-shadow: none;
-}
-
-#libraryView .book-card:focus-visible {
-  outline: 3px solid var(--accent);
-  outline-offset: 3px;
-}
-
-
-/* =========================================================
-   BOOK COVER
-========================================================= */
-
+/* Actual cover */
 #libraryView .book-cover {
-  --cover-hue: 215;
-
   position: relative;
-
   width: 100%;
   aspect-ratio: 0.72;
-
-  overflow: hidden;
-
   border-radius: 6px 9px 9px 6px;
-
-  background-size: cover;
-  background-position: center;
-
-  box-shadow:
-    inset 6px 0 0 rgba(255, 255, 255, 0.12),
-    0 5px 14px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
 }
 
 #libraryView .book-cover-overlay {
   position: absolute;
   inset: 0;
-  z-index: 1;
 
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 
   padding: 32% 9px 12px;
-
-  color: #fff;
 }
 
-
-/* =========================================================
-   BOOK TITLE
-========================================================= */
-
-#libraryView .book-title {
-  display: -webkit-box;
-
-  margin: 0;
-
-  overflow: hidden;
-
-  color: #fff;
-
-  font-family:
-    Georgia,
-    "Noto Serif CJK TC",
-    "Noto Serif CJK SC",
-    "Times New Roman",
-    serif;
-
-  font-size: 15px;
-  font-weight: 650;
-  line-height: 1.22;
-
-  text-align: center;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
-
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-}
-
-
-/* =========================================================
-   BOOK PROGRESS
-========================================================= */
-
+/* Progress */
 #libraryView .book-progress {
   position: absolute;
 
   left: 9px;
   right: 9px;
   bottom: 10px;
-
-  display: flex;
-  align-items: center;
-  gap: 7px;
 }
 
 #libraryView .book-progress-track {
-  flex: 1;
-
-  width: auto;
   height: 9px;
-
-  background: rgba(255, 255, 255, 0.32);
-
   border-radius: 999px;
   overflow: hidden;
 }
 
 #libraryView .book-progress-bar {
   height: 100%;
-
-  background: rgba(255, 255, 255, 0.9);
-
   border-radius: inherit;
-
-  transition: width 0.2s ease;
 }
 
 #libraryView .book-progress-text {
-  flex: 0 0 auto;
-
-  margin: 0;
-
-  color: #fff;
-
+  margin-top: 4px;
   font-size: 12px;
-  font-weight: 700;
   line-height: 1;
-
-  text-align: right;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
 }
 
-
-/* =========================================================
-   DELETE BOOK
-========================================================= */
-
+/* Delete button */
 #libraryView .book-delete-button {
-  position: absolute;
   top: 6px;
   right: 6px;
-  z-index: 3;
 
   width: 27px;
   height: 27px;
   min-height: 27px;
 
-  padding: 0;
-
-  border: 0;
-  border-radius: 50%;
-
-  background: rgba(0, 0, 0, 0.38);
-  color: #fff;
-
   font-size: 19px;
-  line-height: 1;
-
-  backdrop-filter: blur(3px);
 }
 
-#libraryView .book-delete-button:hover {
-  background: rgba(0, 0, 0, 0.65);
-}
-
-/* =========================================================
-   LIBRARY RESPONSIVE
-========================================================= */
-
+/* DESKTOP */
 @media (min-width: 760px) {
+
   #libraryView .library-panel {
     grid-template-columns:
       repeat(4, minmax(125px, 145px));
@@ -2970,7 +3308,9 @@ body.reader-fullscreen .reader-content {
   }
 }
 
+/* LARGE DESKTOP */
 @media (min-width: 1100px) {
+
   #libraryView .library-panel {
     grid-template-columns:
       repeat(5, minmax(125px, 145px));
@@ -2979,15 +3319,11 @@ body.reader-fullscreen .reader-content {
   }
 }
 
-@media (max-width: 700px) {
+/* PHONE */
+@media (max-width: 640px) {
+
   #libraryView {
-    min-height: calc(100vh - 76px);
     padding: 10px 10px 22px;
-
-    border-radius: 12px;
-
-    background-size: 100% auto;
-    background-position: center top;
   }
 
   #libraryView .library-panel {
@@ -3010,24 +3346,24 @@ body.reader-fullscreen .reader-content {
     padding: 28% 8px 8px;
   }
 
-  #libraryView .book-title {
-    font-size: 14px;
-  }
+  
+#libraryView .book-title {
+  position: relative;
+  margin: 0;
+
+  font-size: 14px;
+  line-height: 1.2;
+  text-align: center;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
   #libraryView .book-progress {
     left: 8px;
     right: 8px;
     bottom: 8px;
-  }
-
-  #libraryView .book-delete-button {
-    top: 6px;
-    right: 6px;
-
-    width: 28px;
-    height: 28px;
-    min-height: 28px;
-
-    font-size: 20px;
   }
 }
