@@ -35,16 +35,39 @@
 
       <button id="menuButton" class="menu-button" type="button" aria-label="Open menu" aria-expanded="false" title="Open menu">
         <svg class="menu-lamp" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-          <path d="M20 12h24v5H20z" class="lamp-arm"/>
-          <path d="M25 16h14l3 8H22z" class="lamp-shade"/>
-          <path d="M27 24h10v5H27z" class="lamp-neck"/>
-          <path d="M22 29h20l-4 18H26z" class="lamp-glow"/>
-          <circle cx="32" cy="32" r="5" class="lamp-bulb"/>
+          <path d="M20 12h24v5H20z" class="lamp-arm" />
+          <path d="M25 16h14l3 8H22z" class="lamp-shade" />
+          <path d="M27 24h10v5H27z" class="lamp-neck" />
+          <path d="M22 29h20l-4 18H26z" class="lamp-glow" />
+          <circle cx="32" cy="32" r="5" class="lamp-bulb" />
         </svg>
       </button>
 
       <div class="app-title">
-        <h2 id="appTitle" aria-label="My Library">𝔐𝔶 𝔏𝔦𝔟𝔯𝔞𝔯𝔶</h2>
+        <h3 id="appTitle" aria-label="My Library">𝔐𝔶 𝔏𝔦𝔟𝔯𝔞𝔯𝔶</h3>
+      </div>
+
+      <!-- LIBRARY ACTIONS -->
+      <div class="library-actions">
+
+        <button id="addBookButton" class="library-add-button" type="button">
+          + Books
+        </button>
+
+        <button id="refreshLibraryButton" class="library-sync-button secondary" type="button" aria-label="Sync library" title="Sync library">
+          ⟳
+        </button>
+
+        <button id="backupLibraryButton" class="library-hidden-action" type="button">
+          Backup
+        </button>
+
+        <button id="restoreLibraryButton" class="library-hidden-action" type="button">
+          Restore
+        </button>
+
+        <input id="restoreLibraryInput" type="file" accept=".json,application/json" hidden>
+
       </div>
 
     </header>
@@ -108,29 +131,10 @@
 
       <section id="librarySection">
 
-      <div class="section-title-row">
+        <div id="libraryPanel" class="library-panel"></div>
 
-      <div class="library-actions">
-
-            <button id="addBookButton" class="library-add-button" type="button">
-              + Books
-            </button>
-
-            <button id="refreshLibraryButton" class="library-sync-button secondary" type="button" aria-label="Sync library" title="Sync library">
-              ⟳
-            </button>
-
-            <button id="backupLibraryButton" class="library-hidden-action" type="button">Backup</button>
-            <button id="restoreLibraryButton" class="library-hidden-action" type="button">Restore</button>
-
-            <input id="restoreLibraryInput" type="file" accept=".json,application/json" hidden>
-          </div>
-
-        </div>
-
-        <div id="libraryPanel" class="library-panel">
-        </div>
       </section>
+
     </div>
 
     <!-- READER VIEW -->
@@ -225,22 +229,18 @@
 
       <div class="reader-chapter-nav">
 
-      <button id="readerPreviousChapter" class="secondary" type="button">
-        ← Previous
-      </button>
+        <button id="readerPreviousChapter" class="secondary" type="button">
+          ← Previous
+        </button>
 
-    <select
-      id="readerChapterSelect"
-      class="reader-chapter-select"
-      aria-label="Select chapter"
-    >
-      <option value="">No Chapters</option>
-    </select>
+        <select id="readerChapterSelect" class="reader-chapter-select" aria-label="Select chapter">
+          <option value="">No Chapters</option>
+        </select>
 
-    <button id="readerNextChapter" class="secondary" type="button">
-      Next →
-    </button>
-  </div>
+        <button id="readerNextChapter" class="secondary" type="button">
+          Next →
+        </button>
+      </div>
 
       <section class="reader-container">
 
