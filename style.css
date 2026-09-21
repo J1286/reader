@@ -765,7 +765,9 @@ input[type="range"] {
 
 .library-actions {
   display: flex;
+  align-items: center;
   gap: 8px;
+  margin-left: auto;
 }
 
 .library-panel {
@@ -778,7 +780,6 @@ input[type="range"] {
 
 .library-empty {
   grid-column: 1 / -1;
-
   padding: 35px 20px;
 
   background: var(--panel-bg);
@@ -1769,7 +1770,7 @@ body.reader-fullscreen .reader-content {
 
   .library-actions button {
     flex: 1;
-    min-height: 44px;
+    min-height: 45px;
   }
 
   .library-panel {
@@ -3129,6 +3130,7 @@ body.reader-fullscreen .reader-content {
   width: auto;
   padding: 0;
   margin: 0;
+  flex: 1;
   text-align: left;
 }
 
