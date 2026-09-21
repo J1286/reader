@@ -3177,161 +3177,154 @@ body.reader-fullscreen .reader-content {
 }
 
 /* =========================================================
-   LIBRARY FINAL LAYOUT
-========================================================= */
+   LIBRARY BOOKSHELF
+========================================================= *
 
 #libraryView {
+  position: relative;
+  min-height: calc(100vh - 94px);
   padding: 18px 18px 28px;
+  border-radius: 16px;
+  overflow: hidden;
+
+  background-image:
+    linear-gradient(
+      rgba(18, 10, 5, 0.20),
+      rgba(18, 10, 5, 0.34)
+    ),
+    url("./assets/bookshelf-bg.png");
+
+  /* Keep the shelf proportions consistent */
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: center top;
 }
 
-#libraryView .section-title-row {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  min-height: 48px;
-  margin-bottom: 12px;
+#libraryView #librarySection {
+  position: relative;
+  z-index: 1;
 }
 
-#libraryView .library-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* Keep books comfortably sized */
+/* BOOK GRID */
 #libraryView .library-panel {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  padding: 0 6%;
+
+  grid-template-columns:
+    repeat(auto-fill, minmax(125px, 150px));
+
+  justify-content: center;
+  align-items: end;
+
+  column-gap: 42px;
+  row-gap: 70px;
+
+  padding: 115px 40px 40px;
 }
 
-/* Book itself */
+/* BOOK */
 #libraryView .book-card {
   position: relative;
+
   width: 100%;
-  max-width: 240px;
+  max-width: 145px;
+
   margin: 0 auto;
   padding: 0;
+
   background: transparent;
   border: 0;
   box-shadow: none;
+
+  cursor: pointer;
 }
 
 /* Actual cover */
 #libraryView .book-cover {
   width: 100%;
   aspect-ratio: 0.72;
-  border-radius: 7px 10px 10px 7px;
+
+  border-radius: 6px 9px 9px 6px;
 }
 
-/* Put title around 1/3 from the top */
+/* Keep the book visually compact */
+
 #libraryView .book-cover-overlay {
-  justify-content: flex-start;
-  padding: 30% 10px 10px;
+  padding: 28% 9px 9px;
 }
 
-/* Larger progress bar */
-#libraryView .book-progress-track {
-  height: 8px;
-}
-
-/* Keep progress near bottom */
+/* Progress */
 #libraryView .book-progress {
   position: absolute;
+
   left: 10px;
   right: 10px;
   bottom: 10px;
 }
 
+#libraryView .book-progress-track {
+  height: 7px;
+}
+
 /* Delete button */
 #libraryView .book-delete-button {
-  top: 8px;
-  right: 8px;
+  top: 6px;
+  right: 6px;
+
+  width: 27px;
+  height: 27px;
+  min-height: 27px;
+
+  font-size: 19px;
 }
 
-/* Move library title beside lamp */
-.app-title {
-  width: auto;
-  padding: 0;
-  margin: 0;
-  text-align: left;
-}
-
-.app-title h1 {
-  font-family: "Old English Text MT", "UnifrakturCook",
-    "UnifrakturMaguntia", Georgia, serif;
-  font-size: 28px;
-  font-weight: 600;
-  line-height: 1;
-}
-
-.app-title p {
-  display: none;
-}
-
-/* Header positioning */
-.header {
-  justify-content: flex-start;
-  padding-left: 82px;
-}
-
-/* Buttons belong at top-right */
-#libraryView .library-actions {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-}
-
-/* Larger screens can fit 3 books */
+/* DESKTOP */
 @media (min-width: 760px) {
+
   #libraryView .library-panel {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-   justify-content: center;
+    grid-template-columns:
+      repeat(4, minmax(125px, 145px));
+
+    column-gap: 55px;
+    row-gap: 85px;
   }
 }
 
+/* LARGE DESKTOP */
 @media (min-width: 1100px) {
+
   #libraryView .library-panel {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns:
+      repeat(5, minmax(125px, 145px));
+
+    column-gap: 65px;
   }
 }
 
-/* Phone */
+/* PHONE */
 @media (max-width: 640px) {
 
   #libraryView {
     padding: 10px 10px 22px;
   }
 
-  .header {
-    padding-left: 76px;
-    min-height: 58px;
-  }
+  #libraryView .library-panel {
+    grid-template-columns:
+      repeat(2, minmax(0, 135px));
 
-  .app-title h1 {
-    font-size: 28px;
-  }
-
-  #libraryView .library-actions {
-    top: 10px;
-    right: 10px;
-  }
-
-  #libraryView 
-   .library-panel {
-    grid-template-columns: repeat(2, minmax(0, 160px));
     justify-content: center;
-    gap: 14px;
-    padding: 0 10px;
+
+    column-gap: 24px;
+    row-gap: 55px;
+
+    padding: 90px 10px 30px;
   }
 
   #libraryView .book-card {
-    max-width: 190px;
+    max-width: 135px;
   }
 
   #libraryView .book-cover-overlay {
-    padding: 30% 8px 8px;
+    padding: 28% 8px 8px;
   }
 
   #libraryView .book-title {
@@ -3339,12 +3332,8 @@ body.reader-fullscreen .reader-content {
   }
 
   #libraryView .book-progress {
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
-  }
-
-  #libraryView .book-progress-track {
-    height: 9px;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
   }
 }
