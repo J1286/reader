@@ -3240,29 +3240,48 @@ body.reader-fullscreen .reader-content {
 
 /* Actual cover */
 #libraryView .book-cover {
+  position: relative;
   width: 100%;
   aspect-ratio: 0.72;
-
   border-radius: 6px 9px 9px 6px;
+  overflow: hidden;
 }
 
-/* Keep the book visually compact */
-
 #libraryView .book-cover-overlay {
-  padding: 28% 9px 9px;
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  padding: 32% 9px 12px;
 }
 
 /* Progress */
 #libraryView .book-progress {
   position: absolute;
 
-  left: 10px;
-  right: 10px;
+  left: 9px;
+  right: 9px;
   bottom: 10px;
 }
 
 #libraryView .book-progress-track {
-  height: 7px;
+  height: 9px;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+#libraryView .book-progress-bar {
+  height: 100%;
+  border-radius: inherit;
+}
+
+#libraryView .book-progress-text {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1;
 }
 
 /* Delete button */
@@ -3327,9 +3346,20 @@ body.reader-fullscreen .reader-content {
     padding: 28% 8px 8px;
   }
 
-  #libraryView .book-title {
-    font-size: 13px;
-  }
+  
+#libraryView .book-title {
+  position: relative;
+  margin: 0;
+
+  font-size: 14px;
+  line-height: 1.2;
+  text-align: center;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
   #libraryView .book-progress {
     left: 8px;
