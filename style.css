@@ -2781,7 +2781,7 @@ body.reader-fullscreen .reader-content {
   background-image:
     linear-gradient(rgba(18, 10, 5, 0.20), rgba(18, 10, 5, 0.34)),
     url("./assets/bookshelf-bg.png");
-  background-size: 100% 100%;
+  background-size: 100% auto;
   background-repeat: no-repeat;
   background-position: center top;
 }
@@ -2867,15 +2867,21 @@ body.reader-fullscreen .reader-content {
   }
 
   #libraryView .library-panel {
-    grid-template-columns: repeat(2, minmax(0, 135px));
+    grid-template-columns: repeat(2, minmax(0, 95px));
     justify-content: center;
-    column-gap: 24px;
-    row-gap: 55px;
-    padding: 20px 10px 30px;
+    column-gap: 16px;
+    row-gap: 0;
+    padding: 90px 10px 30px;
   }
 
   #libraryView .book-card {
-    max-width: 135px;
+    width: 95px;
+    max-width: 95px;
+  }
+
+  #libraryView .book-cover {
+    width: 95px;
+    aspect-ratio: 0.72;
   }
 
   #libraryView .book-cover-overlay {
