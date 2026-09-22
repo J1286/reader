@@ -2742,33 +2742,79 @@ body.reader-fullscreen .reader-content {
   filter: drop-shadow(0 0 5px currentColor);
 }
 
-/* Library header title */
-.header {
+/* =========================================================
+   LIBRARY HEADER
+========================================================= */
+
+body:has(#libraryView:not(.hidden)) .header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
   justify-content: flex-start;
+  min-height: 52px;
+  margin-bottom: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+
+  background: var(--page-bg);
 }
 
-.app-title {
+/* Keep the title beside the lamp */
+body:has(#libraryView:not(.hidden)) .app-title {
   width: auto;
+  flex: 1;
   padding: 0;
   margin: 0;
-  flex: 1;
   text-align: left;
 }
 
-.app-title h1 {
+/* Library title */
+body:has(#libraryView:not(.hidden)) #appTitle {
   margin: 0;
-  font-size: 24px;
-  font-weight: 600;
-  line-height: 1;
-}
 
-.app-title h1.library-title {
-  margin: 0;
-  font-family: "Old English Text MT", "Lucida Blackletter", "UnifrakturCook", "UnifrakturMaguntia", serif;
+  font-family:
+    "Old English Text MT",
+    "Lucida Blackletter",
+    "UnifrakturCook",
+    "UnifrakturMaguntia",
+    serif;
+
   font-size: 29px;
   font-weight: 600;
   line-height: 1;
   letter-spacing: 0.01em;
+}
+
+/* Phone */
+@media (max-width: 700px) {
+  body:has(#libraryView:not(.hidden)) .header {
+    min-height: 50px;
+    padding: 5px 10px;
+    gap: 8px;
+  }
+
+  body:has(#libraryView:not(.hidden)) #appTitle {
+    font-size: 27px;
+  }
+
+  body:has(#libraryView:not(.hidden)) .library-add-button {
+    min-height: 36px;
+    padding: 5px 9px;
+  }
+
+  body:has(#libraryView:not(.hidden)) .library-sync-button {
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+  body:has(#libraryView:not(.hidden)) #appTitle {
+    font-size: 24px;
+  }
 }
 
 /* Bookshelf background */
