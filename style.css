@@ -3335,7 +3335,7 @@ body.reader-fullscreen .reader-content {
     column-gap: 24px;
     row-gap: 55px;
 
-    padding: 90px 10px 30px;
+    padding: 20px 10px 30px;
   }
 
   #libraryView .book-card {
@@ -3365,5 +3365,26 @@ body.reader-fullscreen .reader-content {
     left: 8px;
     right: 8px;
     bottom: 8px;
+  }
+}
+
+/* FINAL LIBRARY BACKGROUND FIX */
+
+#libraryView {
+  background-image:
+    linear-gradient(
+      rgba(18, 10, 5, 0.20),
+      rgba(18, 10, 5, 0.34)
+    ),
+    url("./assets/bookshelf-bg.png");
+
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center top;
+}
+
+@media (max-width: 640px) {
+  #libraryView {
+    background-size: 100% 100%;
   }
 }
