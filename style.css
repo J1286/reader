@@ -2867,21 +2867,15 @@ body.reader-fullscreen .reader-content {
   }
 
   #libraryView .library-panel {
-    grid-template-columns: repeat(2, minmax(0, 100px));
+    grid-template-columns: repeat(2, minmax(0, 135px));
     justify-content: center;
-    column-gap: 18px;
-    row-gap: 6px;
-    padding: 95px 10px 30px;
+    column-gap: 24px;
+    row-gap: 55px;
+    padding: 20px 10px 30px;
   }
 
   #libraryView .book-card {
-    width: 100px;
-    max-width: 100px;
-  }
-
-  #libraryView .book-cover {
-    width: 95px;
-    aspect-ratio: 0.72;
+    max-width: 135px;
   }
 
   #libraryView .book-cover-overlay {
@@ -2896,9 +2890,9 @@ body.reader-fullscreen .reader-content {
   }
 
   #libraryView .book-progress {
-    left: 9px;
-    right: 9px;
-    bottom: 9px;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
   }
 
   #libraryView .book-progress-track {
