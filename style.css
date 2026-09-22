@@ -2767,6 +2767,7 @@ body:has(#libraryView:not(.hidden)) .app-title {
   padding: 0;
   margin: 0;
   text-align: left;
+  margin-left: 12px;
 }
 
 /* Library title */
@@ -2792,6 +2793,7 @@ body:has(#libraryView:not(.hidden)) #appTitle {
     min-height: 50px;
     padding: 5px 10px;
     gap: 8px;
+    margin-left: 10px;
   }
 
   body:has(#libraryView:not(.hidden)) #appTitle {
