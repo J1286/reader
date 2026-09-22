@@ -2781,7 +2781,7 @@ body.reader-fullscreen .reader-content {
   background-image:
     linear-gradient(rgba(18, 10, 5, 0.20), rgba(18, 10, 5, 0.34)),
     url("./assets/bookshelf-bg.png");
-  background-size: 100% auto;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center top;
 }
@@ -2867,16 +2867,16 @@ body.reader-fullscreen .reader-content {
   }
 
   #libraryView .library-panel {
-    grid-template-columns: repeat(2, minmax(0, 95px));
+    grid-template-columns: repeat(2, minmax(0, 100px));
     justify-content: center;
-    column-gap: 16px;
-    row-gap: 0;
-    padding: 90px 10px 30px;
+    column-gap: 18px;
+    row-gap: 6px;
+    padding: 95px 10px 30px;
   }
 
   #libraryView .book-card {
-    width: 95px;
-    max-width: 95px;
+    width: 100px;
+    max-width: 100px;
   }
 
   #libraryView .book-cover {
@@ -2896,9 +2896,9 @@ body.reader-fullscreen .reader-content {
   }
 
   #libraryView .book-progress {
-    left: 8px;
-    right: 8px;
-    bottom: 8px;
+    left: 9px;
+    right: 9px;
+    bottom: 9px;
   }
 
   #libraryView .book-progress-track {
