@@ -2762,11 +2762,6 @@ body:has(#libraryView:not(.hidden)) .header {
 
 /* Keep the title beside the lamp */
 body:has(#libraryView:not(.hidden)) .app-title {
-  width: auto;
-  flex: 1;
-  padding: 0;
-  margin: 0;
-  text-align: left;
   margin-left: 12px;
 }
 
