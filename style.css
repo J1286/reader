@@ -760,171 +760,6 @@ input[type="range"] {
 }
 
 /* =========================================================
-   LIBRARY
-========================================================= */
-
-.library-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-left: auto;
-}
-
-.library-panel {
-  display: grid;
-
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-
-  gap: 14px;
-}
-
-.library-empty {
-  grid-column: 1 / -1;
-  padding: 35px 20px;
-
-  background: var(--panel-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-
-  color: var(--muted-color);
-  text-align: center;
-}
-
-.book-card {
-  position: relative;
-
-  display: flex;
-  flex-direction: column;
-
-  padding: 20px;
-
-  background: var(--panel-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-
-  cursor: pointer;
-
-  transition: transform 0.15s ease, box-shadow 0.15s ease,
-    border-color 0.15s ease;
-}
-
-.book-card:hover {
-  transform: translateY(-3px);
-
-  border-color: var(--accent);
-
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-}
-
-.book-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 54px;
-  height: 68px;
-
-  margin-bottom: 14px;
-
-  background: var(--accent);
-  color: #ffffff;
-
-  border-radius: 4px 7px 7px 4px;
-
-  box-shadow: inset 5px 0 0 rgba(0, 0, 0, 0.12), 0 4px 10px rgba(0, 0, 0, 0.12);
-
-  font-size: 26px;
-}
-
-.book-title {
-  overflow: hidden;
-
-  color: var(--text-color);
-
-  font-family: Georgia, "Noto Serif CJK TC", "Noto Serif CJK SC",
-    "Times New Roman", serif;
-
-  font-size: 17px;
-  font-weight: 600;
-  line-height: 1.4;
-
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.book-meta {
-  margin-top: 5px;
-
-  color: var(--muted-color);
-
-  font-size: 12px;
-  line-height: 1.5;
-}
-
-.book-progress {
-  margin-top: 14px;
-}
-
-.book-progress-track {
-  width: 100%;
-  height: 5px;
-
-  background: var(--border-color);
-
-  border-radius: 99px;
-  overflow: hidden;
-}
-
-.book-progress-bar {
-  width: 0%;
-  height: 100%;
-
-  background: var(--accent);
-
-  border-radius: inherit;
-
-  transition: width 0.2s ease;
-}
-
-.book-progress-text,
-.book-progress-label {
-  margin-top: 5px;
-
-  color: var(--muted-color);
-
-  font-size: 11px;
-  font-weight: 600;
-  text-align: right;
-}
-
-.book-card-actions {
-  display: flex;
-  gap: 6px;
-
-  margin-top: 12px;
-}
-
-.book-card-actions button {
-  padding: 6px 9px;
-  font-size: 12px;
-}
-
-.book-type {
-  display: inline-block;
-
-  margin-top: 8px;
-  padding: 3px 7px;
-
-  border-radius: 4px;
-
-  background: var(--button-hover);
-  color: var(--muted-color);
-
-  font-size: 11px;
-  text-transform: uppercase;
-}
-
-/* =========================================================
    READER HEADER
 ========================================================= */
 
@@ -1750,72 +1585,6 @@ body.reader-fullscreen .reader-content {
 
   .side-menu {
     width: min(310px, 86vw);
-  }
-
-  /* LIBRARY */
-
-  #libraryView {
-    padding-bottom: 20px;
-  }
-
-  #librarySection {
-    width: 100%;
-  }
-
-  .library-actions {
-    display: flex;
-    width: 100%;
-    gap: 8px;
-  }
-
-  .library-actions button {
-    flex: 1;
-    min-height: 45px;
-  }
-
-  .library-panel {
-    display: grid;
-    grid-template-columns: 1fr;
-
-    padding: 0 var(--mobile-padding);
-
-    gap: 12px;
-  }
-
-  .book-card {
-    width: 100%;
-    min-width: 0;
-
-    padding: 16px;
-
-    border-radius: 14px;
-  }
-
-  .book-title {
-    font-size: 18px;
-    line-height: 1.3;
-
-    overflow-wrap: anywhere;
-  }
-
-  .book-meta {
-    font-size: 13px;
-
-    overflow-wrap: anywhere;
-  }
-
-  .book-card-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-
-    gap: 8px;
-
-    margin-top: 12px;
-  }
-
-  .book-card-actions button {
-    width: 100%;
-    min-height: 44px;
   }
 
   /* READER HEADER */
@@ -2756,76 +2525,14 @@ body.reader-fullscreen .reader-content {
 }
 
 /* =========================================================
-   FORMAT UI / MOBILE-FRIENDLY CONTROLS
-========================================================= */
-
-.reading-style { flex: 1; }
-.preset-bar { display: flex; align-items: center; gap: 8px; }
-.preset-bar .theme-controls { display: flex; align-items: center; gap: 5px; }
-.preset-bar .theme-button { width: 38px; min-width: 38px; height: 38px; padding: 4px; }
-
-.format-help-row { display: flex; justify-content: flex-end; margin-bottom: 6px; }
-.help-button {
-  width: 24px; height: 24px; padding: 0; display: inline-flex;
-  align-items: center; justify-content: center; border-radius: 50%;
-  font-size: 13px; font-weight: 700; cursor: pointer;
-}
-.format-help {
-  display: flex; flex-wrap: wrap; gap: 7px 16px; margin: 0 0 8px; padding: 8px 10px;
-  background: var(--button-hover); border: 1px solid var(--border-color);
-  border-radius: 7px; color: var(--muted-color); font-size: 12px;
-}
-.format-help strong { color: var(--text-color); margin-right: 3px; }
-.format-help.hidden { display: none; }
-
-.stepper { display: inline-flex; align-items: center; gap: 3px; }
-.step-button {
-  width: 28px; height: 32px; padding: 0; display: inline-flex;
-  align-items: center; justify-content: center; font-size: 17px; line-height: 1;
-}
-.stepper input[type="number"] { width: 52px; padding: 6px 4px; text-align: center; }
-.format-options .setting { gap: 5px; }
-.format-options .setting span { min-width: 34px; }
-
-.export-buttons {
-  flex: 1 0 100%; display: flex; justify-content: flex-end; gap: 5px;
-  margin-left: 0; margin-top: 2px;
-}
-.export-buttons button { min-height: 32px; padding: 5px 10px; font-size: 12px; }
-
-@media (min-width: 701px) {
-  .format-options .toolbar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 18px; }
-  .format-options .setting { min-width: 0; }
-  .preview-width-setting { grid-column: 1 / -1; }
-}
-
-@media (max-width: 700px) {
-  .style-toolbar { flex-direction: column; gap: 8px; }
-  .reading-style { width: 100%; }
-  .preset-bar { width: 100%; }
-  .preset-bar .preset-select { flex: 1; min-width: 0; width: auto; }
-  .preset-bar .theme-controls { flex-shrink: 0; }
-  .preset-bar .theme-button { width: 36px; min-width: 36px; height: 38px; }
-
-  .format-options .toolbar { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 10px; }
-  .format-options .setting { width: 100%; min-width: 0; }
-  .format-options .setting .icon-label { flex-shrink: 0; }
-  .stepper input[type="number"] { width: 44px; }
-  .step-button { width: 27px; }
-  .preview-width-setting { grid-column: 1 / -1; }
-  .preview-width-setting input[type="range"] { flex: 1; min-width: 70px; }
-
-  .export-buttons { grid-column: 1 / -1; display: flex; width: 100%; gap: 5px; }
-  .export-buttons button { flex: 1; width: auto; min-height: 32px; padding: 5px 6px; }
-}
-
-/* =========================================================
-   LIBRARY REDESIGN
+   LIBRARY
 ========================================================= */
 
 .library-actions {
+  display: flex;
   align-items: center;
   gap: 7px;
+  margin-left: auto;
 }
 
 .library-add-button {
@@ -2850,26 +2557,42 @@ body.reader-fullscreen .reader-content {
   display: none !important;
 }
 
+.library-empty {
+  grid-column: 1 / -1;
+  padding: 35px 20px;
+  background: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  color: var(--muted-color);
+  text-align: center;
+}
+
 .library-panel {
+  display: grid;
   grid-template-columns: repeat(2, minmax(0, 170px));
   justify-content: center;
+  align-items: end;
   gap: 18px;
 }
 
 .book-card {
+  position: relative;
+  width: 100%;
   min-width: 0;
+  max-width: 145px;
+  margin: 0 auto;
   padding: 0;
   overflow: hidden;
   border: 0;
   border-radius: 10px;
   background: transparent;
   box-shadow: none;
+  cursor: pointer;
+  transition: transform 0.15s ease;
 }
 
 .book-card:hover {
   transform: translateY(-2px);
-  border-color: transparent;
-  box-shadow: none;
 }
 
 .book-card:focus-visible {
@@ -2880,14 +2603,15 @@ body.reader-fullscreen .reader-content {
 .book-cover {
   --cover-hue: 215;
   position: relative;
-  aspect-ratio: 0.72;
   width: 100%;
+  aspect-ratio: 0.72;
   overflow: hidden;
   border-radius: 7px 9px 9px 7px;
   background:
     radial-gradient(circle at 70% 25%, hsla(var(--cover-hue), 80%, 78%, 0.32), transparent 28%),
     linear-gradient(150deg, hsl(var(--cover-hue), 48%, 36%), hsl(calc(var(--cover-hue) + 35), 42%, 13%));
-  box-shadow: inset 6px 0 0 rgba(255, 255, 255, 0.12),
+  box-shadow:
+    inset 6px 0 0 rgba(255, 255, 255, 0.12),
     0 5px 14px rgba(0, 0, 0, 0.18);
   background-size: cover;
   background-position: center;
@@ -2913,8 +2637,8 @@ body.reader-fullscreen .reader-content {
   z-index: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 13px 12px 11px;
+  justify-content: flex-start;
+  padding: 32% 9px 12px;
   color: #fff;
 }
 
@@ -2933,6 +2657,10 @@ body.reader-fullscreen .reader-content {
 }
 
 .book-progress {
+  position: absolute;
+  left: 9px;
+  right: 9px;
+  bottom: 10px;
   display: flex;
   align-items: center;
   gap: 7px;
@@ -2942,21 +2670,23 @@ body.reader-fullscreen .reader-content {
 .book-progress-track {
   flex: 1;
   width: auto;
-  height: 5px;
+  height: 9px;
   background: rgba(255, 255, 255, 0.32);
   border-radius: 99px;
   overflow: hidden;
 }
 
 .book-progress-bar {
+  height: 100%;
   background: rgba(255, 255, 255, 0.9);
+  border-radius: inherit;
 }
 
 .book-progress-text {
   flex: 0 0 auto;
   margin: 0;
   color: #fff;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   line-height: 1;
   text-align: right;
@@ -2965,18 +2695,18 @@ body.reader-fullscreen .reader-content {
 
 .book-delete-button {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 6px;
+  right: 6px;
   z-index: 3;
-  width: 30px;
-  height: 30px;
-  min-height: 30px;
+  width: 27px;
+  height: 27px;
+  min-height: 27px;
   padding: 0;
   border: 0;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.38);
   color: #fff;
-  font-size: 22px;
+  font-size: 19px;
   line-height: 1;
   backdrop-filter: blur(3px);
 }
@@ -2985,6 +2715,7 @@ body.reader-fullscreen .reader-content {
   background: rgba(0, 0, 0, 0.65);
 }
 
+/* Decorative lamp used by the menu button */
 .menu-lamp {
   width: 31px;
   height: 31px;
@@ -3011,117 +2742,7 @@ body.reader-fullscreen .reader-content {
   filter: drop-shadow(0 0 5px currentColor);
 }
 
-@media (max-width: 700px) {
-  .header {
-    min-height: 58px;
-    flex-direction: row;
-    align-items: center;
-    padding: 9px var(--mobile-padding);
-  }
-
-  .app-title {
-    padding: 0 52px;
-  }
-
-  .library-actions {
-    width: auto;
-    flex: 0 0 auto;
-  }
-
-  .library-add-button {
-    min-height: 38px;
-    padding: 6px 10px;
-  }
-
-  .library-sync-button {
-    width: 38px;
-    height: 38px;
-    min-height: 38px;
-  }
-
-  .library-panel {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    padding: 0 var(--mobile-padding);
-  }
-
-  .book-cover-overlay {
-    padding: 11px 9px 9px;
-  }
-
-  .book-title {
-    margin-bottom: 8px;
-    font-size: 14px;
-  }
-
-  .book-progress {
-    gap: 5px;
-  }
-
-  .book-progress-text {
-    font-size: 10px;
-  }
-
-  .book-delete-button {
-    top: 6px;
-    right: 6px;
-    width: 28px;
-    height: 28px;
-    min-height: 28px;
-    font-size: 20px;
-  }
-}
-
-/* =========================================================
-   LIBRARY BOOKSHELF BACKGROUND
-========================================================= */
-
-#libraryView {
-  position: relative;
-  min-height: calc(100vh - 94px);
-  padding: 18px 18px 28px;
-  border-radius: 16px;
-  overflow: hidden;
-  background-image:
-    linear-gradient(rgba(18, 10, 5, 0.20), rgba(18, 10, 5, 0.34)),
-    url("./assets/bookshelf-bg.png");
-  background-size: cover;
-  background-position: center top;
-  background-attachment: scroll;
-}
-
-#libraryView #librarySection {
-  position: relative;
-  z-index: 1;
-}
-
-#libraryView .section-title-row {
-  color: #fff8ed;
-}
-
-#libraryView .section-title-row h2 {
-  text-shadow: 0 2px 7px rgba(0, 0, 0, 0.55);
-}
-
-#libraryView .library-panel {
-  padding-top: 8px;
-}
-
-@media (max-width: 640px) {
-  #libraryView {
-    min-height: calc(100vh - 76px);
-    padding: 10px 10px 22px;
-    border-radius: 12px;
-    background-size: 100% 100%;
-    background-position: center top;
-  }
-}
-
-
-/* =========================================================
-   LIBRARY HEADER TITLE
-========================================================= */
-
+/* Library header title */
 .header {
   justify-content: flex-start;
 }
@@ -3142,11 +2763,64 @@ body.reader-fullscreen .reader-content {
 }
 
 .app-title h1.library-title {
+  margin: 0;
   font-family: "Old English Text MT", "Lucida Blackletter", "UnifrakturCook", "UnifrakturMaguntia", serif;
   font-size: 29px;
+  font-weight: 600;
+  line-height: 1;
   letter-spacing: 0.01em;
 }
 
+/* Bookshelf background */
+#libraryView {
+  position: relative;
+  min-height: calc(100vh - 94px);
+  padding: 18px 18px 28px;
+  border-radius: 16px;
+  overflow: hidden;
+  background-image:
+    linear-gradient(rgba(18, 10, 5, 0.20), rgba(18, 10, 5, 0.34)),
+    url("./assets/bookshelf-bg.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center top;
+}
+
+#libraryView #librarySection {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+#libraryView .section-title-row {
+  color: #fff8ed;
+}
+
+#libraryView .section-title-row h2 {
+  text-shadow: 0 2px 7px rgba(0, 0, 0, 0.55);
+}
+
+#libraryView .library-panel {
+  padding: 115px 40px 40px;
+}
+
+/* Desktop */
+@media (min-width: 760px) {
+  #libraryView .library-panel {
+    grid-template-columns: repeat(4, minmax(125px, 145px));
+    column-gap: 55px;
+    row-gap: 85px;
+  }
+}
+
+@media (min-width: 1100px) {
+  #libraryView .library-panel {
+    grid-template-columns: repeat(5, minmax(125px, 145px));
+    column-gap: 65px;
+  }
+}
+
+/* Phone */
 @media (max-width: 700px) {
   .header {
     min-height: 58px;
@@ -3168,173 +2842,35 @@ body.reader-fullscreen .reader-content {
   .app-title h1.library-title {
     font-size: 25px;
   }
-}
 
-@media (max-width: 380px) {
-  .app-title h1.library-title {
-    font-size: 22px;
+  .library-actions {
+    width: auto;
+    flex: 0 0 auto;
   }
-}
 
-/* =========================================================
-   LIBRARY BOOKSHELF
-========================================================= */
-
-#libraryView {
-  position: relative;
-  min-height: calc(100vh - 94px);
-  padding: 18px 18px 28px;
-  border-radius: 16px;
-  overflow: hidden;
-
-  background-image:
-    linear-gradient(
-      rgba(18, 10, 5, 0.20),
-      rgba(18, 10, 5, 0.34)
-    ),
-    url("./assets/bookshelf-bg.png");
-
-  /* Keep the shelf proportions consistent */
-  background-size: 100% auto;
-  background-repeat: no-repeat;
-  background-position: center top;
-}
-
-#libraryView #librarySection {
-  position: relative;
-  z-index: 1;
-}
-
-/* BOOK GRID */
-#libraryView .library-panel {
-  display: grid;
-
-  grid-template-columns:
-    repeat(auto-fill, minmax(125px, 150px));
-
-  justify-content: center;
-  align-items: end;
-
-  column-gap: 42px;
-  row-gap: 70px;
-
-  padding: 115px 40px 40px;
-}
-
-/* BOOK */
-#libraryView .book-card {
-  position: relative;
-
-  width: 100%;
-  max-width: 145px;
-
-  margin: 0 auto;
-  padding: 0;
-
-  background: transparent;
-  border: 0;
-  box-shadow: none;
-
-  cursor: pointer;
-}
-
-/* Actual cover */
-#libraryView .book-cover {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 0.72;
-  border-radius: 6px 9px 9px 6px;
-  overflow: hidden;
-}
-
-#libraryView .book-cover-overlay {
-  position: absolute;
-  inset: 0;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-
-  padding: 32% 9px 12px;
-}
-
-/* Progress */
-#libraryView .book-progress {
-  position: absolute;
-
-  left: 9px;
-  right: 9px;
-  bottom: 10px;
-}
-
-#libraryView .book-progress-track {
-  height: 9px;
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-#libraryView .book-progress-bar {
-  height: 100%;
-  border-radius: inherit;
-}
-
-#libraryView .book-progress-text {
-  margin-top: 4px;
-  font-size: 12px;
-  line-height: 1;
-}
-
-/* Delete button */
-#libraryView .book-delete-button {
-  top: 6px;
-  right: 6px;
-
-  width: 27px;
-  height: 27px;
-  min-height: 27px;
-
-  font-size: 19px;
-}
-
-/* DESKTOP */
-@media (min-width: 760px) {
-
-  #libraryView .library-panel {
-    grid-template-columns:
-      repeat(4, minmax(125px, 145px));
-
-    column-gap: 55px;
-    row-gap: 85px;
+  .library-add-button {
+    min-height: 38px;
+    padding: 6px 10px;
   }
-}
 
-/* LARGE DESKTOP */
-@media (min-width: 1100px) {
-
-  #libraryView .library-panel {
-    grid-template-columns:
-      repeat(5, minmax(125px, 145px));
-
-    column-gap: 65px;
+  .library-sync-button {
+    width: 38px;
+    height: 38px;
+    min-height: 38px;
   }
-}
-
-/* PHONE */
-@media (max-width: 640px) {
 
   #libraryView {
+    min-height: calc(100vh - 76px);
     padding: 10px 10px 22px;
+    border-radius: 12px;
+    background-size: 100% 100%;
   }
 
   #libraryView .library-panel {
-    grid-template-columns:
-      repeat(2, minmax(0, 135px));
-
+    grid-template-columns: repeat(2, minmax(0, 135px));
     justify-content: center;
-
     column-gap: 24px;
     row-gap: 55px;
-
     padding: 20px 10px 30px;
   }
 
@@ -3346,45 +2882,39 @@ body.reader-fullscreen .reader-content {
     padding: 28% 8px 8px;
   }
 
-  
-#libraryView .book-title {
-  position: relative;
-  margin: 0;
-
-  font-size: 14px;
-  line-height: 1.2;
-  text-align: center;
-
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
+  #libraryView .book-title {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.2;
+    text-align: center;
+  }
 
   #libraryView .book-progress {
     left: 8px;
     right: 8px;
     bottom: 8px;
   }
+
+  #libraryView .book-progress-track {
+    height: 9px;
+  }
+
+  #libraryView .book-progress-text {
+    font-size: 10px;
+  }
+
+  #libraryView .book-delete-button {
+    top: 6px;
+    right: 6px;
+    width: 28px;
+    height: 28px;
+    min-height: 28px;
+    font-size: 20px;
+  }
 }
 
-/* FINAL LIBRARY BACKGROUND FIX */
-
-#libraryView {
-  background-image:
-    linear-gradient(
-      rgba(18, 10, 5, 0.20),
-      rgba(18, 10, 5, 0.34)
-    ),
-    url("./assets/bookshelf-bg.png");
-
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-position: center top;
-}
-
-@media (max-width: 640px) {
-  #libraryView {
-    background-size: 100% 100%;
+@media (max-width: 380px) {
+  .app-title h1.library-title {
+    font-size: 22px;
   }
 }
