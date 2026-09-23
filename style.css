@@ -2960,3 +2960,27 @@ body:has(#libraryView:not(.hidden)) #appTitle {
     font-size: 22px;
   }
 }
+
+/* =========================================================
+   LIBRARY MENU BOOK ICON
+========================================================= */
+
+.menu-book {
+  width: 38px;
+  height: 38px;
+  display: block;
+}
+
+.menu-book .book-pages {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 4;
+  stroke-linejoin: round;
+}
+
+.menu-book .book-spine {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
