@@ -108,6 +108,13 @@
         </button>
       </nav>
 
+        <div class="side-menu-update">
+  			 <button id="checkUpdateButton" class="menu-item" type="button">
+    			 <span class="menu-icon">🔄</span>
+    			 <span>Check for Updates</span>
+  			</button>
+	</div>
+
       <div class="side-menu-future">
         <div class="side-menu-divider"></div>
         <div class="future-item">
@@ -601,6 +608,31 @@
               "My Reader service worker registered:",
               registration.scope
             );
+	
+	const checkUpdateButton =
+  document.getElementById("checkUpdateButton");
+
+if (checkUpdateButton) {
+  checkUpdateButton.addEventListener("click", async () => {
+    try {
+      checkUpdateButton.disabled = true;
+      checkUpdateButton.querySelector(".menu-icon").textContent = "⏳";
+
+      await registration.update();
+
+      setTimeout(() => {
+        checkUpdateButton.disabled = false;
+        checkUpdateButton.querySelector(".menu-icon").textContent = "🔄";
+      }, 1000);
+
+    } catch (error) {
+      console.error("Update check failed:", error);
+
+      checkUpdateButton.disabled = false;
+      checkUpdateButton.querySelector(".menu-icon").textContent = "🔄";
+    }
+  });
+}
 
             function showUpdateNotice(worker) {
               const updateNotice =
