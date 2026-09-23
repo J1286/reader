@@ -2962,6 +2962,22 @@ body:has(#libraryView:not(.hidden)) #appTitle {
 }
 
 /* =========================================================
+   LIBRARY ACTIONS
+========================================================= */
+
+/* Hidden outside Library */
+body:not(:has(#libraryView:not(.hidden))) .library-actions {
+  display: none;
+}
+
+/* Visible in Library */
+body:has(#libraryView:not(.hidden)) .library-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+/* =========================================================
    LIBRARY MENU BOOK ICON
 ========================================================= */
 
