@@ -1,0 +1,51 @@
+name: Update App Version
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Bump cache version
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+
+          path = Path("sw.js")
+          text = path.read_text()
+
+          pattern = r'(const CACHE_NAME = "my-reader-v)(\d+)\.(\d+)\.(\d+)(";)'
+          match = re.search(pattern, text)
+
+          if not match:
+              raise SystemExit("Could not find CACHE_NAME in sw.js")
+
+          major = int(match.group(2))
+          minor = int(match.group(3))
+          patch = int(match.group(4)) + 1
+
+          new_version = f"{match.group(1)}{major}.{minor}.{patch}{match.group(5)}"
+
+          text = text[:match.start()] + new_version + text[match.end():]
+          path.write_text(text)
+
+          print(f"Updated cache version to my-reader-v{major}.{minor}.{patch}")
+          PY
+
+      - name: Commit version bump
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add sw.js
+          git commit -m "Bump app cache version"
+          git push
