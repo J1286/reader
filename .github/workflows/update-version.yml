@@ -13,15 +13,40 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
-      - name: Bump cache version
+      - name: Check for app changes
+        id: changes
+        run: |
+          LAST_VERSION_COMMIT=$(git log -1 --format="%H" -- sw.js)
+
+          echo "Last version bump: $LAST_VERSION_COMMIT"
+
+          if git diff --quiet "$LAST_VERSION_COMMIT" HEAD -- \
+            index.html \
+            style.css \
+            '*.js' \
+            manifest.json \
+            assets/; then
+
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No app changes detected."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "App changes detected."
+          fi
+
+      - name: Bump version
+        if: steps.changes.outputs.changed == 'true'
         run: |
           python - <<'PY'
           import re
+          import json
           from pathlib import Path
 
-          path = Path("sw.js")
-          text = path.read_text()
+          sw_path = Path("sw.js")
+          text = sw_path.read_text()
 
           pattern = r'(const CACHE_NAME = "my-reader-v)(\d+)\.(\d+)\.(\d+)(";)'
           match = re.search(pattern, text)
@@ -33,19 +58,42 @@ jobs:
           minor = int(match.group(3))
           patch = int(match.group(4)) + 1
 
-          new_version = f"{match.group(1)}{major}.{minor}.{patch}{match.group(5)}"
+          version = f"{major}.{minor}.{patch}"
 
-          text = text[:match.start()] + new_version + text[match.end():]
-          path.write_text(text)
+          new_cache_name = (
+              f"{match.group(1)}{version}{match.group(5)}"
+          )
 
-          print(f"Updated cache version to my-reader-v{major}.{minor}.{patch}")
+          text = (
+              text[:match.start()]
+              + new_cache_name
+              + text[match.end():]
+          )
+
+          sw_path.write_text(text)
+
+          Path("version.json").write_text(
+              json.dumps(
+                  {"version": version},
+                  indent=2
+              ) + "\n"
+          )
+
+          print(f"Updated app version to {version}")
           PY
 
       - name: Commit version bump
+        if: steps.changes.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add sw.js
-          git commit -m "Bump app cache version"
+          git add sw.js version.json
+          git commit -m "Bump app version"
           git push
+
+      - name: No update needed
+        if: steps.changes.outputs.changed == 'false'
+        run: |
+          echo "No app changes since the last version bump."
+          echo "Version remains unchanged."
