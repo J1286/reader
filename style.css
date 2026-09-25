@@ -3031,3 +3031,10 @@ body:has(#libraryView:not(.hidden)) .library-actions {
   opacity: 0.6;
   cursor: wait;
 }
+
+.app-version-label {
+  margin-left: auto;
+  font-size: 0.8em;
+  opacity: 0.6;
+  white-space: nowrap;
+}
