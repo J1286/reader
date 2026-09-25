@@ -110,10 +110,11 @@
 
         <div class="side-menu-update">
   			 <button id="checkUpdateButton" class="update-menu-item" type="button">
-    			 <span class="menu-icon">🔄</span>
-    			 <span>Check for Updates</span>
-  			</button>
-	</div>
+  				<span class="menu-icon">🔄</span>
+  				<span>Check for Updates</span>
+  				<span id="appVersionLabel" class="app-version-label"></span>
+			</button>
+		</div>
 
       <div class="side-menu-future">
         <div class="side-menu-divider"></div>
@@ -612,28 +613,61 @@
 	const checkUpdateButton =
   document.getElementById("checkUpdateButton");
 
-if (checkUpdateButton) {
-  checkUpdateButton.addEventListener("click", async () => {
-    try {
-      checkUpdateButton.disabled = true;
-      checkUpdateButton.querySelector(".menu-icon").textContent = "⏳";
+	const appVersionLabel =
+	  document.getElementById("appVersionLabel");
 
-      await registration.update();
+	/* Load current app version */
 
-      setTimeout(() => {
-        checkUpdateButton.disabled = false;
-        checkUpdateButton.querySelector(".menu-icon").textContent = "🔄";
-      }, 1000);
+	async function loadAppVersion() {
+	  if (!appVersionLabel) {
+	    return;
+	  }
 
-    } catch (error) {
-      console.error("Update check failed:", error);
+  	try {
+    	const response = await fetch("./version.json", {
+      	cache: "no-store"
+    	});
 
-      checkUpdateButton.disabled = false;
-      checkUpdateButton.querySelector(".menu-icon").textContent = "🔄";
+    if (!response.ok) {
+      throw new Error("Could not load version.json");
     }
-  });
+
+    const data = await response.json();
+
+    if (data.version) {
+      appVersionLabel.textContent = `v${data.version}`;
+    }
+  } catch (error) {
+    console.error("Could not load app version:", error);
+  	}
 }
 
+	loadAppVersion();
+
+	/* Check for updates */
+
+	if (checkUpdateButton) {
+  	checkUpdateButton.addEventListener("click", async () => {
+    	try {
+      	checkUpdateButton.disabled = true;
+      	checkUpdateButton.querySelector(".menu-icon").textContent = "⏳";
+
+	      await registration.update();
+
+      	setTimeout(() => {
+      	  checkUpdateButton.disabled = false;
+      	  checkUpdateButton.querySelector(".menu-icon").textContent = "🔄";
+      	}, 1000);
+
+    	} catch (error) {
+      	console.error("Update check failed:", error);
+
+	    checkUpdateButton.disabled = false;
+        checkUpdateButton.querySelector(".menu-icon").textContent = "🔄";
+    	}
+  	  });
+	}
+			  
             function showUpdateNotice(worker) {
               const updateNotice =
                 document.getElementById("updateNotice");
