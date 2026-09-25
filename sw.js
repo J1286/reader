@@ -15,6 +15,7 @@ const APP_SHELL = [
   "/reader/export.js",
   "/reader/backup.js",
   "/reader/manifest.json",
+  "/reader/version.json",
   "/reader/assets/bookshelf-bg.png",
   "/reader/assets/default-book-cover.png"
 ];
