@@ -28,7 +28,8 @@ jobs:
             style.css \
             '*.js' \
             manifest.json \
-            assets/; then
+            assets/ \
+            ':!version.json'; then
 
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No app changes detected."
