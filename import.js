@@ -114,7 +114,8 @@ function isSupportedFile(file) {
     filename.endsWith(".txt") ||
     filename.endsWith(".md") ||
     filename.endsWith(".text") ||
-    filename.endsWith(".docx")
+    filename.endsWith(".docx") || 
+    filename.endsWith(".pdf")
   );
 }
 
