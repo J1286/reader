@@ -530,6 +530,13 @@
   <script src="./chapters.js"></script>
   <script src="./formatter.js"></script>
   <script src="./reader.js"></script>
+
+  <script type="module">
+  import * as pdfjsLib from
+    "https://cdn.jsdelivr.net/npm/pdfjs-dist@6.3.289/build/pdf.mjs";
+  window.pdfjsLib = pdfjsLib;
+  </script>
+	
   <script src="./import.js"></script>
   <script src="./library.js"></script>
   <script src="./backup.js"></script>
