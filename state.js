@@ -140,6 +140,8 @@ const modeButtons =
 const formatterView =
   document.getElementById("formatterView");
 
+const settingsView =
+  document.getElementById("settingsView");
 
 /* =================================================
    APPLICATION CONSTANTS
