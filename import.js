@@ -116,6 +116,7 @@ async function importFile(file) {
   }
 
   await importTextFile(file);
+}
 
 browseFileButton.addEventListener(
   "click",
@@ -138,7 +139,6 @@ fileInput.addEventListener(
     fileInput.value = "";
    }
  );
-}
 
 /* =================================================
    DRAG AND DROP
