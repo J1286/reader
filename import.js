@@ -136,9 +136,9 @@ fileInput.addEventListener(
     }
 
     fileInput.value = "";
-  }
-);
-
+   }
+ );
+}
 
 /* =================================================
    DRAG AND DROP
