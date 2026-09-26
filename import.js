@@ -63,17 +63,55 @@ async function importPdfFile(file) {
 
     const pages = [];
 
-    for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+    for (
+      let pageNumber = 1;
+      pageNumber <= pdf.numPages;
+      pageNumber++
+    ) {
       const page = await pdf.getPage(pageNumber);
 
       const textContent =
         await page.getTextContent();
 
-      const pageText = textContent.items
-        .map(item => item.str)
-        .join(" ");
+      const items = textContent.items
+        .filter(item => item.str && item.str.trim())
+        .map(item => ({
+          text: item.str.trim(),
+          x: item.transform[4],
+          y: item.transform[5]
+        }));
 
-      pages.push(pageText);
+      const lines = [];
+
+      for (const item of items) {
+        let line = lines.find(
+          existing =>
+            Math.abs(existing.y - item.y) < 3
+        );
+
+        if (!line) {
+          line = {
+            y: item.y,
+            items: []
+          };
+
+          lines.push(line);
+        }
+
+        line.items.push(item);
+      }
+
+      lines.sort((a, b) => b.y - a.y);
+
+      const pageLines = lines.map(line => {
+        line.items.sort((a, b) => a.x - b.x);
+
+        return line.items
+          .map(item => item.text)
+          .join(" ");
+      });
+
+      pages.push(pageLines.join("\n"));
     }
 
     const text = pages.join("\n\n");
