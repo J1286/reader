@@ -13,7 +13,8 @@ async function setMode(mode) {
     const titles = {
       library: { text: "𝔐𝔶 𝔏𝔦𝔟𝔯𝔞𝔯𝔶", aria: "My Library", className: "library-title" },
       reader: { text: "Reader", aria: "Reader", className: "" },
-      formatter: { text: "Tools", aria: "Tools", className: "" }
+      formatter: { text: "Tools", aria: "Tools", className: "" },
+      settings: { text: "Settings", aria: "Settings", className: "" }
     };
 
     const title = titles[mode] || titles.library;
@@ -44,6 +45,11 @@ async function setMode(mode) {
     mode !== "formatter"
   );
 
+  settingsView.classList.toggle(
+    "hidden",
+    mode !== "settings" 
+  );
+
   if (mode === "library") {
     await syncLibraryState();
     await renderLibrary();
@@ -59,7 +65,6 @@ async function setMode(mode) {
 
   stateChanged();
 }
-
 
 modeButtons.forEach((button) => {
   button.addEventListener("click", () => {
