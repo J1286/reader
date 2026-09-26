@@ -118,18 +118,16 @@
 
       <div class="side-menu-future">
         <div class="side-menu-divider"></div>
-        <div class="future-item">
+        <button class="menu-item" data-mode="settings" type="button">
+  		  <span class="menu-icon">⚙️</span>
+  		  <span>Settings</span>
+	    </button>
+      </div>
+		<div class="future-item">
           🔖
           <span>Bookmarks</span>
           <small>Coming later</small>
         </div>
-
-        <div class="future-item">
-          ⚙️
-          <span>Settings</span>
-          <small>Coming later</small>
-        </div>
-      </div>
     </aside>
 
     <div id="menuBackdrop" class="menu-backdrop"></div>
@@ -326,6 +324,60 @@
             press "Apply to Input".
           </p>
         </div>
+
+		<!-- SETTINGS VIEW -->
+
+<div id="settingsView" class="app-view hidden">
+
+  <section class="settings-section">
+    <h2>Settings</h2>
+
+    <div class="settings-panel">
+
+      <div class="settings-group">
+        <h3>Reading Defaults</h3>
+
+        <p class="settings-placeholder">
+          Reading preferences will go here.
+        </p>
+      </div>
+
+      <div class="settings-group">
+        <h3>Library</h3>
+
+        <p class="settings-placeholder">
+          Library preferences will go here.
+        </p>
+      </div>
+
+      <div class="settings-group">
+        <h3>Backup &amp; Restore</h3>
+
+        <p class="settings-placeholder">
+          Backup and restore will go here.
+        </p>
+      </div>
+
+      <div class="settings-group">
+        <h3>App</h3>
+
+        <p class="settings-placeholder">
+          App options will go here.
+        </p>
+      </div>
+
+      <div class="settings-group">
+        <h3>About</h3>
+
+        <p class="settings-placeholder">
+          About My Reader will go here.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+</div>
       </section>
 
       <!-- READING STYLE -->
