@@ -53,6 +53,42 @@ async function loadImportedText(text, filename) {
    FILE IMPORT
 ================================================= */
 
+async function importPdfFile(file) {
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+
+    const pdf = await window.pdfjsLib.getDocument({
+      data: arrayBuffer
+    }).promise;
+
+    const pages = [];
+
+    for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+      const page = await pdf.getPage(pageNumber);
+
+      const textContent =
+        await page.getTextContent();
+
+      const pageText = textContent.items
+        .map(item => item.str)
+        .join(" ");
+
+      pages.push(pageText);
+    }
+
+    const text = pages.join("\n\n");
+
+    await loadImportedText(text, file.name);
+
+  } catch (error) {
+    console.error("Could not import PDF:", error);
+
+    showStatus(
+      "The PDF could not be imported."
+    );
+  }
+}
+
 async function importFile(file) {
   if (!file) {
     return;
@@ -60,7 +96,7 @@ async function importFile(file) {
 
   if (!isSupportedFile(file)) {
     showStatus(
-      "Please choose a TXT, Markdown or Word file."
+      "Please choose a TXT, Markdown, Word or PDF file."
     );
 
     return;
@@ -71,13 +107,15 @@ async function importFile(file) {
 
   if (filename.endsWith(".docx")) {
     await importWordFile(file);
+    return;
+  }
 
+  if (filename.endsWith(".pdf")) {
+    await importPdfFile(file);
     return;
   }
 
   await importTextFile(file);
-}
-
 
 browseFileButton.addEventListener(
   "click",
