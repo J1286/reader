@@ -3038,3 +3038,147 @@ body:has(#libraryView:not(.hidden)) .library-actions {
   opacity: 0.6;
   white-space: nowrap;
 }
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+.settings-page {
+  width: min(100%, 900px);
+  margin: 0 auto;
+  padding: 0 10px 40px;
+}
+
+.settings-page-title {
+  margin: 0 0 28px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.settings-section {
+  margin-bottom: 24px;
+}
+
+.settings-section-title {
+  margin: 0 0 9px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.settings-card {
+  overflow: hidden;
+
+  background: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  min-height: 62px;
+  padding: 12px 16px;
+
+  border-bottom: 1px solid var(--border-color);
+}
+
+.settings-row:last-child {
+  border-bottom: 0;
+}
+
+.settings-row-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  min-width: 0;
+}
+
+.settings-row-info strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.settings-row-info span {
+  color: var(--muted-color);
+  font-size: 12px;
+}
+
+.settings-value {
+  flex-shrink: 0;
+
+  color: var(--muted-color);
+  font-size: 13px;
+}
+
+.settings-row select {
+  flex-shrink: 0;
+
+  min-width: 145px;
+  padding: 7px 9px;
+
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+
+  font-size: 13px;
+}
+
+.settings-link {
+  flex-shrink: 0;
+
+  padding: 7px 12px;
+
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+
+  background: var(--button-bg);
+  color: var(--text-color);
+
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.settings-link:hover {
+  background: var(--button-hover);
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+  .settings-page {
+    padding: 0 8px 30px;
+  }
+
+  .settings-page-title {
+    margin-bottom: 22px;
+    font-size: 21px;
+  }
+
+  .settings-section {
+    margin-bottom: 20px;
+  }
+
+  .settings-row {
+    min-height: 60px;
+    padding: 11px 13px;
+    gap: 12px;
+  }
+
+  .settings-row-info strong {
+    font-size: 13px;
+  }
+
+  .settings-row-info span {
+    font-size: 11px;
+  }
+
+  .settings-row select {
+    min-width: 115px;
+    max-width: 130px;
+  }
+}
