@@ -516,108 +516,104 @@
 
     <!-- READING DEFAULTS -->
 
-    <section class="settings-section">
-      <h3 class="settings-section-title">
-        Reading Defaults
-      </h3>
+<section class="settings-section">
 
-      <div class="settings-card">
-        <div class="settings-row">
-          <div class="settings-row-info">
-            <strong>Default reading style</strong>
-            <span>Style used when opening a book</span>
-          </div>
+  <h3 class="settings-section-title">
+    Reading Defaults
+  </h3>
 
-          <select id="defaultReadingStyle">
-            <option>Book</option>
-            <option>E-reader</option>
-            <option>Web</option>
-            <option>Manuscript</option>
-            <option>Custom</option>
-          </select>
-        </div>
+  <div class="settings-card">
 
-        <div class="settings-row">
-          <div class="settings-row-info">
-            <strong>Default font</strong>
-            <span>Font used for reading</span>
-          </div>
-
-          <select id="defaultFont">
-            <option>Georgia</option>
-            <option>Arial</option>
-            <option>Verdana</option>
-            <option>Times New Roman</option>
-            <option>system-ui</option>
-          </select>
-        </div>
-
-        <div class="settings-row">
-  <div class="settings-row-info">
-    <strong>Default font size</strong>
-    <span>Starting reading text size</span>
-  </div>
-
-  <input
-    id="settingsFontSize"
-    type="number"
-    min="10"
-    max="40"
-    step="1"
-    value="18"
-  >
-</div>
-
-        <div class="settings-row">
-  <div class="settings-row-info">
-    <strong>Line spacing</strong>
-    <span>Space between lines of text</span>
-  </div>
-
-  <input
-    id="settingsLineSpacing"
-    type="number"
-    min="1"
-    max="3"
-    step="0.1"
-    value="1.6"
-  >
-</div>
-
-        <div class="settings-row">
-  <div class="settings-row-info">
-    <strong>Paragraph spacing</strong>
-    <span>Space between paragraphs</span>
-  </div>
-
-  <input
-    id="settingsParagraphSpacing"
-    type="number"
-    min="0"
-    max="60"
-    step="1"
-    value="16"
-  >
-</div>
-
-        <div class="settings-row">
-  <div class="settings-row-info">
-    <strong>Reading width</strong>
-    <span>Maximum width of the reading area</span>
-  </div>
-
-  <input
-    id="settingsReadingWidth"
-    type="number"
-    min="300"
-    max="1400"
-    step="10"
-    value="800"
-  >
-</div>
+    <div class="settings-row">
+      <div class="settings-row-info">
+        <strong>Default reading style</strong>
+        <span>Style used when opening a book</span>
       </div>
-    </section>
-	
+
+      <select id="settingsDefaultStyle">
+        <option value="book">Book</option>
+        <option value="ereader">E-reader</option>
+        <option value="web">Web</option>
+        <option value="manuscript">Manuscript</option>
+        <option value="custom">Custom</option>
+      </select>
+    </div>
+
+    <div class="settings-row">
+      <div class="settings-row-info">
+        <strong>Default font</strong>
+        <span>Font used for reading</span>
+      </div>
+
+      <span class="settings-value">Current</span>
+    </div>
+
+    <div class="settings-row">
+      <div class="settings-row-info">
+        <strong>Default font size</strong>
+        <span>Starting reading text size</span>
+      </div>
+
+      <input
+        id="settingsFontSize"
+        type="number"
+        min="10"
+        max="40"
+        step="1"
+        value="18"
+      >
+    </div>
+
+    <div class="settings-row">
+      <div class="settings-row-info">
+        <strong>Line spacing</strong>
+        <span>Space between lines of text</span>
+      </div>
+
+      <input
+        id="settingsLineSpacing"
+        type="number"
+        min="1"
+        max="3"
+        step="0.1"
+        value="1.6"
+      >
+    </div>
+
+    <div class="settings-row">
+      <div class="settings-row-info">
+        <strong>Paragraph spacing</strong>
+        <span>Space between paragraphs</span>
+      </div>
+
+      <input
+        id="settingsParagraphSpacing"
+        type="number"
+        min="0"
+        max="60"
+        step="1"
+        value="16"
+      >
+    </div>
+
+    <div class="settings-row">
+      <div class="settings-row-info">
+        <strong>Reading width</strong>
+        <span>Maximum width of the reading area</span>
+      </div>
+
+      <input
+        id="settingsReadingWidth"
+        type="number"
+        min="300"
+        max="1400"
+        step="10"
+        value="800"
+      >
+    </div>
+  </div>
+</section>
+	  
     <!-- LIBRARY -->
 
     <section class="settings-section">
