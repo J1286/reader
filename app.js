@@ -420,12 +420,6 @@ const settingsBackupButton =
 const settingsRestoreButton =
   document.getElementById("settingsRestoreButton");
 
-const backupLibraryButton =
-  document.getElementById("backupLibraryButton");
-
-const restoreLibraryButton =
-  document.getElementById("restoreLibraryButton");
-
 settingsBackupButton?.addEventListener("click", () => {
   backupLibraryButton?.click();
 });
