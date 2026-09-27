@@ -3182,3 +3182,25 @@ body:has(#libraryView:not(.hidden)) .library-actions {
     max-width: 130px;
   }
 }
+
+.settings-row input[type="number"] {
+  flex-shrink: 0;
+  width: 90px;
+  padding: 7px 9px;
+
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+
+  background: var(--input-bg);
+  color: var(--text-color);
+
+  font-size: 13px;
+  text-align: right;
+}
+
+@media (max-width: 600px) {
+
+  .settings-row input[type="number"] {
+    width: 75px;
+  }
+}
