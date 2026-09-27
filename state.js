@@ -135,7 +135,7 @@ const dropZone =
 /* ---------- Application Navigation ---------- */
 
 const modeButtons =
-  document.querySelectorAll(".mode-button");
+  document.querySelectorAll(".menu-item");
 
 const formatterView =
   document.getElementById("formatterView");
