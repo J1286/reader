@@ -510,50 +510,223 @@
 
     <!-- SETTINGS VIEW -->
 
-	<div id="settingsView" class="app-view hidden">
-		<div class="settings-panel">
+<div id="settingsView" class="app-view hidden">
+  <div class="settings-page">
+    <h2 class="settings-page-title">Settings</h2>
 
-		<div class="settings-group">
-		<h3>Reading Defaults</h3>
+    <!-- READING DEFAULTS -->
 
-		<p class="settings-placeholder">	
-		  Reading preferences will go here.
-		</p>
-	</div>
+    <section class="settings-section">
+      <h3 class="settings-section-title">
+        Reading Defaults
+      </h3>
 
-	<div class="settings-group">
-	  <h3>Library</h3>
+      <div class="settings-card">
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <strong>Default reading style</strong>
+            <span>Style used when opening a book</span>
+          </div>
 
-	  <p class="settings-placeholder">
-	    Library preferences will go here.
-	  </p>
-	</div>
+          <select id="defaultReadingStyle">
+            <option>Book</option>
+            <option>E-reader</option>
+            <option>Web</option>
+            <option>Manuscript</option>
+            <option>Custom</option>
+          </select>
+        </div>
 
-	<div class="settings-group">
-	  <h3>Backup &amp; Restore</h3>
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <strong>Default font</strong>
+            <span>Font used for reading</span>
+          </div>
 
-	  <p class="settings-placeholder">
-		Backup and restore will go here.
-	  </p>
-	</div>
+          <select id="defaultFont">
+            <option>Georgia</option>
+            <option>Arial</option>
+            <option>Verdana</option>
+            <option>Times New Roman</option>
+            <option>system-ui</option>
+          </select>
+        </div>
 
-	<div class="settings-group">
-	  <h3>App</h3>
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <strong>Default font size</strong>
+            <span>Starting reading text size</span>
+          </div>
 
-	  <p class="settings-placeholder">
-		App options will go here.
-	  </p>
-	</div>
+          <span class="settings-value">18 px</span>
+        </div>
 
-	<div class="settings-group">
-	  <h3>About</h3>
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <strong>Line spacing</strong>
+            <span>Space between lines of text</span>
+          </div>
 
-	  <p class="settings-placeholder">
-		About My Reader will go here.
-	  </p>
-	  </div>
-    </div>
-  </section>
+          <span class="settings-value">1.6</span>
+        </div>
+
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <strong>Paragraph spacing</strong>
+            <span>Space between paragraphs</span>
+          </div>
+
+          <span class="settings-value">16 px</span>
+        </div>
+
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <strong>Reading width</strong>
+            <span>Maximum width of the reading area</span>
+          </div>
+
+          <span class="settings-value">800 px</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIBRARY -->
+
+    <section class="settings-section">
+
+      <h3 class="settings-section-title">
+        Library
+      </h3>
+
+      <div class="settings-card">
+
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <strong>Sort books by</strong>
+            <span>Choose how books are arranged</span>
+          </div>
+
+          <select id="librarySort">
+            <option>Recently added</option>
+            <option>Title</option>
+            <option>Author</option>
+            <option>Progress</option>
+          </select>
+        </div>
+
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <strong>Books per row</strong>
+            <span>Number of books shown across the library</span>
+          </div>
+
+          <select id="booksPerRow">
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- BACKUP & RESTORE -->
+
+    <section class="settings-section">
+      <h3 class="settings-section-title">
+        Backup &amp; Restore
+      </h3>
+
+      <div class="settings-card">
+
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <strong>Export Library</strong>
+            <span>Save your books and library data</span>
+          </div>
+
+          <button type="button" class="secondary">
+            Export
+          </button>
+        </div>
+
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <strong>Restore Library</strong>
+            <span>Restore a previous library backup</span>
+          </div>
+
+          <button type="button" class="secondary">
+            Restore
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- APP -->
+
+    <section class="settings-section">
+      <h3 class="settings-section-title">
+        App
+      </h3>
+
+      <div class="settings-card">
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <strong>Check for Updates</strong>
+            <span>Check whether a newer version is available</span>
+          </div>
+
+          <button type="button" class="secondary">
+            Check
+          </button>
+        </div>
+
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <strong>Version</strong>
+            <span>Current My Reader version</span>
+          </div>
+
+          <span class="settings-value">v1.1.8</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+
+    <section class="settings-section">
+
+      <h3 class="settings-section-title">
+        About
+      </h3>
+
+      <div class="settings-card">
+
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <strong>My Reader</strong>
+            <span>A personal web reading and formatting tool</span>
+          </div>
+        </div>
+
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <strong>GitHub</strong>
+            <span>View the project source code</span>
+          </div>
+
+          <a
+            href="https://github.com/J1286/reader"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="settings-link"
+          >
+            Open
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
 </div>
 	  
     <!-- GLOBAL STATUS -->
