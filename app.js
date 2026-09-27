@@ -409,3 +409,27 @@ formatHelpButton?.addEventListener("click", () => {
   formatHelp?.classList.toggle("hidden", !nextOpen);
   formatHelp?.setAttribute("aria-hidden", String(!nextOpen));
 });
+
+/* =================================================
+   SETTINGS → BACKUP & RESTORE
+================================================= */
+
+const settingsBackupButton =
+  document.getElementById("settingsBackupButton");
+
+const settingsRestoreButton =
+  document.getElementById("settingsRestoreButton");
+
+const backupLibraryButton =
+  document.getElementById("backupLibraryButton");
+
+const restoreLibraryButton =
+  document.getElementById("restoreLibraryButton");
+
+settingsBackupButton?.addEventListener("click", () => {
+  backupLibraryButton?.click();
+});
+
+settingsRestoreButton?.addEventListener("click", () => {
+  restoreLibraryButton?.click();
+});
