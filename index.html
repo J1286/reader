@@ -798,14 +798,6 @@
         closeMenu();
       }
     });
-    // MENU NAVIGATION
-    document.querySelectorAll(".menu-item").forEach((button) => {
-      button.addEventListener("click", async () => {
-        const mode = button.dataset.mode;
-        await setMode(mode);
-        closeMenu();
-      });
-    });
   </script>
 
   <script>
