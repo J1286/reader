@@ -143,6 +143,21 @@ const formatterView =
 const settingsView =
   document.getElementById("settingsView");
 
+const settingsDefaultStyle =
+  document.getElementById("settingsDefaultStyle");
+
+const settingsFontSize =
+  document.getElementById("settingsFontSize");
+
+const settingsLineSpacing =
+  document.getElementById("settingsLineSpacing");
+
+const settingsParagraphSpacing =
+  document.getElementById("settingsParagraphSpacing");
+
+const settingsReadingWidth =
+  document.getElementById("settingsReadingWidth");
+
 /* =================================================
    APPLICATION CONSTANTS
 ================================================= */
