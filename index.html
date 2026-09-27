@@ -553,40 +553,68 @@
         </div>
 
         <div class="settings-row">
-          <div class="settings-row-info">
-            <strong>Default font size</strong>
-            <span>Starting reading text size</span>
-          </div>
+  <div class="settings-row-info">
+    <strong>Default font size</strong>
+    <span>Starting reading text size</span>
+  </div>
 
-          <span class="settings-value">18 px</span>
-        </div>
-
-        <div class="settings-row">
-          <div class="settings-row-info">
-            <strong>Line spacing</strong>
-            <span>Space between lines of text</span>
-          </div>
-
-          <span class="settings-value">1.6</span>
-        </div>
+  <input
+    id="settingsFontSize"
+    type="number"
+    min="10"
+    max="40"
+    step="1"
+    value="18"
+  >
+</div>
 
         <div class="settings-row">
-          <div class="settings-row-info">
-            <strong>Paragraph spacing</strong>
-            <span>Space between paragraphs</span>
-          </div>
+  <div class="settings-row-info">
+    <strong>Line spacing</strong>
+    <span>Space between lines of text</span>
+  </div>
 
-          <span class="settings-value">16 px</span>
-        </div>
+  <input
+    id="settingsLineSpacing"
+    type="number"
+    min="1"
+    max="3"
+    step="0.1"
+    value="1.6"
+  >
+</div>
 
         <div class="settings-row">
-          <div class="settings-row-info">
-            <strong>Reading width</strong>
-            <span>Maximum width of the reading area</span>
-          </div>
+  <div class="settings-row-info">
+    <strong>Paragraph spacing</strong>
+    <span>Space between paragraphs</span>
+  </div>
 
-          <span class="settings-value">800 px</span>
-        </div>
+  <input
+    id="settingsParagraphSpacing"
+    type="number"
+    min="0"
+    max="60"
+    step="1"
+    value="16"
+  >
+</div>
+
+        <div class="settings-row">
+  <div class="settings-row-info">
+    <strong>Reading width</strong>
+    <span>Maximum width of the reading area</span>
+  </div>
+
+  <input
+    id="settingsReadingWidth"
+    type="number"
+    min="300"
+    max="1400"
+    step="10"
+    value="800"
+  >
+</div>
       </div>
     </section>
 	
