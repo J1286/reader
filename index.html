@@ -627,41 +627,48 @@
     <!-- LIBRARY -->
 
     <section class="settings-section">
+  	  <h3 class="settings-section-title">
+    	Library
+  	  </h3>
 
-      <h3 class="settings-section-title">
-        Library
-      </h3>
-
-      <div class="settings-card">
-
-        <div class="settings-row">
-          <div class="settings-row-info">
-            <strong>Sort books by</strong>
-            <span>Choose how books are arranged</span>
-          </div>
-
-          <select id="librarySort">
-            <option>Recently added</option>
-            <option>Title</option>
-            <option>Author</option>
-            <option>Progress</option>
-          </select>
-        </div>
-
-        <div class="settings-row">
-          <div class="settings-row-info">
-            <strong>Books per row</strong>
-            <span>Number of books shown across the library</span>
-          </div>
-
-          <select id="booksPerRow">
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-          </select>
-        </div>
+  <div class="settings-card">
+    <div class="settings-row">
+      <div class="settings-row-info">
+        <strong>Sort books by</strong>
+        <span>Choose how books are ordered</span>
       </div>
-    </section>
+
+      <select id="settingsLibrarySort">
+        <option value="recent">Recently added</option>
+        <option value="title">Title</option>
+        <option value="progress">Reading progress</option>
+      </select>
+    </div>
+
+    <div class="settings-row">
+      <div class="settings-row-info">
+        <strong>Books per row</strong>
+        <span>Number of books shown across the library</span>
+      </div>
+
+      <select id="settingsBooksPerRow">
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+      </select>
+    </div>
+
+    <div class="settings-actions">
+      <button
+        id="settingsApplyLibrary"
+        class="settings-link"
+        type="button"
+      >
+        Apply
+      </button>
+    </div>
+  </div>
+</section>
 
     <!-- BACKUP & RESTORE -->
 
