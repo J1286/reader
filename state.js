@@ -131,6 +131,22 @@ const fileInput =
 const dropZone =
   document.getElementById("dropZone");
 
+/* ---------- Settings ---------- */
+
+const settingsDefaultStyle =
+  document.getElementById("settingsDefaultStyle");
+
+const settingsFontSize =
+  document.getElementById("settingsFontSize");
+
+const settingsLineSpacing =
+  document.getElementById("settingsLineSpacing");
+
+const settingsParagraphSpacing =
+  document.getElementById("settingsParagraphSpacing");
+
+const settingsReadingWidth =
+  document.getElementById("settingsReadingWidth");
 
 /* ---------- Application Navigation ---------- */
 
