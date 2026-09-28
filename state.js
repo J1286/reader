@@ -215,6 +215,11 @@ const appState = {
   library: [],
 
   currentBookId: null,
+   
+  librarySettings: {
+    sort: "recent",
+    booksPerRow: 2
+  },
 
   formatter: {
     ...DEFAULT_FORMATTER_SETTINGS
@@ -489,7 +494,8 @@ function saveAppState() {
       currentBookId: appState.currentBookId,
       formatter: appState.formatter,
       cleanup: appState.cleanup,
-      reader: appState.reader
+      reader: appState.reader,
+      librarySettings: appState.librarySettings
     };
 
     localStorage.setItem(
@@ -541,6 +547,12 @@ function loadAppState() {
     appState.currentBookId =
       savedState.currentBookId ||
       null;
+
+    appState.librarySettings = {
+      sort: "recent",
+      booksPerRow: 2,
+      ...(savedState.librarySettings || {})
+    };
 
     appState.formatter = {
       ...DEFAULT_FORMATTER_SETTINGS,
