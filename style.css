@@ -3146,6 +3146,12 @@ body:has(#libraryView:not(.hidden)) .library-actions {
   background: var(--button-hover);
 }
 
+.settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 16px;
+}
+
 /* MOBILE */
 
 @media (max-width: 600px) {
