@@ -148,6 +148,9 @@ const settingsParagraphSpacing =
 const settingsReadingWidth =
   document.getElementById("settingsReadingWidth");
 
+const settingsApplyDefaults =
+  document.getElementById("settingsApplyDefaults");
+
 /* ---------- Application Navigation ---------- */
 
 const modeButtons =
