@@ -151,6 +151,15 @@ const settingsReadingWidth =
 const settingsApplyDefaults =
   document.getElementById("settingsApplyDefaults");
 
+const settingsLibrarySort =
+  document.getElementById("settingsLibrarySort");
+
+const settingsBooksPerRow =
+  document.getElementById("settingsBooksPerRow");
+
+const settingsApplyLibrary =
+  document.getElementById("settingsApplyLibrary");
+
 /* ---------- Application Navigation ---------- */
 
 const modeButtons =
