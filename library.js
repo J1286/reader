@@ -413,9 +413,32 @@ async function renderLibrary() {
       return;
     }
 
-    books.sort((a, b) => {
-      return (b.lastOpened || 0) - (a.lastOpened || 0);
-    });
+    const sortMode =
+  appState.librarySettings?.sort || "recent";
+
+books.sort((a, b) => {
+
+  if (sortMode === "title") {
+    return (a.title || "").localeCompare(
+      b.title || "",
+      undefined,
+      { sensitivity: "base" }
+    );
+  }
+
+  if (sortMode === "progress") {
+    return (
+      (b.progress || 0) -
+      (a.progress || 0)
+    );
+  }
+
+  return (
+    (b.lastOpened || 0) -
+    (a.lastOpened || 0)
+  );
+
+});
 
     books.forEach((book) => {
       const card = document.createElement("article");
