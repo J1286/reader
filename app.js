@@ -63,6 +63,23 @@ async function setMode(mode) {
     renderCurrentView();
   }
 
+  if (mode === "settings") {
+  settingsDefaultStyle.value =
+    appState.formatter.preset || "book";
+
+  settingsFontSize.value =
+    appState.formatter.fontSize;
+
+  settingsLineSpacing.value =
+    appState.formatter.lineSpacing;
+
+  settingsParagraphSpacing.value =
+    appState.formatter.paragraphSpacing;
+
+  settingsReadingWidth.value =
+    appState.formatter.previewWidth;
+}
+
   stateChanged();
 }
 
