@@ -444,3 +444,30 @@ settingsBackupButton?.addEventListener("click", () => {
 settingsRestoreButton?.addEventListener("click", () => {
   restoreLibraryButton?.click();
 });
+
+/* Apply */
+
+settingsApplyDefaults?.addEventListener("click", () => {
+  appState.formatter.preset =
+    settingsDefaultStyle.value;
+
+  appState.formatter.fontSize =
+    Number(settingsFontSize.value);
+
+  appState.formatter.lineSpacing =
+    Number(settingsLineSpacing.value);
+
+  appState.formatter.paragraphSpacing =
+    Number(settingsParagraphSpacing.value);
+
+  appState.formatter.previewWidth =
+    Number(settingsReadingWidth.value);
+
+  saveAppState();
+
+  settingsApplyDefaults.textContent = "Applied";
+
+  setTimeout(() => {
+    settingsApplyDefaults.textContent = "Apply";
+  }, 1200);
+});
