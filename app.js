@@ -445,6 +445,26 @@ settingsRestoreButton?.addEventListener("click", () => {
   restoreLibraryButton?.click();
 });
 
+settingsApplyLibrary?.addEventListener("click", () => {
+
+  appState.librarySettings.sort =
+    settingsLibrarySort.value;
+
+  appState.librarySettings.booksPerRow =
+    Number(settingsBooksPerRow.value);
+
+  saveAppState();
+
+  renderLibrary();
+
+  settingsApplyLibrary.textContent = "Applied";
+
+  setTimeout(() => {
+    settingsApplyLibrary.textContent = "Apply";
+  }, 1200);
+
+});
+
 /* Apply */
 
 settingsApplyDefaults?.addEventListener("click", () => {
