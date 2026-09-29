@@ -160,6 +160,12 @@ const settingsBooksPerRow =
 const settingsApplyLibrary =
   document.getElementById("settingsApplyLibrary");
 
+const settingsCheckUpdate =
+  document.getElementById("settingsCheckUpdate");
+
+const settingsAppVersion =
+  document.getElementById("settingsAppVersion");
+
 /* ---------- Application Navigation ---------- */
 
 const modeButtons =
