@@ -512,7 +512,6 @@
 
 <div id="settingsView" class="app-view hidden">
   <div class="settings-page">
-    <h2 class="settings-page-title">Settings</h2>
 
     <!-- READING DEFAULTS -->
 
@@ -670,45 +669,6 @@
   </div>
 </section>
 
-<section class="settings-section">
-
-  <h3 class="settings-section-title">
-    App
-  </h3>
-
-  <div class="settings-card">
-
-    <div class="settings-row">
-      <div class="settings-row-info">
-        <strong>Check for Updates</strong>
-        <span>Check whether a newer version is available</span>
-      </div>
-
-      <button
-        id="settingsCheckUpdate"
-        class="settings-link"
-        type="button"
-      >
-        Check
-      </button>
-    </div>
-
-    <div class="settings-row">
-      <div class="settings-row-info">
-        <strong>Version</strong>
-        <span>Current installed version</span>
-      </div>
-
-      <span
-        id="settingsAppVersion"
-        class="settings-value"
-      >
-        —
-      </span>
-    </div>
-  </div>
-</section>
-
     <!-- BACKUP & RESTORE -->
 
 <section class="settings-section">
@@ -753,24 +713,38 @@
     <!-- ABOUT -->
 
     <section class="settings-section">
-
-  <h3 class="settings-section-title">
-    About
-  </h3>
+      <h3 class="settings-section-title">
+        About
+      </h3>
 
   <div class="settings-card">
 
     <div class="settings-row">
       <div class="settings-row-info">
         <strong>My Reader</strong>
-        <span>A simple personal reading app</span>
+        <span>A personal web reading and formatting tool</span>
       </div>
     </div>
 
     <div class="settings-row">
       <div class="settings-row-info">
+        <strong>Check for Updates</strong>
+        <span>Check whether a newer version is available</span>
+      </div>
+
+      <button
+        id="settingsCheckUpdate"
+        class="secondary"
+        type="button"
+      >
+        Check
+      </button>
+    </div>
+
+    <div class="settings-row">
+      <div class="settings-row-info">
         <strong>Version</strong>
-        <span>Current installed version</span>
+        <span>Current My Reader version</span>
       </div>
 
       <span
@@ -783,21 +757,22 @@
 
     <div class="settings-row">
       <div class="settings-row-info">
-        <strong>Source Code</strong>
-        <span>View the project on GitHub</span>
+        <strong>GitHub</strong>
+        <span>View the project source code</span>
       </div>
 
       <a
-        class="settings-link"
         href="https://github.com/J1286/reader"
         target="_blank"
         rel="noopener noreferrer"
+        class="settings-link"
       >
-        GitHub
+        Open
       </a>
     </div>
   </div>
 </section>
+	  
   </div>
 </div>
 	  
