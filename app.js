@@ -469,29 +469,74 @@ settingsApplyLibrary?.addEventListener("click", () => {
   checkUpdateButton?.click();
 });
 
-/* Apply */
+/* Settings → Reading Defaults */
 
 settingsApplyDefaults?.addEventListener("click", () => {
+  const fontSizeValue =
+    Number(settingsFontSize.value);
+
+  const lineSpacingValue =
+    Number(settingsLineSpacing.value);
+
+  const paragraphSpacingValue =
+    Number(settingsParagraphSpacing.value);
+
+  const readingWidthValue =
+    Number(settingsReadingWidth.value);
+
   appState.formatter.preset =
     settingsDefaultStyle.value;
 
   appState.formatter.fontSize =
-    Number(settingsFontSize.value);
+    fontSizeValue;
 
   appState.formatter.lineSpacing =
-    Number(settingsLineSpacing.value);
+    lineSpacingValue;
 
   appState.formatter.paragraphSpacing =
-    Number(settingsParagraphSpacing.value);
+    paragraphSpacingValue;
 
   appState.formatter.previewWidth =
-    Number(settingsReadingWidth.value);
+    readingWidthValue;
+
+  /* Keep Formatter controls in sync */
+  fontSize.value =
+    fontSizeValue;
+
+  lineSpacing.value =
+    lineSpacingValue;
+
+  paragraphSpacing.value =
+    paragraphSpacingValue;
+
+  previewWidth.value =
+    readingWidthValue;
+
+  /* Apply the same defaults to Reader */
+  appState.reader.fontSize =
+    fontSizeValue;
+
+  appState.reader.lineSpacing =
+    lineSpacingValue;
+
+  appState.reader.contentWidth =
+    readingWidthValue;
+
+  appState.formatter.indent =
+    settingsDefaultStyle.value === "book" ||
+    settingsDefaultStyle.value === "ereader";
 
   saveAppState();
 
-  settingsApplyDefaults.textContent = "Applied";
+  if (currentMode === "reader") {
+    renderReader();
+  }
+
+  settingsApplyDefaults.textContent =
+    "Applied";
 
   setTimeout(() => {
-    settingsApplyDefaults.textContent = "Apply";
+    settingsApplyDefaults.textContent =
+      "Apply";
   }, 1200);
 });
