@@ -166,6 +166,9 @@ const settingsCheckUpdate =
 const settingsAppVersion =
   document.getElementById("settingsAppVersion");
 
+const settingsAboutVersion =
+  document.getElementById("settingsAboutVersion");
+
 /* ---------- Application Navigation ---------- */
 
 const modeButtons =
