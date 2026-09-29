@@ -465,6 +465,10 @@ settingsApplyLibrary?.addEventListener("click", () => {
 
 });
 
+  settingsCheckUpdate?.addEventListener("click", () => {
+  checkUpdateButton?.click();
+});
+
 /* Apply */
 
 settingsApplyDefaults?.addEventListener("click", () => {
