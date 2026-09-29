@@ -469,6 +469,27 @@ settingsApplyLibrary?.addEventListener("click", () => {
   checkUpdateButton?.click();
 });
 
+settingsDefaultStyle?.addEventListener("change", () => {
+  const preset =
+    presetSettings[settingsDefaultStyle.value];
+
+  if (!preset) {
+    return;
+  }
+
+  settingsFontSize.value =
+    preset.fontSize;
+
+  settingsLineSpacing.value =
+    preset.lineSpacing;
+
+  settingsParagraphSpacing.value =
+    preset.paragraphSpacing;
+
+  settingsReadingWidth.value =
+    preset.previewWidth;
+});
+
 /* Settings → Reading Defaults */
 
 settingsApplyDefaults?.addEventListener("click", () => {
