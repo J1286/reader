@@ -392,6 +392,14 @@ async function syncLibraryState() {
 async function renderLibrary() {
   try {
     const books = await getAllBooks();
+	  
+	const booksPerRow =
+  appState.librarySettings?.booksPerRow || 2;
+
+libraryPanel.style.setProperty(
+  "--library-columns",
+  booksPerRow
+);
 
     appState.library = books;
 
