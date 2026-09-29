@@ -936,7 +936,15 @@
     const data = await response.json();
 
     if (data.version) {
-      appVersionLabel.textContent = `v${data.version}`;
+      const versionText = `v${data.version}`;
+
+      appVersionLabel.textContent =
+      versionText;
+
+    if (settingsAppVersion) {
+      settingsAppVersion.textContent =
+        versionText;
+      }
     }
   } catch (error) {
     console.error("Could not load app version:", error);
