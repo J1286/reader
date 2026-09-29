@@ -2569,7 +2569,8 @@ body.reader-fullscreen .reader-content {
 
 .library-panel {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 170px));
+  grid-template-columns:
+    repeat(var(--library-columns, 2), minmax(0, 170px));
   justify-content: center;
   align-items: end;
   gap: 18px;
@@ -2849,7 +2850,8 @@ body:has(#libraryView:not(.hidden)) #appTitle {
 /* Desktop */
 @media (min-width: 760px) {
   #libraryView .library-panel {
-    grid-template-columns: repeat(4, minmax(125px, 145px));
+    grid-template-columns:
+      repeat(var(--library-columns, 4), minmax(125px, 145px));
     column-gap: 55px;
     row-gap: 85px;
   }
@@ -2857,7 +2859,8 @@ body:has(#libraryView:not(.hidden)) #appTitle {
 
 @media (min-width: 1100px) {
   #libraryView .library-panel {
-    grid-template-columns: repeat(5, minmax(125px, 145px));
+    grid-template-columns:
+      repeat(var(--library-columns, 5), minmax(125px, 145px));
     column-gap: 65px;
   }
 }
@@ -2909,7 +2912,8 @@ body:has(#libraryView:not(.hidden)) #appTitle {
   }
 
   #libraryView .library-panel {
-    grid-template-columns: repeat(2, minmax(0, 135px));
+    grid-template-columns:
+      repeat(var(--library-columns, 2), minmax(0, 135px));
     justify-content: center;
     column-gap: 24px;
     row-gap: 55px;
