@@ -134,7 +134,7 @@ async function importFile(file) {
 
   if (!isSupportedFile(file)) {
     showStatus(
-      "Please choose a TXT, Markdown, Word or PDF file."
+      "Please choose a TXT, Markdown, HTML, Word or PDF file."
     );
 
     return;
@@ -150,6 +150,14 @@ async function importFile(file) {
 
   if (filename.endsWith(".pdf")) {
     await importPdfFile(file);
+    return;
+  }
+
+  if (
+    filename.endsWith(".htm") ||
+    filename.endsWith(".html")
+  ) {
+    await importHtmlFile(file);
     return;
   }
 
@@ -190,11 +198,54 @@ function isSupportedFile(file) {
     filename.endsWith(".txt") ||
     filename.endsWith(".md") ||
     filename.endsWith(".text") ||
-    filename.endsWith(".docx") || 
+    filename.endsWith(".htm") ||
+    filename.endsWith(".html") ||
+    filename.endsWith(".docx") ||
     filename.endsWith(".pdf")
   );
 }
 
+async function importHtmlFile(file) {
+  try {
+    const html =
+      await file.text();
+
+    const parser =
+      new DOMParser();
+
+    const document =
+      parser.parseFromString(
+        html,
+        "text/html"
+      );
+
+    document
+      .querySelectorAll("script, style, noscript")
+      .forEach(element => {
+        element.remove();
+      });
+
+    const text =
+      document.body?.innerText ||
+      document.body?.textContent ||
+      "";
+
+    await loadImportedText(
+      text,
+      file.name
+    );
+
+  } catch (error) {
+    console.error(
+      "Could not read HTML file:",
+      error
+    );
+
+    showStatus(
+      "Could not read that HTML file."
+    );
+  }
+}
 
 async function importTextFile(file) {
   try {
