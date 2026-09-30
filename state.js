@@ -154,6 +154,9 @@ const settingsReadingWidth =
 const settingsApplyDefaults =
   document.getElementById("settingsApplyDefaults");
 
+const settingsResetDefaults =
+  document.getElementById("settingsResetDefaults");
+
 const settingsLibrarySort =
   document.getElementById("settingsLibrarySort");
 
