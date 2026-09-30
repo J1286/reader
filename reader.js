@@ -119,8 +119,8 @@ function renderReader() {
   }px`;
 
    const readerFonts = {
-  current:
-    'Georgia, "Noto Serif CJK TC", "Noto Serif CJK SC", "Times New Roman", serif',
+  system:
+  'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
 
   book:
     'Georgia, "Noto Serif CJK TC", "Noto Serif CJK SC", "Times New Roman", serif',
@@ -137,7 +137,7 @@ function renderReader() {
 
 readerContent.style.fontFamily =
   readerFonts[appState.reader.fontFamily] ||
-  readerFonts.current;
+  readerFonts.system;
 
   readerContent.style.lineHeight =
     parseFloat(appState.reader.lineSpacing) || 1.6;
