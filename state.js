@@ -136,6 +136,9 @@ const dropZone =
 const settingsDefaultStyle =
   document.getElementById("settingsDefaultStyle");
 
+const settingsDefaultFont =
+  document.getElementById("settingsDefaultFont");
+
 const settingsFontSize =
   document.getElementById("settingsFontSize");
 
@@ -191,7 +194,8 @@ const DEFAULT_READER_SETTINGS = {
   fontSize: 18,
   lineSpacing: 1.6,
   theme: "light",
-  contentWidth: 720
+  contentWidth: 720,
+  fontFamily: "current"
 };
 
 const DEFAULT_FORMATTER_SETTINGS = {
