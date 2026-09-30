@@ -526,6 +526,9 @@ settingsApplyDefaults?.addEventListener("click", () => {
   appState.formatter.preset =
     settingsDefaultStyle.value;
 
+  appState.reader.fontFamily =
+    settingsDefaultFont.value;
+
   appState.formatter.fontSize =
     fontSizeValue;
 
