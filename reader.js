@@ -118,6 +118,27 @@ function renderReader() {
     parseFloat(appState.reader.fontSize) || 18
   }px`;
 
+   const readerFonts = {
+  current:
+    'Georgia, "Noto Serif CJK TC", "Noto Serif CJK SC", "Times New Roman", serif',
+
+  book:
+    'Georgia, "Noto Serif CJK TC", "Noto Serif CJK SC", "Times New Roman", serif',
+
+  ereader:
+    '"Noto Sans CJK TC", "PingFang TC", "Microsoft JhengHei", Arial, sans-serif',
+
+  web:
+    'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+
+  manuscript:
+    '"Courier New", monospace'
+};
+
+readerContent.style.fontFamily =
+  readerFonts[appState.reader.fontFamily] ||
+  readerFonts.current;
+
   readerContent.style.lineHeight =
     parseFloat(appState.reader.lineSpacing) || 1.6;
 
