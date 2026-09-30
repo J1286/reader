@@ -207,28 +207,79 @@ function isSupportedFile(file) {
 
 async function importHtmlFile(file) {
   try {
-    const html =
-      await file.text();
+    const buffer = await file.arrayBuffer();
+    const bytes = new Uint8Array(buffer);
 
-    const parser =
-      new DOMParser();
+    // Read the beginning of the file using an ASCII-compatible encoding
+    // so we can look for a declared charset.
+    const header = new TextDecoder("windows-1252").decode(
+      bytes.slice(0, 8192)
+    );
 
-    const document =
-      parser.parseFromString(
-        html,
-        "text/html"
-      );
+    const charsetMatch = header.match(
+      /charset\s*=\s*["']?\s*([a-zA-Z0-9._-]+)/i
+    );
 
+    let encoding =
+      charsetMatch?.[1]?.toLowerCase() || null;
+
+    // Common names for CP950.
+    if (
+      encoding === "cp950" ||
+      encoding === "950"
+    ) {
+      encoding = "windows-950";
+    }
+
+    let html;
+
+    if (encoding) {
+      try {
+        html = new TextDecoder(encoding).decode(bytes);
+      } catch {
+        // If the declared encoding isn't supported,
+        // fall back to UTF-8.
+        html = new TextDecoder("utf-8").decode(bytes);
+      }
+    } else {
+      // Try UTF-8 first.
+      try {
+        html = new TextDecoder("utf-8", {
+          fatal: true
+        }).decode(bytes);
+      } catch {
+        // Older Chinese HTML files are often Big5 / CP950.
+        try {
+          html = new TextDecoder("windows-950").decode(bytes);
+        } catch {
+          html = new TextDecoder("big5").decode(bytes);
+        }
+      }
+    }
+
+    const parser = new DOMParser();
+
+    const document = parser.parseFromString(
+      html,
+      "text/html"
+    );
+
+    // Remove things that shouldn't become book text.
     document
       .querySelectorAll("script, style, noscript")
-      .forEach(element => {
+      .forEach((element) => {
         element.remove();
       });
 
-    const text =
-      document.body?.innerText ||
-      document.body?.textContent ||
-      "";
+    // Preserve formatting when the HTML uses <pre>,
+    // which is common in older online novels.
+    const pre = document.body?.querySelector("pre");
+
+    const text = pre
+      ? pre.textContent || ""
+      : document.body?.innerText ||
+        document.body?.textContent ||
+        "";
 
     await loadImportedText(
       text,
