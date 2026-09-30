@@ -492,6 +492,24 @@ settingsDefaultStyle?.addEventListener("change", () => {
 
 /* Settings → Reading Defaults */
 
+settingsResetDefaults?.addEventListener("click", () => {
+  settingsDefaultStyle.value = "book";
+  settingsDefaultFont.value = "system";
+
+  settingsFontSize.value = 18;
+  settingsLineSpacing.value = 1.6;
+  settingsParagraphSpacing.value = 16;
+  settingsReadingWidth.value = 800;
+
+  settingsResetDefaults.textContent =
+    "Reset";
+
+  setTimeout(() => {
+    settingsResetDefaults.textContent =
+      "Reset to Default";
+  }, 1200);
+});
+
 settingsApplyDefaults?.addEventListener("click", () => {
   const fontSizeValue =
     Number(settingsFontSize.value);
