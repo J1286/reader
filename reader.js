@@ -96,13 +96,6 @@ function renderReader() {
 
   const book = getCurrentBook();
 
-  const searchPosition =
-    Number.isFinite(
-      Number(appState.reader.searchPosition)
-    )
-      ? Number(appState.reader.searchPosition)
-      : null;
-
   restoringReaderPosition = true;
 
   const text = book?.text || "";
@@ -251,7 +244,7 @@ readerContent.style.fontFamily =
 
     const restoredScrollTop = Math.min(Math.max(0, savedScrollTop), maxScroll);
 
-    if (searchPosition !== null) {
+    if (pendingSearchPosition !== null) {
 
   const paragraphs =
     getBookParagraphs(text);
@@ -276,19 +269,17 @@ readerContent.style.fontFamily =
       paragraphText.length;
 
     if (
-      searchPosition >= paragraphStart &&
-      searchPosition <= paragraphEnd
+      pendingSearchPosition >= paragraphStart &&
+      pendingSearchPosition <= paragraphEnd
     ) {
 
       targetIndex = i;
       break;
-
     }
 
     characterCount =
       paragraphEnd + 1;
   }
-
 
   if (targetIndex >= 0) {
 
@@ -302,19 +293,15 @@ readerContent.style.fontFamily =
       });
 
     }
-
   }
 
-  appState.reader.searchPosition =
-    null;
+  pendingSearchPosition = null;
 
 } else {
 
   readerContent.scrollTop =
     restoredScrollTop;
-
 }
-
 
 updateReaderProgress();
 updateReaderChapterNavigation();
