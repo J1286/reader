@@ -106,11 +106,6 @@
           <span class="menu-icon">🛠️</span>
           <span>Tools</span>
         </button>
-
-		<button class="menu-item" data-mode="search" type="button">
-  		  <span class="menu-icon">🔍</span>
-  		  <span>Search</span>
-		</button>
 		  
 		<button class="menu-item" data-mode="settings" type="button">
   		  <span class="menu-icon">⚙️</span>
@@ -139,23 +134,7 @@
 
 	<!-- SEARCH VIEW -->
 <div id="searchView" class="app-view hidden">
-  <section class="search-container">
-    <div class="search-box">
-      <input
-        id="searchInput"
-        type="search"
-        placeholder="Search your library..."
-        autocomplete="off"
-      >
-
-      <button
-        id="searchButton"
-        type="button"
-        aria-label="Search"
-      >
-        🔍
-      </button>
-    </div>
+  <section class="search-container">    
     <div id="searchResults"></div>
   </section>
 </div>
@@ -863,7 +842,6 @@
 	
   <script src="./import.js"></script>
   <script src="./library.js"></script>
-  <script src="./search.js"></script>
   <script src="./backup.js"></script>
   <script src="./export.js"></script>
   <script src="./app.js"></script>
