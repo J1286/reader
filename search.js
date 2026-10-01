@@ -43,16 +43,22 @@ async function performLibrarySearch() {
     const textLower =
       text.toLocaleLowerCase();
 
-    const textIndex =
-      textLower.indexOf(searchTerm);
+    let searchPosition = 0;
+    let foundTextMatch = false;
 
-    if (!titleMatch && textIndex === -1) {
-      return;
-    }
+    while (true) {
 
-    let snippet = "";
+      const textIndex =
+        textLower.indexOf(
+          searchTerm,
+          searchPosition
+        );
 
-    if (textIndex !== -1) {
+      if (textIndex === -1) {
+        break;
+      }
+
+      foundTextMatch = true;
 
       const start =
         Math.max(0, textIndex - 80);
@@ -63,7 +69,7 @@ async function performLibrarySearch() {
           textIndex + query.length + 120
         );
 
-      snippet =
+      let snippet =
         text
           .slice(start, end)
           .replace(/\s+/g, " ")
@@ -77,19 +83,32 @@ async function performLibrarySearch() {
         snippet += "…";
       }
 
-    } else {
+      matches.push({
+        book,
+        snippet,
+        searchPosition: textIndex
+      });
 
-      snippet =
-        "Match found in book title.";
+      searchPosition =
+        textIndex + Math.max(query.length, 1);
+    }
+
+    if (
+      titleMatch &&
+      !foundTextMatch
+    ) {
+
+      matches.push({
+        book,
+        snippet:
+          "Match found in book title.",
+        searchPosition: null
+      });
 
     }
 
-    matches.push({
-      book,
-      snippet
-    });
-
   });
+
 
   if (!matches.length) {
 
@@ -99,44 +118,66 @@ async function performLibrarySearch() {
     return;
   }
 
-  matches.forEach(({ book, snippet }) => {
 
-    const result =
-      document.createElement("button");
+  matches.forEach(
+    ({
+      book,
+      snippet,
+      searchPosition
+    }) => {
 
-    result.type = "button";
-    result.className = "search-result";
+      const result =
+        document.createElement("button");
 
-    const title =
-      document.createElement("strong");
+      result.type = "button";
+      result.className =
+        "search-result";
 
-    title.textContent =
-      book.title || "Untitled";
 
-    const preview =
-      document.createElement("span");
+      const title =
+        document.createElement("strong");
 
-    preview.textContent =
-      snippet;
+      title.textContent =
+        book.title || "Untitled";
 
-    result.appendChild(title);
-    result.appendChild(preview);
 
-    result.addEventListener(
-      "click",
-      () => {
-        openBook(book.id);
-      }
-    );
+      const preview =
+        document.createElement("span");
 
-    searchResults.appendChild(result);
-  });
+      preview.textContent =
+        snippet;
+
+
+      result.appendChild(title);
+      result.appendChild(preview);
+
+
+      result.addEventListener(
+        "click",
+        () => {
+
+          openBook(
+            book.id,
+            searchPosition
+          );
+
+        }
+      );
+
+
+      searchResults.appendChild(result);
+
+    }
+  );
+
 }
+
 
 searchButton?.addEventListener(
   "click",
   performLibrarySearch
 );
+
 
 searchInput?.addEventListener(
   "keydown",
@@ -145,5 +186,6 @@ searchInput?.addEventListener(
     if (event.key === "Enter") {
       performLibrarySearch();
     }
+
   }
 );
