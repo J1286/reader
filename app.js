@@ -50,9 +50,17 @@ async function setMode(mode) {
     mode !== "settings" 
   );
 
+  searchView.classList.toggle(
+    "hidden",
+    mode !== "search"
+  );
+
   if (mode === "library") {
     await syncLibraryState();
     await renderLibrary();
+  } else if 
+     (mode === "search") {
+     appTitle.textContent = "Search";
   }
 
   if (mode === "reader") {
@@ -430,6 +438,9 @@ formatHelpButton?.addEventListener("click", () => {
 /* =================================================
    SETTINGS → BACKUP & RESTORE
 ================================================= */
+
+const searchView =
+  document.getElementById("searchView");
 
 const settingsBackupButton =
   document.getElementById("settingsBackupButton");
