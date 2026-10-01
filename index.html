@@ -106,6 +106,40 @@
           <span class="menu-icon">🛠️</span>
           <span>Tools</span>
         </button>
+
+		<button
+  		  class="menu-item"
+  		  type="button"
+  		  data-action="search"
+	    >
+  		  <span class="menu-icon">🔍</span>
+  		  <span>Search</span>
+		</button>
+
+		<section id="searchView" class="hidden">
+  <div class="search-container">
+
+    <div class="search-box">
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="Search your library..."
+        autocomplete="off"
+      >
+
+      <button
+        id="searchButton"
+        type="button"
+        aria-label="Search"
+      >
+        🔍
+      </button>
+    </div>
+
+    <div id="searchResults"></div>
+
+  </div>
+</section>
 		  
 		<button class="menu-item" data-mode="settings" type="button">
   		  <span class="menu-icon">⚙️</span>
