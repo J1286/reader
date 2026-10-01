@@ -361,6 +361,7 @@ function updateReaderProgress() {
 
 let readerSaveTimer = null;
 let restoringReaderPosition = false;
+let pendingSearchPosition = null;
 
 async function persistReaderPosition() {
   if (restoringReaderPosition) {
