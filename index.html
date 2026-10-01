@@ -107,18 +107,39 @@
           <span>Tools</span>
         </button>
 
-		<button
-  		  class="menu-item"
-  		  type="button"
-  		  data-action="search"
-	    >
+		<button class="menu-item" data-mode="search" type="button">
   		  <span class="menu-icon">🔍</span>
   		  <span>Search</span>
 		</button>
+		  
+		<button class="menu-item" data-mode="settings" type="button">
+  		  <span class="menu-icon">⚙️</span>
+  		  <span>Settings</span>
+	    </button>
+      </nav>
 
-		<section id="searchView" class="hidden">
-  <div class="search-container">
+        <div class="side-menu-update">
+  			 <button id="checkUpdateButton" class="update-menu-item" type="button">
+  				<span class="menu-icon">🔄</span>
+  				<span>Check for Updates</span>
+  				<span id="appVersionLabel" class="app-version-label"></span>
+			</button>
+		</div>		
+    </aside>
 
+    <div id="menuBackdrop" class="menu-backdrop"></div>
+
+    <!-- LIBRARY VIEW -->
+
+    <div id="libraryView" class="app-view">
+      <section id="librarySection">
+        <div id="libraryPanel" class="library-panel"></div>
+      </section>
+    </div>
+
+	<!-- SEARCH VIEW -->
+<div id="searchView" class="app-view hidden">
+  <section class="search-container">
     <div class="search-box">
       <input
         id="searchInput"
@@ -135,48 +156,14 @@
         🔍
       </button>
     </div>
-
     <div id="searchResults"></div>
-
-  </div>
-</section>
-		  
-		<button class="menu-item" data-mode="settings" type="button">
-  		  <span class="menu-icon">⚙️</span>
-  		  <span>Settings</span>
-	    </button>
-      </nav>
-
-        <div class="side-menu-update">
-  			 <button id="checkUpdateButton" class="update-menu-item" type="button">
-  				<span class="menu-icon">🔄</span>
-  				<span>Check for Updates</span>
-  				<span id="appVersionLabel" class="app-version-label"></span>
-			</button>
-		</div>
-		
-    </aside>
-
-    <div id="menuBackdrop" class="menu-backdrop"></div>
-
-    <!-- LIBRARY VIEW -->
-
-    <div id="libraryView" class="app-view">
-
-      <section id="librarySection">
-
-        <div id="libraryPanel" class="library-panel"></div>
-
-      </section>
-
-    </div>
+  </section>
+</div>
 
     <!-- READER VIEW -->
 
     <div id="readerView" class="app-view hidden">
-
       <section class="reader-header">
-
         <div>
           <h2 id="readerTitle">Untitled</h2>
 
@@ -184,68 +171,52 @@
             No book loaded
           </div>
         </div>
-
         <button id="readerSettingsButton" class="reader-settings-button" type="button" aria-label="Reading settings" aria-expanded="false">
           Aa
         </button>
-
       </section>
 
       <section id="readerControls" class="reader-controls reader-controls-hidden">
-
         <div class="reader-control-group">
-
           <span class="reader-control-label">
             Text
           </span>
-
           <button id="readerFontDecrease" class="secondary" type="button" title="Decrease font size">
             A−
           </button>
-
           <span id="readerFontSize">
             18px
           </span>
-
           <button id="readerFontIncrease" class="secondary" type="button" title="Increase font size">
             A+
           </button>
-
         </div>
 
         <div class="reader-control-group">
-
           <span class="reader-control-label">
             Spacing
           </span>
-
           <button id="readerSpacingDecrease" class="secondary" type="button" title="Decrease line spacing">
             −
           </button>
-
           <span id="readerSpacing">
             1.6
           </span>
-
           <button id="readerSpacingIncrease" class="secondary" type="button" title="Increase line spacing">
             +
           </button>
         </div>
 
         <div class="reader-control-group">
-
           <span class="reader-control-label">
             Theme
           </span>
-
           <button class="reader-theme-button active" data-reader-theme="light" type="button">
             ☀️
           </button>
-
           <button class="reader-theme-button" data-reader-theme="dark" type="button">
             🌙
           </button>
-
           <button class="reader-theme-button" data-reader-theme="sepia" type="button">
             📖
           </button>
@@ -258,11 +229,9 @@
         <button id="readerResetButton" class="secondary" type="button">
           Reset
         </button>
-
       </section>
 
       <div class="reader-chapter-nav">
-
         <button id="readerPreviousChapter" class="secondary" type="button">
           ← Previous
         </button>
@@ -277,9 +246,7 @@
       </div>
 
       <section class="reader-container">
-
         <article id="readerContent" class="reader-content"></article>
-
       </section>
 
       <div class="reader-progress-container">
@@ -289,11 +256,10 @@
 
         <span id="readerProgressText">0%</span>
       </div>
-
     </div>
 
     <!-- FORMATTER VIEW -->
-
+	  
     <div id="formatterView" class="app-view hidden">
 
       <!-- CLEANUP -->
@@ -331,9 +297,7 @@
         </div>
 
         <div id="cleanupResult" class="cleanup-result hidden">
-
           <div class="cleanup-header">
-
             <strong>
               Suggested cleanup
             </strong>
