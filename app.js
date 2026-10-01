@@ -50,13 +50,14 @@ async function setMode(mode) {
     mode !== "settings" 
   );
 
-  if (mode === "library") {
+    if (mode === "library") {
     await syncLibraryState();
     await renderLibrary();
-
-  if (mode === "reader") {
-    renderReader();
   }
+
+    if (mode === "reader") {
+      renderReader();
+    }
 
   if (mode === "formatter") {
     renderCurrentView();
