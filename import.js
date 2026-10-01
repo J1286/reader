@@ -300,13 +300,31 @@ async function importHtmlFile(file) {
 
 async function importTextFile(file) {
   try {
-    const text =
-      await file.text();
+    const buffer = await file.arrayBuffer();
+const bytes = new Uint8Array(buffer);
 
-    await loadImportedText(
-      text,
-      file.name
-    );
+let text;
+
+try {
+  // Modern TXT files
+  text = new TextDecoder("utf-8", {
+    fatal: true
+  }).decode(bytes);
+
+} catch {
+  try {
+    text = new TextDecoder("windows-950").decode(bytes);
+
+  } catch {
+    // Final fallback
+    text = new TextDecoder("big5").decode(bytes);
+  }
+}
+
+await loadImportedText(
+  text,
+  file.name
+);
   } catch (error) {
     console.error(
       "Could not read text file:",
