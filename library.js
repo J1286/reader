@@ -583,7 +583,10 @@ function getBookCoverHue(value) {
    OPEN BOOK
 ================================================= */
 
-async function openBook(bookId) {
+async function openBook(
+  bookId,
+  searchPosition = null
+) {
   try {
     const storedBook =
       await getBook(bookId);
@@ -613,6 +616,9 @@ async function openBook(bookId) {
     setCurrentBook(
       bookId
     );
+
+	appState.reader.searchPosition =
+  	  searchPosition;
 
     loadCurrentBookReaderState();
 
