@@ -93,7 +93,15 @@ presetSelect?.addEventListener("change", () => {
 ================================================= */
 
 function renderReader() {
+
   const book = getCurrentBook();
+
+  const searchPosition =
+    Number.isFinite(
+      Number(appState.reader.searchPosition)
+    )
+      ? Number(appState.reader.searchPosition)
+      : null;
 
   restoringReaderPosition = true;
 
@@ -243,15 +251,76 @@ readerContent.style.fontFamily =
 
     const restoredScrollTop = Math.min(Math.max(0, savedScrollTop), maxScroll);
 
-    readerContent.scrollTop = restoredScrollTop;
+    if (searchPosition !== null) {
 
-    updateReaderProgress();
+  const paragraphs =
+    getBookParagraphs(text);
 
-    updateReaderChapterNavigation();
+  let characterCount = 0;
+  let targetIndex = -1;
 
-    updateReaderControls();
+  for (
+    let i = 0;
+    i < paragraphs.length;
+    i += 1
+  ) {
 
-    restoringReaderPosition = false;
+    const paragraphText =
+      paragraphs[i];
+
+    const paragraphStart =
+      characterCount;
+
+    const paragraphEnd =
+      characterCount +
+      paragraphText.length;
+
+    if (
+      searchPosition >= paragraphStart &&
+      searchPosition <= paragraphEnd
+    ) {
+
+      targetIndex = i;
+      break;
+
+    }
+
+    characterCount =
+      paragraphEnd + 1;
+  }
+
+
+  if (targetIndex >= 0) {
+
+    const targetParagraph =
+      readerContent.children[targetIndex];
+
+    if (targetParagraph) {
+
+      targetParagraph.scrollIntoView({
+        block: "center"
+      });
+
+    }
+
+  }
+
+  appState.reader.searchPosition =
+    null;
+
+} else {
+
+  readerContent.scrollTop =
+    restoredScrollTop;
+
+}
+
+
+updateReaderProgress();
+updateReaderChapterNavigation();
+updateReaderControls();
+
+restoringReaderPosition = false;
   });
 }
 
