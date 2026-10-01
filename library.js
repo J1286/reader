@@ -647,6 +647,9 @@ async function openBook(
 
     await renderLibrary();
 
+	pendingSearchPosition =
+  	  searchPosition;
+
     setMode("reader");
 
     showStatus(
