@@ -617,9 +617,6 @@ async function openBook(
       bookId
     );
 
-	appState.reader.searchPosition =
-  	  searchPosition;
-
     loadCurrentBookReaderState();
 
     const book =
