@@ -365,18 +365,17 @@ LIBRARY INITIALIZATION
   );
 
   openLibraryDB()
-    .then(() => renderLibrary())
-    .catch((error) => {
-      console.error(
+  .then(() => renderLibrary())
+  .catch((error) => {
+    console.error(
       "Could not open the book library:",
       error
     );
 
-  showStatus(
-    "Could not open the book library."
-  );
- });
-
+    showStatus(
+      "Could not open the book library."
+    );
+  });
 
 /* =================================================
 INITIAL STATE
