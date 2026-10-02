@@ -489,6 +489,31 @@ settingsDefaultStyle?.addEventListener("change", () => {
     preset.previewWidth;
 });
 
+  const readerSearchButton =
+    document.getElementById("readerSearchButton");
+
+const readerSearchBar =
+  document.getElementById("readerSearchBar");
+
+const readerSearchInput =
+  document.getElementById("readerSearchInput");
+
+const readerSearchClose =
+  document.getElementById("readerSearchClose");
+
+  readerSearchButton?.addEventListener("click", () => {
+  readerSearchBar?.classList.toggle("hidden");
+
+  if (!readerSearchBar?.classList.contains("hidden")) {
+    readerSearchInput?.focus();
+  }
+});
+
+readerSearchClose?.addEventListener("click", () => {
+  readerSearchBar?.classList.add("hidden");
+  readerSearchInput.value = "";
+});
+
 /* Settings → Reading Defaults */
 
 settingsResetDefaults?.addEventListener("click", () => {
