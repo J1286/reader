@@ -4,7 +4,6 @@
 
 function download(blob, filename) {
   const url = URL.createObjectURL(blob);
-
   const link = document.createElement("a");
 
   link.href = url;
@@ -13,9 +12,7 @@ function download(blob, filename) {
   document.body.appendChild(link);
 
   link.click();
-
   link.remove();
-
   URL.revokeObjectURL(url);
 }
 
