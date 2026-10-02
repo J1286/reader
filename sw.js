@@ -22,9 +22,9 @@ const APP_SHELL = [
 
 /* INSTALL */
 
-self.addEventListener("install", event => {
+self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
+    caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(APP_SHELL);
     })
   );
@@ -32,7 +32,7 @@ self.addEventListener("install", event => {
 
 /* MESSAGE */
 
-self.addEventListener("message", event => {
+self.addEventListener("message", (event) => {
   if (event.data === "SKIP_WAITING") {
     self.skipWaiting();
   }
@@ -40,13 +40,13 @@ self.addEventListener("message", event => {
 
 /* ACTIVATE */
 
-self.addEventListener("activate", event => {
+self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then(keys => {
+    caches.keys().then((keys) => {
       return Promise.all(
         keys
-          .filter(key => key !== CACHE_NAME)
-          .map(key => caches.delete(key))
+          .filter((key) => key !== CACHE_NAME)
+          .map((key) => caches.delete(key))
       );
     })
   );
