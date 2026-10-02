@@ -4,7 +4,6 @@
 
 let dragCounter = 0;
 
-
 /* =================================================
    IMPORT
 ================================================= */
@@ -63,19 +62,14 @@ async function importPdfFile(file) {
 
     const pages = [];
 
-    for (
-      let pageNumber = 1;
-      pageNumber <= pdf.numPages;
-      pageNumber++
-    ) {
+    for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
       const page = await pdf.getPage(pageNumber);
 
-      const textContent =
-        await page.getTextContent();
+      const textContent = await page.getTextContent();
 
       const items = textContent.items
-        .filter(item => item.str && item.str.trim())
-        .map(item => ({
+        .filter((item) => item.str && item.str.trim())
+        .map((item) => ({
           text: item.str.trim(),
           x: item.transform[4],
           y: item.transform[5]
@@ -84,10 +78,7 @@ async function importPdfFile(file) {
       const lines = [];
 
       for (const item of items) {
-        let line = lines.find(
-          existing =>
-            Math.abs(existing.y - item.y) < 3
-        );
+        let line = lines.find((existing) => Math.abs(existing.y - item.y) < 3);
 
         if (!line) {
           line = {
@@ -103,12 +94,10 @@ async function importPdfFile(file) {
 
       lines.sort((a, b) => b.y - a.y);
 
-      const pageLines = lines.map(line => {
+      const pageLines = lines.map((line) => {
         line.items.sort((a, b) => a.x - b.x);
 
-        return line.items
-          .map(item => item.text)
-          .join(" ");
+        return line.items.map((item) => item.text).join(" ");
       });
 
       pages.push(pageLines.join("\n"));
@@ -117,13 +106,10 @@ async function importPdfFile(file) {
     const text = pages.join("\n\n");
 
     await loadImportedText(text, file.name);
-
   } catch (error) {
     console.error("Could not import PDF:", error);
 
-    showStatus(
-      "The PDF could not be imported."
-    );
+    showStatus("The PDF could not be imported.");
   }
 }
 
@@ -133,15 +119,12 @@ async function importFile(file) {
   }
 
   if (!isSupportedFile(file)) {
-    showStatus(
-      "Please choose a TXT, Markdown, HTML, Word or PDF file."
-    );
+    showStatus("Please choose a TXT, Markdown, HTML, Word or PDF file.");
 
     return;
   }
 
-  const filename =
-    file.name.toLowerCase();
+  const filename = file.name.toLowerCase();
 
   if (filename.endsWith(".docx")) {
     await importWordFile(file);
@@ -153,10 +136,7 @@ async function importFile(file) {
     return;
   }
 
-  if (
-    filename.endsWith(".htm") ||
-    filename.endsWith(".html")
-  ) {
+  if (filename.endsWith(".htm") || filename.endsWith(".html")) {
     await importHtmlFile(file);
     return;
   }
@@ -164,35 +144,26 @@ async function importFile(file) {
   await importTextFile(file);
 }
 
-browseFileButton.addEventListener(
-  "click",
-  () => {
-    fileInput.click();
+browseFileButton.addEventListener("click", () => {
+  fileInput.click();
+});
+
+fileInput.addEventListener("change", async () => {
+  const file = fileInput.files[0];
+
+  if (file) {
+    await importFile(file);
   }
-);
 
-
-fileInput.addEventListener(
-  "change",
-  async () => {
-    const file =
-      fileInput.files[0];
-
-    if (file) {
-      await importFile(file);
-    }
-
-    fileInput.value = "";
-   }
- );
+  fileInput.value = "";
+});
 
 /* =================================================
    DRAG AND DROP
 ================================================= */
 
 function isSupportedFile(file) {
-  const filename =
-    file.name.toLowerCase();
+  const filename = file.name.toLowerCase();
 
   return (
     filename.endsWith(".txt") ||
@@ -212,22 +183,16 @@ async function importHtmlFile(file) {
 
     // Read the beginning of the file using an ASCII-compatible encoding
     // so we can look for a declared charset.
-    const header = new TextDecoder("windows-1252").decode(
-      bytes.slice(0, 8192)
-    );
+    const header = new TextDecoder("windows-1252").decode(bytes.slice(0, 8192));
 
     const charsetMatch = header.match(
       /charset\s*=\s*["']?\s*([a-zA-Z0-9._-]+)/i
     );
 
-    let encoding =
-      charsetMatch?.[1]?.toLowerCase() || null;
+    let encoding = charsetMatch?.[1]?.toLowerCase() || null;
 
     // Common names for CP950.
-    if (
-      encoding === "cp950" ||
-      encoding === "950"
-    ) {
+    if (encoding === "cp950" || encoding === "950") {
       encoding = "windows-950";
     }
 
@@ -259,17 +224,12 @@ async function importHtmlFile(file) {
 
     const parser = new DOMParser();
 
-    const document = parser.parseFromString(
-      html,
-      "text/html"
-    );
+    const document = parser.parseFromString(html, "text/html");
 
     // Remove things that shouldn't become book text.
-    document
-      .querySelectorAll("script, style, noscript")
-      .forEach((element) => {
-        element.remove();
-      });
+    document.querySelectorAll("script, style, noscript").forEach((element) => {
+      element.remove();
+    });
 
     // Preserve formatting when the HTML uses <pre>,
     // which is common in older online novels.
@@ -277,216 +237,128 @@ async function importHtmlFile(file) {
 
     const text = pre
       ? pre.textContent || ""
-      : document.body?.innerText ||
-        document.body?.textContent ||
-        "";
+      : document.body?.innerText || document.body?.textContent || "";
 
-    await loadImportedText(
-      text,
-      file.name
-    );
-
+    await loadImportedText(text, file.name);
   } catch (error) {
-    console.error(
-      "Could not read HTML file:",
-      error
-    );
+    console.error("Could not read HTML file:", error);
 
-    showStatus(
-      "Could not read that HTML file."
-    );
+    showStatus("Could not read that HTML file.");
   }
 }
 
 async function importTextFile(file) {
   try {
     const buffer = await file.arrayBuffer();
-const bytes = new Uint8Array(buffer);
+    const bytes = new Uint8Array(buffer);
 
-let text;
+    let text;
 
-try {
-  // Modern TXT files
-  text = new TextDecoder("utf-8", {
-    fatal: true
-  }).decode(bytes);
+    try {
+      // Modern TXT files
+      text = new TextDecoder("utf-8", {
+        fatal: true
+      }).decode(bytes);
+    } catch {
+      try {
+        text = new TextDecoder("windows-950").decode(bytes);
+      } catch {
+        // Final fallback
+        text = new TextDecoder("big5").decode(bytes);
+      }
+    }
 
-} catch {
-  try {
-    text = new TextDecoder("windows-950").decode(bytes);
-
-  } catch {
-    // Final fallback
-    text = new TextDecoder("big5").decode(bytes);
-  }
-}
-
-await loadImportedText(
-  text,
-  file.name
-);
+    await loadImportedText(text, file.name);
   } catch (error) {
-    console.error(
-      "Could not read text file:",
-      error
-    );
+    console.error("Could not read text file:", error);
 
-    showStatus(
-      "Could not read that text file."
-    );
+    showStatus("Could not read that text file.");
   }
 }
-
 
 async function importWordFile(file) {
   if (!window.mammoth) {
-    showStatus(
-      "Word import library unavailable."
-    );
+    showStatus("Word import library unavailable.");
 
-    console.error(
-      "Mammoth.js was not loaded."
-    );
+    console.error("Mammoth.js was not loaded.");
 
     return;
   }
 
   try {
-    showStatus(
-      "Reading Word document..."
-    );
+    showStatus("Reading Word document...");
 
-    const arrayBuffer =
-      await file.arrayBuffer();
+    const arrayBuffer = await file.arrayBuffer();
 
-    const result =
-      await window.mammoth.extractRawText({
-        arrayBuffer
-      });
+    const result = await window.mammoth.extractRawText({
+      arrayBuffer
+    });
 
-    const text =
-      result.value;
+    const text = result.value;
 
-    if (
-      result.messages &&
-      result.messages.length
-    ) {
-      console.info(
-        "Word import messages:",
-        result.messages
-      );
+    if (result.messages && result.messages.length) {
+      console.info("Word import messages:", result.messages);
     }
 
-    await loadImportedText(
-      text,
-      file.name
-    );
+    await loadImportedText(text, file.name);
   } catch (error) {
-    console.error(
-      "Could not read Word document:",
-      error
-    );
+    console.error("Could not read Word document:", error);
 
-    showStatus(
-      "Could not read that Word document."
-    );
+    showStatus("Could not read that Word document.");
   }
 }
-
 
 /* =================================================
    DRAG EVENTS
 ================================================= */
 
-[
-  "dragenter",
-  "dragover",
-  "dragleave",
-  "drop"
-].forEach((eventName) => {
-  dropZone.addEventListener(
-    eventName,
-    (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-  );
+["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+  dropZone.addEventListener(eventName, (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+  });
 });
 
+dropZone.addEventListener("dragenter", () => {
+  dragCounter++;
 
-dropZone.addEventListener(
-  "dragenter",
-  () => {
-    dragCounter++;
+  dropZone.classList.add("drag-over");
+});
 
-    dropZone.classList.add(
-      "drag-over"
-    );
-  }
-);
+dropZone.addEventListener("dragover", (event) => {
+  event.dataTransfer.dropEffect = "copy";
+});
 
+dropZone.addEventListener("dragleave", () => {
+  dragCounter--;
 
-dropZone.addEventListener(
-  "dragover",
-  (event) => {
-    event.dataTransfer.dropEffect =
-      "copy";
-  }
-);
-
-
-dropZone.addEventListener(
-  "dragleave",
-  () => {
-    dragCounter--;
-
-    if (dragCounter <= 0) {
-      dragCounter = 0;
-
-      dropZone.classList.remove(
-        "drag-over"
-      );
-    }
-  }
-);
-
-
-dropZone.addEventListener(
-  "drop",
-  async (event) => {
+  if (dragCounter <= 0) {
     dragCounter = 0;
 
-    dropZone.classList.remove(
-      "drag-over"
-    );
-
-    const files =
-      Array.from(
-        event.dataTransfer.files
-      );
-
-    if (files.length > 0) {
-      await importFile(files[0]);
-
-      return;
-    }
-
-    const text =
-      event.dataTransfer.getData(
-        "text/plain"
-      );
-
-    if (text && text.trim()) {
-      await loadImportedText(
-        text,
-        "Dragged text"
-      );
-
-      return;
-    }
-
-    showStatus(
-      "Nothing usable was dropped."
-    );
+    dropZone.classList.remove("drag-over");
   }
-);
+});
+
+dropZone.addEventListener("drop", async (event) => {
+  dragCounter = 0;
+
+  dropZone.classList.remove("drag-over");
+
+  const files = Array.from(event.dataTransfer.files);
+
+  if (files.length > 0) {
+    await importFile(files[0]);
+
+    return;
+  }
+
+  const text = event.dataTransfer.getData("text/plain");
+
+  if (text && text.trim()) {
+    await loadImportedText(text, "Dragged text");
+
+    return;
+  }
+
+  showStatus("Nothing usable was dropped.");
+});
