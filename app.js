@@ -514,6 +514,18 @@ readerSearchClose?.addEventListener("click", () => {
   readerSearchInput.value = "";
 });
 
+readerSearchInput?.addEventListener("keydown", (event) => {
+  if (event.key !== "Enter") {
+    return;
+  }
+
+  event.preventDefault();
+
+  searchCurrentBook(
+    readerSearchInput.value.trim()
+  );
+});
+
 /* Settings → Reading Defaults */
 
 settingsResetDefaults?.addEventListener("click", () => {
