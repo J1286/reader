@@ -11,7 +11,11 @@ async function setMode(mode) {
   const appTitle = document.getElementById("appTitle");
   if (appTitle) {
     const titles = {
-      library: { text: "𝔐𝔶 𝔏𝔦𝔟𝔯𝔞𝔯𝔶", aria: "My Library", className: "library-title" },
+      library: {
+        text: "𝔐𝔶 𝔏𝔦𝔟𝔯𝔞𝔯𝔶",
+        aria: "My Library",
+        className: "library-title"
+      },
       reader: { text: "Reader", aria: "Reader", className: "" },
       formatter: { text: "Tools", aria: "Tools", className: "" },
       settings: { text: "Settings", aria: "Settings", className: "" }
@@ -20,65 +24,48 @@ async function setMode(mode) {
     const title = titles[mode] || titles.library;
     appTitle.textContent = title.text;
     appTitle.setAttribute("aria-label", title.aria);
-    appTitle.classList.toggle("library-title", title.className === "library-title");
+    appTitle.classList.toggle(
+      "library-title",
+      title.className === "library-title"
+    );
   }
 
   modeButtons.forEach((button) => {
-    button.classList.toggle(
-      "active",
-      button.dataset.mode === mode
-    );
+    button.classList.toggle("active", button.dataset.mode === mode);
   });
 
-  libraryView.classList.toggle(
-    "hidden",
-    mode !== "library"
-  );
+  libraryView.classList.toggle("hidden", mode !== "library");
 
-  readerView.classList.toggle(
-    "hidden",
-    mode !== "reader"
-  );
+  readerView.classList.toggle("hidden", mode !== "reader");
 
-  formatterView.classList.toggle(
-    "hidden",
-    mode !== "formatter"
-  );
+  formatterView.classList.toggle("hidden", mode !== "formatter");
 
-  settingsView.classList.toggle(
-    "hidden",
-    mode !== "settings" 
-  );
+  settingsView.classList.toggle("hidden", mode !== "settings");
 
-    if (mode === "library") {
+  if (mode === "library") {
     await syncLibraryState();
     await renderLibrary();
   }
 
-    if (mode === "reader") {
-      renderReader();
-    }
+  if (mode === "reader") {
+    renderReader();
+  }
 
   if (mode === "formatter") {
     renderCurrentView();
   }
 
   if (mode === "settings") {
-  settingsDefaultStyle.value =
-    appState.formatter.preset || "book";
+    settingsDefaultStyle.value = appState.formatter.preset || "book";
 
-  settingsFontSize.value =
-    appState.formatter.fontSize;
+    settingsFontSize.value = appState.formatter.fontSize;
 
-  settingsLineSpacing.value =
-    appState.formatter.lineSpacing;
+    settingsLineSpacing.value = appState.formatter.lineSpacing;
 
-  settingsParagraphSpacing.value =
-    appState.formatter.paragraphSpacing;
+    settingsParagraphSpacing.value = appState.formatter.paragraphSpacing;
 
-  settingsReadingWidth.value =
-    appState.formatter.previewWidth;
-}
+    settingsReadingWidth.value = appState.formatter.previewWidth;
+  }
 
   stateChanged();
 }
@@ -88,7 +75,6 @@ modeButtons.forEach((button) => {
     setMode(button.dataset.mode);
   });
 });
-
 
 /* =================================================
 FORMATTER VIEW RENDERING
@@ -121,7 +107,6 @@ function syncBookFromInput() {
   }
 }
 
-
 /* =================================================
 LIVE PREVIEW + BOOK PERSISTENCE
 ================================================= */
@@ -151,144 +136,116 @@ inputText.addEventListener("input", () => {
     try {
       await saveBook(book);
     } catch (error) {
-      console.error(
-        "Could not save edited book:",
-        error
-      );
+      console.error("Could not save edited book:", error);
 
-      showStatus(
-        "Could not save your latest edit."
-      );
+      showStatus("Could not save your latest edit.");
     }
   }, 500);
 });
-
 
 /* =================================================
 STATS
 ================================================= */
 
-  function updateStats() {
-    const book = getCurrentBook();
+function updateStats() {
+  const book = getCurrentBook();
 
-    const text = book?.text || currentBook?.text || "";
+  const text = book?.text || currentBook?.text || "";
 
-    const characters = [...text].length;
+  const characters = [...text].length;
 
-    const words = text.trim()
-    ? text.trim().split(/\s+/).length: 0;
+  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
 
-    const width = parseFloat(lineWidth.value) || 40;
+  const width = parseFloat(lineWidth.value) || 40;
 
-    const paragraphs = formatDocument(text, width);
+  const paragraphs = formatDocument(text, width);
 
-    const lines = paragraphs.reduce(
-(total, paragraph) => total + paragraph.length, 0);
+  const lines = paragraphs.reduce(
+    (total, paragraph) => total + paragraph.length,
+    0
+  );
 
-    stats.textContent =
-      `${characters} characters · ` +
-      `${words} words · ` +
-      `${lines} lines`;
-  }
-
+  stats.textContent =
+    `${characters} characters · ` + `${words} words · ` + `${lines} lines`;
+}
 
 /* =================================================
 STATUS
 ================================================= */
 
-  let statusTimer = null;
+let statusTimer = null;
 
-  function showStatus(message) {
-    status.textContent = message;
+function showStatus(message) {
+  status.textContent = message;
 
-    clearTimeout(statusTimer);
+  clearTimeout(statusTimer);
 
-    statusTimer = setTimeout(() => {
-      status.textContent = "";
-    }, 2000);
-  }
+  statusTimer = setTimeout(() => {
+    status.textContent = "";
+  }, 2000);
+}
 
 /* =================================================
 READER THEMES
 ================================================= */
 
-  function setReaderTheme(theme) {
-    appState.reader.theme = theme;
+function setReaderTheme(theme) {
+  appState.reader.theme = theme;
 
-    document.body.dataset.theme = theme;
-
-    readerThemeButtons.forEach((button) => {
-      button.classList.toggle("active",
-button.dataset.readerTheme === theme);
-      });
-
-    stateChanged();
-  }
+  document.body.dataset.theme = theme;
 
   readerThemeButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      setReaderTheme(button.dataset.readerTheme);
-    });
+    button.classList.toggle("active", button.dataset.readerTheme === theme);
   });
 
+  stateChanged();
+}
+
+readerThemeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    setReaderTheme(button.dataset.readerTheme);
+  });
+});
 
 /* =================================================
 MANUAL SETTINGS → CUSTOM
 ================================================= */
 
-[
-  lineWidth,
-  fontSize,
-  lineSpacing,
-  paragraphSpacing,
-  previewWidth
-].forEach((control) => {
-  control.addEventListener("input", () => {
-    if (presetSelect) {
-      presetSelect.value = "custom";
-    }
+[lineWidth, fontSize, lineSpacing, paragraphSpacing, previewWidth].forEach(
+  (control) => {
+    control.addEventListener("input", () => {
+      if (presetSelect) {
+        presetSelect.value = "custom";
+      }
 
-    preview.classList.remove(
-      "preset-book",
-      "preset-ereader",
-      "preset-web",
-      "preset-manuscript"
-    );
+      preview.classList.remove(
+        "preset-book",
+        "preset-ereader",
+        "preset-web",
+        "preset-manuscript"
+      );
 
-    preview.classList.add(
-      "preset-custom"
-    );
+      preview.classList.add("preset-custom");
 
-    appState.formatter.lineWidth =
-      parseFloat(lineWidth.value) || 40;
+      appState.formatter.lineWidth = parseFloat(lineWidth.value) || 40;
 
-    appState.formatter.fontSize =
-      parseFloat(fontSize.value) || 18;
+      appState.formatter.fontSize = parseFloat(fontSize.value) || 18;
 
-    appState.formatter.lineSpacing =
-      parseFloat(lineSpacing.value) || 1.6;
+      appState.formatter.lineSpacing = parseFloat(lineSpacing.value) || 1.6;
 
-    appState.formatter.paragraphSpacing =
-      parseInt(
-        paragraphSpacing.value,
-        10
-      ) || 0;
+      appState.formatter.paragraphSpacing =
+        parseInt(paragraphSpacing.value, 10) || 0;
 
-    appState.formatter.previewWidth =
-      parseInt(
-        previewWidth.value,
-        10
-      ) || 800;
+      appState.formatter.previewWidth = parseInt(previewWidth.value, 10) || 800;
 
-    appState.formatter.preset =
-      "custom";
+      appState.formatter.preset = "custom";
 
-    renderCurrentView();
+      renderCurrentView();
 
-    stateChanged();
-  });
-});
-
+      stateChanged();
+    });
+  }
+);
 
 /* =================================================
 FORMAT OPTIONS TOGGLE
@@ -307,75 +264,61 @@ formatToggle?.addEventListener("click", () => {
   }
 });
 
-
 /* =================================================
 THEMES
 ================================================= */
 
-  const themeButtons = document.querySelectorAll(
-".theme-button");
+const themeButtons = document.querySelectorAll(".theme-button");
 
-  function setTheme(theme) {
-    appState.formatter.theme = theme;
+function setTheme(theme) {
+  appState.formatter.theme = theme;
 
-    document.body.dataset.theme = theme;
-
-    themeButtons.forEach((button) => {
-      button.classList.toggle("active",
-button.dataset.theme === theme);
-    });
-
-    readerThemeButtons.forEach((button) => {
-      button.classList.toggle("active",
-button.dataset.readerTheme === theme);
-    });
-
-    appState.reader.theme = theme;
-
-    stateChanged();
-  }
+  document.body.dataset.theme = theme;
 
   themeButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-    setTheme(button.dataset.theme);
-    });
+    button.classList.toggle("active", button.dataset.theme === theme);
   });
 
+  readerThemeButtons.forEach((button) => {
+    button.classList.toggle("active", button.dataset.readerTheme === theme);
+  });
+
+  appState.reader.theme = theme;
+
+  stateChanged();
+}
+
+themeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    setTheme(button.dataset.theme);
+  });
+});
 
 /* =================================================
 RESTORE SAVED THEME
 ================================================= */
 
-  const savedTheme = appState.formatter.theme ||
-appState.reader.theme || "light";
+const savedTheme = appState.formatter.theme || appState.reader.theme || "light";
 
-  setTheme(savedTheme);
-  restoreFormatterSettings();
+setTheme(savedTheme);
+restoreFormatterSettings();
 
 /* =================================================
 LIBRARY INITIALIZATION
 ================================================= */
 
-  addBookButton.addEventListener("click", () => {
-    fileInput.click();
-  });
+addBookButton.addEventListener("click", () => {
+  fileInput.click();
+});
 
-  refreshLibraryButton.addEventListener(
-    "click",
-    renderLibrary
-  );
+refreshLibraryButton.addEventListener("click", renderLibrary);
 
-  openLibraryDB()
+openLibraryDB()
   .then(() => renderLibrary())
   .catch((error) => {
-    console.error(
-      "Could not open the book library:",
-      error
-    );
+    console.error("Could not open the book library:", error);
 
-    showStatus(
-      "Could not open the book library."
-    );
+    showStatus("Could not open the book library.");
   });
 
 /* =================================================
@@ -386,7 +329,7 @@ const isStandalone =
   window.matchMedia("(display-mode: standalone)").matches ||
   window.navigator.standalone === true;
 
-setMode(isStandalone ? "library" : (appState.mode || "library"));
+setMode(isStandalone ? "library" : appState.mode || "library");
 
 /* =================================================
 FORMAT STEPPERS + HELP
@@ -430,11 +373,9 @@ formatHelpButton?.addEventListener("click", () => {
    SETTINGS → BACKUP & RESTORE
 ================================================= */
 
-const settingsBackupButton =
-  document.getElementById("settingsBackupButton");
+const settingsBackupButton = document.getElementById("settingsBackupButton");
 
-const settingsRestoreButton =
-  document.getElementById("settingsRestoreButton");
+const settingsRestoreButton = document.getElementById("settingsRestoreButton");
 
 settingsBackupButton?.addEventListener("click", () => {
   backupLibraryButton?.click();
@@ -445,12 +386,9 @@ settingsRestoreButton?.addEventListener("click", () => {
 });
 
 settingsApplyLibrary?.addEventListener("click", () => {
+  appState.librarySettings.sort = settingsLibrarySort.value;
 
-  appState.librarySettings.sort =
-    settingsLibrarySort.value;
-
-  appState.librarySettings.booksPerRow =
-    Number(settingsBooksPerRow.value);
+  appState.librarySettings.booksPerRow = Number(settingsBooksPerRow.value);
 
   saveAppState();
 
@@ -461,47 +399,37 @@ settingsApplyLibrary?.addEventListener("click", () => {
   setTimeout(() => {
     settingsApplyLibrary.textContent = "Apply";
   }, 1200);
-
 });
 
-  settingsCheckUpdate?.addEventListener("click", () => {
+settingsCheckUpdate?.addEventListener("click", () => {
   checkUpdateButton?.click();
 });
 
 settingsDefaultStyle?.addEventListener("change", () => {
-  const preset =
-    presetSettings[settingsDefaultStyle.value];
+  const preset = presetSettings[settingsDefaultStyle.value];
 
   if (!preset) {
     return;
   }
 
-  settingsFontSize.value =
-    preset.fontSize;
+  settingsFontSize.value = preset.fontSize;
 
-  settingsLineSpacing.value =
-    preset.lineSpacing;
+  settingsLineSpacing.value = preset.lineSpacing;
 
-  settingsParagraphSpacing.value =
-    preset.paragraphSpacing;
+  settingsParagraphSpacing.value = preset.paragraphSpacing;
 
-  settingsReadingWidth.value =
-    preset.previewWidth;
+  settingsReadingWidth.value = preset.previewWidth;
 });
 
-  const readerSearchButton =
-    document.getElementById("readerSearchButton");
+const readerSearchButton = document.getElementById("readerSearchButton");
 
-const readerSearchBar =
-  document.getElementById("readerSearchBar");
+const readerSearchBar = document.getElementById("readerSearchBar");
 
-const readerSearchInput =
-  document.getElementById("readerSearchInput");
+const readerSearchInput = document.getElementById("readerSearchInput");
 
-const readerSearchClose =
-  document.getElementById("readerSearchClose");
+const readerSearchClose = document.getElementById("readerSearchClose");
 
-  readerSearchButton?.addEventListener("click", () => {
+readerSearchButton?.addEventListener("click", () => {
   readerSearchBar?.classList.toggle("hidden");
 
   if (!readerSearchBar?.classList.contains("hidden")) {
@@ -521,9 +449,7 @@ readerSearchInput?.addEventListener("keydown", (event) => {
 
   event.preventDefault();
 
-  searchCurrentBook(
-    readerSearchInput.value.trim()
-  );
+  searchCurrentBook(readerSearchInput.value.trim());
 });
 
 /* Settings → Reading Defaults */
@@ -537,68 +463,49 @@ settingsResetDefaults?.addEventListener("click", () => {
   settingsParagraphSpacing.value = 16;
   settingsReadingWidth.value = 800;
 
-  settingsResetDefaults.textContent =
-    "Reset";
+  settingsResetDefaults.textContent = "Reset";
 
   setTimeout(() => {
-    settingsResetDefaults.textContent =
-      "Reset to Default";
+    settingsResetDefaults.textContent = "Reset to Default";
   }, 1200);
 });
 
 settingsApplyDefaults?.addEventListener("click", () => {
-  const fontSizeValue =
-    Number(settingsFontSize.value);
+  const fontSizeValue = Number(settingsFontSize.value);
 
-  const lineSpacingValue =
-    Number(settingsLineSpacing.value);
+  const lineSpacingValue = Number(settingsLineSpacing.value);
 
-  const paragraphSpacingValue =
-    Number(settingsParagraphSpacing.value);
+  const paragraphSpacingValue = Number(settingsParagraphSpacing.value);
 
-  const readingWidthValue =
-    Number(settingsReadingWidth.value);
+  const readingWidthValue = Number(settingsReadingWidth.value);
 
-  appState.formatter.preset =
-    settingsDefaultStyle.value;
+  appState.formatter.preset = settingsDefaultStyle.value;
 
-  appState.reader.fontFamily =
-    settingsDefaultFont.value;
+  appState.reader.fontFamily = settingsDefaultFont.value;
 
-  appState.formatter.fontSize =
-    fontSizeValue;
+  appState.formatter.fontSize = fontSizeValue;
 
-  appState.formatter.lineSpacing =
-    lineSpacingValue;
+  appState.formatter.lineSpacing = lineSpacingValue;
 
-  appState.formatter.paragraphSpacing =
-    paragraphSpacingValue;
+  appState.formatter.paragraphSpacing = paragraphSpacingValue;
 
-  appState.formatter.previewWidth =
-    readingWidthValue;
+  appState.formatter.previewWidth = readingWidthValue;
 
   /* Keep Formatter controls in sync */
-  fontSize.value =
-    fontSizeValue;
+  fontSize.value = fontSizeValue;
 
-  lineSpacing.value =
-    lineSpacingValue;
+  lineSpacing.value = lineSpacingValue;
 
-  paragraphSpacing.value =
-    paragraphSpacingValue;
+  paragraphSpacing.value = paragraphSpacingValue;
 
-  previewWidth.value =
-    readingWidthValue;
+  previewWidth.value = readingWidthValue;
 
   /* Apply the same defaults to Reader */
-  appState.reader.fontSize =
-    fontSizeValue;
+  appState.reader.fontSize = fontSizeValue;
 
-  appState.reader.lineSpacing =
-    lineSpacingValue;
+  appState.reader.lineSpacing = lineSpacingValue;
 
-  appState.reader.contentWidth =
-    readingWidthValue;
+  appState.reader.contentWidth = readingWidthValue;
 
   appState.formatter.indent =
     settingsDefaultStyle.value === "book" ||
@@ -610,11 +517,9 @@ settingsApplyDefaults?.addEventListener("click", () => {
     renderReader();
   }
 
-  settingsApplyDefaults.textContent =
-    "Applied";
+  settingsApplyDefaults.textContent = "Applied";
 
   setTimeout(() => {
-    settingsApplyDefaults.textContent =
-      "Apply";
+    settingsApplyDefaults.textContent = "Apply";
   }, 1200);
 });
