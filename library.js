@@ -8,55 +8,35 @@ const STORE_NAME = "books";
 
 let libraryDB = null;
 
-
 /* =================================================
    DATABASE
 ================================================= */
 
 function openLibraryDB() {
   return new Promise((resolve, reject) => {
-
     if (libraryDB) {
       resolve(libraryDB);
       return;
     }
 
-    const request =
-      indexedDB.open(
-        DB_NAME,
-        DB_VERSION
-      );
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
 
     request.onupgradeneeded = (event) => {
-      const db =
-        event.target.result;
+      const db = event.target.result;
 
-      if (
-        !db.objectStoreNames.contains(
-          STORE_NAME
-        )
-      ) {
-        const store =
-          db.createObjectStore(
-            STORE_NAME,
-            {
-              keyPath: "id"
-            }
-          );
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        const store = db.createObjectStore(STORE_NAME, {
+          keyPath: "id"
+        });
 
-        store.createIndex(
-          "title",
-          "title",
-          {
-            unique: false
-          }
-        );
+        store.createIndex("title", "title", {
+          unique: false
+        });
       }
     };
 
     request.onsuccess = () => {
-      libraryDB =
-        request.result;
+      libraryDB = request.result;
 
       libraryDB.onversionchange = () => {
         libraryDB.close();
@@ -78,7 +58,6 @@ function openLibraryDB() {
   });
 }
 
-
 /* =================================================
    BOOK NORMALIZATION
 ================================================= */
@@ -88,81 +67,44 @@ function normalizeStoredBook(book) {
     return null;
   }
 
-  const savedReader =
-    book.readerState ||
-    book.reader ||
-    {};
+  const savedReader = book.readerState || book.reader || {};
 
   const normalized = {
     ...book,
 
     id: book.id,
 
-    title:
-      book.title ||
-      "Untitled",
+    title: book.title || "Untitled",
 
-    text:
-      book.text ||
-      "",
+    text: book.text || "",
 
-    type:
-      book.type ||
-      "txt",
+    type: book.type || "txt",
 
-    sourceName:
-      book.sourceName ||
-      "",
+    sourceName: book.sourceName || "",
 
-    chapters:
-      Array.isArray(book.chapters)
-        ? book.chapters
-        : [],
+    chapters: Array.isArray(book.chapters) ? book.chapters : [],
 
-    createdAt:
-      book.createdAt ||
-      new Date().toISOString(),
+    createdAt: book.createdAt || new Date().toISOString(),
 
-    updatedAt:
-      book.updatedAt ||
-      new Date().toISOString(),
+    updatedAt: book.updatedAt || new Date().toISOString(),
 
     readerState: {
-      chapterIndex:
-        Number.isFinite(
-          Number(savedReader.chapterIndex)
-        )
-          ? Number(savedReader.chapterIndex)
-          : 0,
+      chapterIndex: Number.isFinite(Number(savedReader.chapterIndex))
+        ? Number(savedReader.chapterIndex)
+        : 0,
 
-      scrollTop:
-        Number.isFinite(
-          Number(savedReader.scrollTop)
-        )
-          ? Math.max(
-              0,
-              Number(savedReader.scrollTop)
-            )
-          : 0,
+      scrollTop: Number.isFinite(Number(savedReader.scrollTop))
+        ? Math.max(0, Number(savedReader.scrollTop))
+        : 0,
 
-      progress:
-        Number.isFinite(
-          Number(savedReader.progress)
-        )
-          ? Math.max(
-              0,
-              Math.min(
-                1,
-                Number(savedReader.progress)
-              )
-            )
-          : 0
+      progress: Number.isFinite(Number(savedReader.progress))
+        ? Math.max(0, Math.min(1, Number(savedReader.progress)))
+        : 0
     }
   };
 
   return normalized;
 }
-
 
 /* =================================================
    SAVE BOOK
@@ -178,10 +120,7 @@ async function saveBook(book) {
   }
 
   return new Promise((resolve, reject) => {
-    const transaction = libraryDB.transaction(
-      STORE_NAME,
-      "readwrite"
-    );
+    const transaction = libraryDB.transaction(STORE_NAME, "readwrite");
 
     const store = transaction.objectStore(STORE_NAME);
 
@@ -196,14 +135,10 @@ async function saveBook(book) {
     };
 
     transaction.onabort = () => {
-      reject(
-        transaction.error ||
-        new Error("IndexedDB transaction aborted.")
-      );
+      reject(transaction.error || new Error("IndexedDB transaction aborted."));
     };
   });
 }
-
 
 /* =================================================
    GET ALL BOOKS
@@ -215,25 +150,14 @@ async function getAllBooks() {
   }
 
   return new Promise((resolve, reject) => {
-    const transaction =
-      libraryDB.transaction(
-        STORE_NAME,
-        "readonly"
-      );
+    const transaction = libraryDB.transaction(STORE_NAME, "readonly");
 
-    const store =
-      transaction.objectStore(
-        STORE_NAME
-      );
+    const store = transaction.objectStore(STORE_NAME);
 
-    const request =
-      store.getAll();
+    const request = store.getAll();
 
     request.onsuccess = () => {
-      const books =
-        request.result
-          .map(normalizeStoredBook)
-          .filter(Boolean);
+      const books = request.result.map(normalizeStoredBook).filter(Boolean);
 
       resolve(books);
     };
@@ -243,16 +167,10 @@ async function getAllBooks() {
     };
 
     transaction.onerror = () => {
-      reject(
-        transaction.error ||
-        new Error(
-          "Could not read library."
-        )
-      );
+      reject(transaction.error || new Error("Could not read library."));
     };
   });
 }
-
 
 /* =================================================
    GET BOOK
@@ -268,26 +186,14 @@ async function getBook(bookId) {
   }
 
   return new Promise((resolve, reject) => {
-    const transaction =
-      libraryDB.transaction(
-        STORE_NAME,
-        "readonly"
-      );
+    const transaction = libraryDB.transaction(STORE_NAME, "readonly");
 
-    const store =
-      transaction.objectStore(
-        STORE_NAME
-      );
+    const store = transaction.objectStore(STORE_NAME);
 
-    const request =
-      store.get(bookId);
+    const request = store.get(bookId);
 
     request.onsuccess = () => {
-      resolve(
-        normalizeStoredBook(
-          request.result
-        )
-      );
+      resolve(normalizeStoredBook(request.result));
     };
 
     request.onerror = () => {
@@ -295,16 +201,10 @@ async function getBook(bookId) {
     };
 
     transaction.onerror = () => {
-      reject(
-        transaction.error ||
-        new Error(
-          "Could not read the book."
-        )
-      );
+      reject(transaction.error || new Error("Could not read the book."));
     };
   });
 }
-
 
 /* =================================================
    DELETE BOOK
@@ -320,16 +220,9 @@ async function deleteBook(bookId) {
   }
 
   return new Promise((resolve, reject) => {
-    const transaction =
-      libraryDB.transaction(
-        STORE_NAME,
-        "readwrite"
-      );
+    const transaction = libraryDB.transaction(STORE_NAME, "readwrite");
 
-    const store =
-      transaction.objectStore(
-        STORE_NAME
-      );
+    const store = transaction.objectStore(STORE_NAME);
 
     store.delete(bookId);
 
@@ -338,52 +231,32 @@ async function deleteBook(bookId) {
     };
 
     transaction.onerror = () => {
-      reject(
-        transaction.error ||
-        new Error(
-          "Could not delete book."
-        )
-      );
+      reject(transaction.error || new Error("Could not delete book."));
     };
 
     transaction.onabort = () => {
-      reject(
-        transaction.error ||
-        new Error(
-          "Delete transaction aborted."
-        )
-      );
+      reject(transaction.error || new Error("Delete transaction aborted."));
     };
   });
 }
-
 
 /* =================================================
    LIBRARY → APPLICATION STATE
 ================================================= */
 
 async function syncLibraryState() {
-  const books =
-    await getAllBooks();
+  const books = await getAllBooks();
 
   appState.library = books;
 
-  if (
-    appState.currentBookId &&
-    !getBookById(
-      appState.currentBookId
-    )
-  ) {
+  if (appState.currentBookId && !getBookById(appState.currentBookId)) {
     appState.currentBookId = null;
   }
 
-  currentBook =
-    getCurrentBook() ||
-    createEmptyBook();
+  currentBook = getCurrentBook() || createEmptyBook();
 
   return books;
 }
-
 
 /* =================================================
    LIBRARY RENDERING
@@ -392,21 +265,14 @@ async function syncLibraryState() {
 async function renderLibrary() {
   try {
     const books = await getAllBooks();
-	  
-	const booksPerRow =
-  appState.librarySettings?.booksPerRow || 2;
 
-libraryPanel.style.setProperty(
-  "--library-columns",
-  booksPerRow
-);
+    const booksPerRow = appState.librarySettings?.booksPerRow || 2;
+
+    libraryPanel.style.setProperty("--library-columns", booksPerRow);
 
     appState.library = books;
 
-    if (
-      appState.currentBookId &&
-      !getBookById(appState.currentBookId)
-    ) {
+    if (appState.currentBookId && !getBookById(appState.currentBookId)) {
       appState.currentBookId = null;
       currentBook = createEmptyBook();
     }
@@ -421,32 +287,21 @@ libraryPanel.style.setProperty(
       return;
     }
 
-    const sortMode =
-  appState.librarySettings?.sort || "recent";
+    const sortMode = appState.librarySettings?.sort || "recent";
 
-books.sort((a, b) => {
+    books.sort((a, b) => {
+      if (sortMode === "title") {
+        return (a.title || "").localeCompare(b.title || "", undefined, {
+          sensitivity: "base"
+        });
+      }
 
-  if (sortMode === "title") {
-    return (a.title || "").localeCompare(
-      b.title || "",
-      undefined,
-      { sensitivity: "base" }
-    );
-  }
+      if (sortMode === "progress") {
+        return (b.progress || 0) - (a.progress || 0);
+      }
 
-  if (sortMode === "progress") {
-    return (
-      (b.progress || 0) -
-      (a.progress || 0)
-    );
-  }
-
-  return (
-    (b.lastOpened || 0) -
-    (a.lastOpened || 0)
-  );
-
-});
+      return (b.lastOpened || 0) - (a.lastOpened || 0);
+    });
 
     books.forEach((book) => {
       const card = document.createElement("article");
@@ -504,16 +359,17 @@ books.sort((a, b) => {
       const deleteButton = document.createElement("button");
       deleteButton.type = "button";
       deleteButton.className = "book-delete-button";
-      deleteButton.setAttribute("aria-label", `Delete ${book.title || "Untitled"}`);
+      deleteButton.setAttribute(
+        "aria-label",
+        `Delete ${book.title || "Untitled"}`
+      );
       deleteButton.title = "Delete book";
       deleteButton.textContent = "×";
 
       deleteButton.addEventListener("click", async (event) => {
         event.stopPropagation();
 
-        const confirmed = confirm(
-          `Delete "${book.title}" from your library?`
-        );
+        const confirmed = confirm(`Delete "${book.title}" from your library?`);
 
         if (!confirmed) {
           return;
@@ -566,13 +422,12 @@ books.sort((a, b) => {
   }
 }
 
-
 function getBookCoverHue(value) {
   const text = String(value || "book");
   let hash = 0;
 
   for (let i = 0; i < text.length; i += 1) {
-    hash = ((hash << 5) - hash) + text.charCodeAt(i);
+    hash = (hash << 5) - hash + text.charCodeAt(i);
     hash |= 0;
   }
 
@@ -583,63 +438,43 @@ function getBookCoverHue(value) {
    OPEN BOOK
 ================================================= */
 
-async function openBook(
-  bookId,
-  searchPosition = null
-) {
+async function openBook(bookId, searchPosition = null) {
   try {
-    const storedBook =
-      await getBook(bookId);
+    const storedBook = await getBook(bookId);
 
     if (!storedBook) {
-      showStatus(
-        "Book could not be found."
-      );
+      showStatus("Book could not be found.");
 
       return;
     }
 
-    const existingBook =
-      getBookById(bookId);
+    const existingBook = getBookById(bookId);
 
     if (existingBook) {
-      Object.assign(
-        existingBook,
-        storedBook
-      );
+      Object.assign(existingBook, storedBook);
     } else {
-      appState.library.push(
-        storedBook
-      );
+      appState.library.push(storedBook);
     }
 
-    setCurrentBook(
-      bookId
-    );
+    setCurrentBook(bookId);
 
     loadCurrentBookReaderState();
 
-    const book =
-      getCurrentBook();
+    const book = getCurrentBook();
 
     if (!book) {
-      showStatus(
-        "Book could not be opened."
-      );
+      showStatus("Book could not be opened.");
 
       return;
     }
 
-	prepareChapters(book.text || "");
+    prepareChapters(book.text || "");
 
-    book.lastOpened =
-      Date.now();
+    book.lastOpened = Date.now();
 
-    book.updatedAt =
-      new Date().toISOString();
+    book.updatedAt = new Date().toISOString();
 
-    inputText.value =
-      book.text || "";
+    inputText.value = book.text || "";
 
     await saveBook(book);
 
@@ -647,53 +482,36 @@ async function openBook(
 
     await renderLibrary();
 
-	pendingSearchPosition =
-  	  searchPosition;
+    pendingSearchPosition = searchPosition;
 
     setMode("reader");
 
-    showStatus(
-      `Opened "${book.title}".`
-    );
+    showStatus(`Opened "${book.title}".`);
   } catch (error) {
-    console.error(
-      "Could not open book:",
-      error
-    );
+    console.error("Could not open book:", error);
 
-    showStatus(
-      "Could not open that book."
-    );
+    showStatus("Could not open that book.");
   }
 }
-
 
 /* =================================================
    CURRENT BOOK TEXT
 ================================================= */
 
-async function updateCurrentBookText(
-  text,
-  persist = false
-) {
-  const book =
-    getCurrentBook();
+async function updateCurrentBookText(text, persist = false) {
+  const book = getCurrentBook();
 
   if (!book) {
     return null;
   }
 
-  book.text =
-    text || "";
+  book.text = text || "";
 
-  book.updatedAt =
-    new Date().toISOString();
+  book.updatedAt = new Date().toISOString();
 
-  currentBook =
-    book;
+  currentBook = book;
 
-  inputText.value =
-    book.text;
+  inputText.value = book.text;
 
   stateChanged();
 
@@ -701,14 +519,9 @@ async function updateCurrentBookText(
     try {
       await saveBook(book);
     } catch (error) {
-      console.error(
-        "Could not save book text:",
-        error
-      );
+      console.error("Could not save book text:", error);
 
-      showStatus(
-        "Could not save the book."
-      );
+      showStatus("Could not save the book.");
     }
   }
 
