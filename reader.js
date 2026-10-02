@@ -93,7 +93,6 @@ presetSelect?.addEventListener("change", () => {
 ================================================= */
 
 function renderReader() {
-
   const book = getCurrentBook();
 
   restoringReaderPosition = true;
@@ -101,17 +100,17 @@ function renderReader() {
   const text = book?.text || "";
 
   if (book) {
-  if (Array.isArray(book.chapters) && book.chapters.length) {
-    detectedChapters = book.chapters.map((chapter, index) => ({
-      ...chapter,
-      id: chapter.id || `chapter-${index + 1}`
-    }));
+    if (Array.isArray(book.chapters) && book.chapters.length) {
+      detectedChapters = book.chapters.map((chapter, index) => ({
+        ...chapter,
+        id: chapter.id || `chapter-${index + 1}`
+      }));
 
-    renderChapterNavigation(detectedChapters);
-  } else {
-    prepareChapters(text, true);
+      renderChapterNavigation(detectedChapters);
+    } else {
+      prepareChapters(text, true);
+    }
   }
-}
 
   loadCurrentBookReaderState();
 
@@ -119,26 +118,23 @@ function renderReader() {
     parseFloat(appState.reader.fontSize) || 18
   }px`;
 
-   const readerFonts = {
-  system:
-  'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+  const readerFonts = {
+    system:
+      'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
 
-  book:
-    'Georgia, "Noto Serif CJK TC", "Noto Serif CJK SC", "Times New Roman", serif',
+    book:
+      'Georgia, "Noto Serif CJK TC", "Noto Serif CJK SC", "Times New Roman", serif',
 
-  ereader:
-    '"Noto Sans CJK TC", "PingFang TC", "Microsoft JhengHei", Arial, sans-serif',
+    ereader:
+      '"Noto Sans CJK TC", "PingFang TC", "Microsoft JhengHei", Arial, sans-serif',
 
-  web:
-    'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    web: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
 
-  manuscript:
-    '"Courier New", monospace'
-};
+    manuscript: '"Courier New", monospace'
+  };
 
-readerContent.style.fontFamily =
-  readerFonts[appState.reader.fontFamily] ||
-  readerFonts.system;
+  readerContent.style.fontFamily =
+    readerFonts[appState.reader.fontFamily] || readerFonts.system;
 
   readerContent.style.lineHeight =
     parseFloat(appState.reader.lineSpacing) || 1.6;
@@ -195,7 +191,10 @@ readerContent.style.fontFamily =
     const isChapter = chapter && textParagraph.startsWith(chapter.title);
 
     paragraph.style.textIndent =
-      appState.formatter.indent && index > 0 && !isChapter && !previousWasChapter
+      appState.formatter.indent &&
+      index > 0 &&
+      !isChapter &&
+      !previousWasChapter
         ? "2em"
         : "0";
 
@@ -245,69 +244,49 @@ readerContent.style.fontFamily =
     const restoredScrollTop = Math.min(Math.max(0, savedScrollTop), maxScroll);
 
     if (pendingSearchPosition !== null) {
+      const paragraphs = getBookParagraphs(text);
 
-  const paragraphs =
-    getBookParagraphs(text);
+      let characterCount = 0;
+      let targetIndex = -1;
 
-  let characterCount = 0;
-  let targetIndex = -1;
+      for (let i = 0; i < paragraphs.length; i += 1) {
+        const paragraphText = paragraphs[i];
 
-  for (
-    let i = 0;
-    i < paragraphs.length;
-    i += 1
-  ) {
+        const paragraphStart = characterCount;
 
-    const paragraphText =
-      paragraphs[i];
+        const paragraphEnd = characterCount + paragraphText.length;
 
-    const paragraphStart =
-      characterCount;
+        if (
+          pendingSearchPosition >= paragraphStart &&
+          pendingSearchPosition <= paragraphEnd
+        ) {
+          targetIndex = i;
+          break;
+        }
 
-    const paragraphEnd =
-      characterCount +
-      paragraphText.length;
+        characterCount = paragraphEnd + 1;
+      }
 
-    if (
-      pendingSearchPosition >= paragraphStart &&
-      pendingSearchPosition <= paragraphEnd
-    ) {
+      if (targetIndex >= 0) {
+        const targetParagraph = readerContent.children[targetIndex];
 
-      targetIndex = i;
-      break;
+        if (targetParagraph) {
+          targetParagraph.scrollIntoView({
+            block: "center"
+          });
+        }
+      }
+
+      pendingSearchPosition = null;
+    } else {
+      readerContent.scrollTop = restoredScrollTop;
     }
 
-    characterCount =
-      paragraphEnd + 1;
-  }
+    updateReaderProgress();
+    updateReaderChapterNavigation();
+    updateReaderControls();
 
-  if (targetIndex >= 0) {
-
-    const targetParagraph =
-      readerContent.children[targetIndex];
-
-    if (targetParagraph) {
-
-      targetParagraph.scrollIntoView({
-        block: "center"
-      });
-
-    }
-  }
-
-  pendingSearchPosition = null;
-
-} else {
-
-  readerContent.scrollTop =
-    restoredScrollTop;
-}
-
-updateReaderProgress();
-updateReaderChapterNavigation();
-updateReaderControls();
-
-restoringReaderPosition = false;
+    restoringReaderPosition = false;
   });
 }
 
@@ -465,11 +444,7 @@ function searchCurrentBook(query) {
   let startIndex = 0;
 
   while (true) {
-    const matchIndex =
-      text.toLowerCase().indexOf(
-        searchText,
-        startIndex
-      );
+    const matchIndex = text.toLowerCase().indexOf(searchText, startIndex);
 
     if (matchIndex === -1) {
       break;
@@ -477,8 +452,7 @@ function searchCurrentBook(query) {
 
     readerSearchMatches.push(matchIndex);
 
-    startIndex =
-      matchIndex + searchText.length;
+    startIndex = matchIndex + searchText.length;
   }
 
   if (!readerSearchMatches.length) {
@@ -489,13 +463,10 @@ function searchCurrentBook(query) {
     readerSearchQuery = query;
     readerSearchIndex = 0;
   } else {
-    readerSearchIndex =
-      (readerSearchIndex + 1) %
-      readerSearchMatches.length;
+    readerSearchIndex = (readerSearchIndex + 1) % readerSearchMatches.length;
   }
 
-  pendingSearchPosition =
-    readerSearchMatches[readerSearchIndex];
+  pendingSearchPosition = readerSearchMatches[readerSearchIndex];
 
   renderReader();
 }
