@@ -136,17 +136,35 @@
 
     <div id="readerView" class="app-view hidden">
       <section class="reader-header">
-        <div>
-          <h2 id="readerTitle">Untitled</h2>
+  <div>
+    <h2 id="readerTitle">Untitled</h2>
+    <div id="readerMeta" class="reader-meta">
+      No book loaded
+    </div>
+  </div>
 
-          <div id="readerMeta" class="reader-meta">
-            No book loaded
-          </div>
-        </div>
-        <button id="readerSettingsButton" class="reader-settings-button" type="button" aria-label="Reading settings" aria-expanded="false">
-          Aa
-        </button>
-      </section>
+  <div class="reader-header-actions">
+    <button
+      id="readerSearchButton"
+      class="reader-search-button"
+      type="button"
+      aria-label="Search in book"
+      title="Search in book"
+    >
+      🔍
+    </button>
+
+    <button
+      id="readerSettingsButton"
+      class="reader-settings-button"
+      type="button"
+      aria-label="Reading settings"
+      aria-expanded="false"
+    >
+      Aa
+    </button>
+  </div>
+</section>
 
       <section id="readerControls" class="reader-controls reader-controls-hidden">
         <div class="reader-control-group">
