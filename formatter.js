@@ -1,22 +1,17 @@
- /* =================================================
+/* =================================================
     CHARACTER / CJK HELPERS
  ================================================= */
 
 function restoreFormatterSettings() {
-  fontSize.value =
-    appState.formatter.fontSize;
+  fontSize.value = appState.formatter.fontSize;
 
-  lineSpacing.value =
-    appState.formatter.lineSpacing;
+  lineSpacing.value = appState.formatter.lineSpacing;
 
-  paragraphSpacing.value =
-    appState.formatter.paragraphSpacing;
+  paragraphSpacing.value = appState.formatter.paragraphSpacing;
 
-  previewWidth.value =
-    appState.formatter.previewWidth;
+  previewWidth.value = appState.formatter.previewWidth;
 
-  widthValue.textContent =
-    previewWidth.value;
+  widthValue.textContent = previewWidth.value;
 }
 
 function isCJK(char) {
@@ -53,12 +48,7 @@ function characterWidth(char) {
     return 0.35;
   }
 
-  if (
-    char === "m" ||
-    char === "w" ||
-    char === "M" ||
-    char === "W"
-  ) {
+  if (char === "m" || char === "w" || char === "M" || char === "W") {
     return 0.85;
   }
 
@@ -82,7 +72,6 @@ function textWidth(text) {
 
   return width;
 }
-
 
 /* =================================================
    TOKENIZATION / WRAPPING
@@ -135,14 +124,8 @@ function wrapParagraph(paragraph, maxWidth) {
   for (const token of tokens) {
     const tokenWidth = textWidth(token);
 
-    if (
-      token.length === 1 &&
-      isCJK(token)
-    ) {
-      if (
-        currentLine &&
-        currentWidth + tokenWidth > maxWidth
-      ) {
+    if (token.length === 1 && isCJK(token)) {
+      if (currentLine && currentWidth + tokenWidth > maxWidth) {
         lines.push(currentLine);
 
         currentLine = "";
@@ -155,20 +138,11 @@ function wrapParagraph(paragraph, maxWidth) {
       continue;
     }
 
-    const spaceWidth =
-      currentLine
-        ? characterWidth(" ")
-        : 0;
+    const spaceWidth = currentLine ? characterWidth(" ") : 0;
 
-    const proposedWidth =
-      currentWidth +
-      spaceWidth +
-      tokenWidth;
+    const proposedWidth = currentWidth + spaceWidth + tokenWidth;
 
-    if (
-      currentLine &&
-      proposedWidth > maxWidth
-    ) {
+    if (currentLine && proposedWidth > maxWidth) {
       lines.push(currentLine);
 
       currentLine = token;
@@ -192,22 +166,12 @@ function wrapParagraph(paragraph, maxWidth) {
 }
 
 function formatDocument(text, maxWidth) {
-  const paragraphs =
-    text.split(/\n\s*\n/);
+  const paragraphs = text.split(/\n\s*\n/);
 
   return paragraphs
-    .filter(
-      (paragraph) => paragraph.trim()
-    )
-    .map(
-      (paragraph) =>
-        wrapParagraph(
-          paragraph,
-          maxWidth
-        )
-    );
+    .filter((paragraph) => paragraph.trim())
+    .map((paragraph) => wrapParagraph(paragraph, maxWidth));
 }
-
 
 /* =================================================
    DOCUMENT HELPERS
@@ -223,9 +187,7 @@ function getBookText() {
   return inputText.value || "";
 }
 
-function getBookParagraphs(
-  text = getBookText()
-) {
+function getBookParagraphs(text = getBookText()) {
   const lines = text.split(/\r?\n/);
 
   const paragraphs = [];
@@ -236,9 +198,7 @@ function getBookParagraphs(
 
     if (!clean) {
       if (currentParagraph.length) {
-        paragraphs.push(
-          currentParagraph.join("\n").trim()
-        );
+        paragraphs.push(currentParagraph.join("\n").trim());
 
         currentParagraph = [];
       }
@@ -246,18 +206,12 @@ function getBookParagraphs(
       return;
     }
 
-    const isChapterHeading =
-      chapterPatterns.some((pattern) =>
-        pattern.test(clean)
-      );
+    const isChapterHeading = chapterPatterns.some((pattern) =>
+      pattern.test(clean)
+    );
 
-    if (
-      isChapterHeading &&
-      currentParagraph.length
-    ) {
-      paragraphs.push(
-        currentParagraph.join("\n").trim()
-      );
+    if (isChapterHeading && currentParagraph.length) {
+      paragraphs.push(currentParagraph.join("\n").trim());
 
       currentParagraph = [];
     }
@@ -266,160 +220,97 @@ function getBookParagraphs(
   });
 
   if (currentParagraph.length) {
-    paragraphs.push(
-      currentParagraph.join("\n").trim()
-    );
+    paragraphs.push(currentParagraph.join("\n").trim());
   }
 
   return paragraphs.filter(Boolean);
 }
 
-
 function getFormattedText() {
-  const width =
-    parseFloat(lineWidth.value) || 40;
+  const width = parseFloat(lineWidth.value) || 40;
 
   const text = getBookText();
 
-  const paragraphs =
-    formatDocument(text, width);
+  const paragraphs = formatDocument(text, width);
 
-  return paragraphs
-    .map(
-      (paragraph) =>
-        paragraph.join("\n")
-    )
-    .join("\n\n");
+  return paragraphs.map((paragraph) => paragraph.join("\n")).join("\n\n");
 }
-
 
 /* =================================================
    PREVIEW
 ================================================= */
 
 function renderPreview(text = getBookText()) {
-  const width =
-    parseFloat(lineWidth.value) || 40;
+  const width = parseFloat(lineWidth.value) || 40;
 
-  const paragraphs =
-    formatDocument(text, width);
+  const paragraphs = formatDocument(text, width);
 
-  const size =
-    parseFloat(fontSize.value) || 18;
+  const size = parseFloat(fontSize.value) || 18;
 
-  const spacing =
-    parseFloat(lineSpacing.value) || 1.6;
+  const spacing = parseFloat(lineSpacing.value) || 1.6;
 
-  const pageWidth =
-    parseInt(
-      previewWidth.value,
-      10
-    ) || 800;
+  const pageWidth = parseInt(previewWidth.value, 10) || 800;
 
-  preview.style.fontSize =
-    `${size}px`;
+  preview.style.fontSize = `${size}px`;
 
-  preview.style.lineHeight =
-    spacing;
+  preview.style.lineHeight = spacing;
 
-  preview.style.width =
-    `${pageWidth}px`;
+  preview.style.width = `${pageWidth}px`;
 
-  widthValue.textContent =
-    `${pageWidth}px`;
+  widthValue.textContent = `${pageWidth}px`;
 
   preview.innerHTML = "";
 
   let chapterCounter = 0;
 
-  paragraphs.forEach(
-    (lines, index) => {
-      const paragraph =
-        document.createElement("div");
+  paragraphs.forEach((lines, index) => {
+    const paragraph = document.createElement("div");
 
-      paragraph.className =
-        "preview-paragraph";
+    paragraph.className = "preview-paragraph";
 
-      paragraph.style.marginBottom =
-        `${
-          parseInt(
-            paragraphSpacing.value,
-            10
-          ) || 0
-        }px`;
+    paragraph.style.marginBottom = `${
+      parseInt(paragraphSpacing.value, 10) || 0
+    }px`;
 
-      paragraph.style.textIndent =
-        appState.formatter.indent && index > 0
-          ? "2em"
-          : "0";
+    paragraph.style.textIndent =
+      appState.formatter.indent && index > 0 ? "2em" : "0";
 
-      const fullText =
-        lines.join("\n");
+    const fullText = lines.join("\n");
 
-      const chapter =
-        detectedChapters[
-          chapterCounter
-        ];
+    const chapter = detectedChapters[chapterCounter];
 
-      if (
-        chapter &&
-        fullText.startsWith(
-          chapter.title
-        )
-      ) {
-        paragraph.id =
-          chapter.id;
+    if (chapter && fullText.startsWith(chapter.title)) {
+      paragraph.id = chapter.id;
 
-        paragraph.classList.add(
-          "preview-chapter"
-        );
+      paragraph.classList.add("preview-chapter");
 
-        paragraph.style.textIndent =
-          "0";
+      paragraph.style.textIndent = "0";
 
-        const title =
-          document.createElement(
-            "div"
-          );
+      const title = document.createElement("div");
 
-        title.className =
-          "preview-chapter-title";
+      title.className = "preview-chapter-title";
 
-        title.textContent =
-          chapter.title;
+      title.textContent = chapter.title;
 
-        paragraph.appendChild(title);
+      paragraph.appendChild(title);
 
-        const remainder =
-          fullText
-            .slice(
-              chapter.title.length
-            )
-            .trim();
+      const remainder = fullText.slice(chapter.title.length).trim();
 
-        if (remainder) {
-          const body =
-            document.createElement(
-              "div"
-            );
+      if (remainder) {
+        const body = document.createElement("div");
 
-          body.textContent =
-            remainder;
+        body.textContent = remainder;
 
-          paragraph.appendChild(body);
-        }
-
-        chapterCounter++;
-      } else {
-        paragraph.textContent =
-          fullText;
+        paragraph.appendChild(body);
       }
 
-      preview.appendChild(
-        paragraph
-      );
+      chapterCounter++;
+    } else {
+      paragraph.textContent = fullText;
     }
-  );
+
+    preview.appendChild(paragraph);
+  });
 
   updateStats();
 }
