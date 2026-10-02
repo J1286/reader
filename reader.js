@@ -441,3 +441,76 @@ if (readerFullscreenButton) {
       : "⛶ Full Screen";
   });
 }
+
+/* =================================================
+   READER SEARCH
+================================================= */
+
+let readerSearchQuery = "";
+let readerSearchMatches = [];
+let readerSearchIndex = -1;
+
+function searchCurrentBook(query) {
+  const book = getCurrentBook();
+
+  if (!book?.text || !query) {
+    return;
+  }
+
+  const text = book.text;
+  const searchText = query.toLowerCase();
+
+  readerSearchMatches = [];
+
+  let startIndex = 0;
+
+  while (true) {
+    const matchIndex =
+      text.toLowerCase().indexOf(
+        searchText,
+        startIndex
+      );
+
+    if (matchIndex === -1) {
+      break;
+    }
+
+    readerSearchMatches.push(matchIndex);
+
+    startIndex =
+      matchIndex + searchText.length;
+  }
+
+  if (!readerSearchMatches.length) {
+    return;
+  }
+
+  if (query !== readerSearchQuery) {
+    readerSearchQuery = query;
+    readerSearchIndex = 0;
+  } else {
+    readerSearchIndex =
+      (readerSearchIndex + 1) %
+      readerSearchMatches.length;
+  }
+
+  pendingSearchPosition =
+    readerSearchMatches[readerSearchIndex];
+
+  renderReader();
+}
+
+const readerSearchInput =
+  document.getElementById("readerSearchInput");
+
+readerSearchInput?.addEventListener("keydown", (event) => {
+  if (event.key !== "Enter") {
+    return;
+  }
+
+  event.preventDefault();
+
+  searchCurrentBook(
+    readerSearchInput.value.trim()
+  );
+});
