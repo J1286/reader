@@ -499,18 +499,3 @@ function searchCurrentBook(query) {
 
   renderReader();
 }
-
-const readerSearchInput =
-  document.getElementById("readerSearchInput");
-
-readerSearchInput?.addEventListener("keydown", (event) => {
-  if (event.key !== "Enter") {
-    return;
-  }
-
-  event.preventDefault();
-
-  searchCurrentBook(
-    readerSearchInput.value.trim()
-  );
-});
