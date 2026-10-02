@@ -1707,7 +1707,6 @@ body.reader-fullscreen .reader-content {
     font-size: 12px;
   }
 
-
   /* READER CONTENT */
 
   .reader-content {
@@ -2569,8 +2568,7 @@ body.reader-fullscreen .reader-content {
 
 .library-panel {
   display: grid;
-  grid-template-columns:
-    repeat(var(--library-columns, 2), minmax(0, 170px));
+  grid-template-columns: repeat(var(--library-columns, 2), minmax(0, 170px));
   justify-content: center;
   align-items: end;
   gap: 18px;
@@ -2608,11 +2606,17 @@ body.reader-fullscreen .reader-content {
   aspect-ratio: 0.72;
   overflow: hidden;
   border-radius: 7px 9px 9px 7px;
-  background:
-    radial-gradient(circle at 70% 25%, hsla(var(--cover-hue), 80%, 78%, 0.32), transparent 28%),
-    linear-gradient(150deg, hsl(var(--cover-hue), 48%, 36%), hsl(calc(var(--cover-hue) + 35), 42%, 13%));
-  box-shadow:
-    inset 6px 0 0 rgba(255, 255, 255, 0.12),
+  background: radial-gradient(
+      circle at 70% 25%,
+      hsla(var(--cover-hue), 80%, 78%, 0.32),
+      transparent 28%
+    ),
+    linear-gradient(
+      150deg,
+      hsl(var(--cover-hue), 48%, 36%),
+      hsl(calc(var(--cover-hue) + 35), 42%, 13%)
+    );
+  box-shadow: inset 6px 0 0 rgba(255, 255, 255, 0.12),
     0 5px 14px rgba(0, 0, 0, 0.18);
   background-size: cover;
   background-position: center;
@@ -2622,14 +2626,25 @@ body.reader-fullscreen .reader-content {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.02) 35%, rgba(0, 0, 0, 0.7) 100%),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 5px);
+  background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.02) 35%,
+      rgba(0, 0, 0, 0.7) 100%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.035) 0 1px,
+      transparent 1px 5px
+    );
   pointer-events: none;
 }
 
 .book-cover.has-cover-image::before {
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.02) 30%, rgba(0, 0, 0, 0.72) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.02) 30%,
+    rgba(0, 0, 0, 0.72) 100%
+  );
 }
 
 .book-cover-overlay {
@@ -2648,7 +2663,8 @@ body.reader-fullscreen .reader-content {
   overflow: hidden;
   margin: 0 0 10px;
   color: #fff;
-  font-family: Georgia, "Noto Serif CJK TC", "Noto Serif CJK SC", "Times New Roman", serif;
+  font-family: Georgia, "Noto Serif CJK TC", "Noto Serif CJK SC",
+    "Times New Roman", serif;
   font-size: clamp(15px, 2.2vw, 19px);
   font-weight: 650;
   line-height: 1.22;
@@ -2769,12 +2785,8 @@ body:has(#libraryView:not(.hidden)) .app-title {
 body:has(#libraryView:not(.hidden)) #appTitle {
   margin: 0;
 
-  font-family:
-    "Old English Text MT",
-    "Lucida Blackletter",
-    "UnifrakturCook",
-    "UnifrakturMaguntia",
-    serif;
+  font-family: "Old English Text MT", "Lucida Blackletter", "UnifrakturCook",
+    "UnifrakturMaguntia", serif;
 
   font-size: 29px;
   font-weight: 600;
@@ -2821,8 +2833,7 @@ body:has(#libraryView:not(.hidden)) #appTitle {
   padding: 18px 18px 28px;
   border-radius: 16px;
   overflow: hidden;
-  background-image:
-    linear-gradient(rgba(18, 10, 5, 0.20), rgba(18, 10, 5, 0.34)),
+  background-image: linear-gradient(rgba(18, 10, 5, 0.2), rgba(18, 10, 5, 0.34)),
     url("./assets/bookshelf-bg.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -2850,8 +2861,10 @@ body:has(#libraryView:not(.hidden)) #appTitle {
 /* Desktop */
 @media (min-width: 760px) {
   #libraryView .library-panel {
-    grid-template-columns:
-      repeat(var(--library-columns, 4), minmax(125px, 145px));
+    grid-template-columns: repeat(
+      var(--library-columns, 4),
+      minmax(125px, 145px)
+    );
     column-gap: 55px;
     row-gap: 85px;
   }
@@ -2859,8 +2872,10 @@ body:has(#libraryView:not(.hidden)) #appTitle {
 
 @media (min-width: 1100px) {
   #libraryView .library-panel {
-    grid-template-columns:
-      repeat(var(--library-columns, 5), minmax(125px, 145px));
+    grid-template-columns: repeat(
+      var(--library-columns, 5),
+      minmax(125px, 145px)
+    );
     column-gap: 65px;
   }
 }
@@ -2912,8 +2927,7 @@ body:has(#libraryView:not(.hidden)) #appTitle {
   }
 
   #libraryView .library-panel {
-    grid-template-columns:
-      repeat(var(--library-columns, 2), minmax(0, 135px));
+    grid-template-columns: repeat(var(--library-columns, 2), minmax(0, 135px));
     justify-content: center;
     column-gap: 24px;
     row-gap: 55px;
@@ -3159,7 +3173,6 @@ body:has(#libraryView:not(.hidden)) .library-actions {
 /* MOBILE */
 
 @media (max-width: 600px) {
-
   .settings-page {
     padding: 0 8px 30px;
   }
@@ -3209,7 +3222,6 @@ body:has(#libraryView:not(.hidden)) .library-actions {
 }
 
 @media (max-width: 600px) {
-
   .settings-row input[type="number"] {
     width: 75px;
   }
