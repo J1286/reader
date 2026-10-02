@@ -92,6 +92,35 @@ presetSelect?.addEventListener("change", () => {
    READER RENDERING
 ================================================= */
 
+function highlightSearchText(text) {
+  if (
+    typeof readerSearchQuery !== "string" ||
+    !readerSearchQuery
+  ) {
+    return null;
+  }
+
+  const escapedText = text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+  const escapedQuery = readerSearchQuery
+    .replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  const regex = new RegExp(
+    `(${escapedQuery})`,
+    "gi"
+  );
+
+  return escapedText.replace(
+    regex,
+    "<mark class=\"reader-search-highlight\">$1</mark>"
+  );
+}
+
 function renderReader() {
   const book = getCurrentBook();
 
@@ -224,9 +253,17 @@ function renderReader() {
       }
 
       chapterCounter++;
+       
     } else {
-      paragraph.textContent = textParagraph;
-    }
+       const highlightedText =
+       highlightSearchText(textParagraph);
+
+       if (highlightedText) {
+         paragraph.innerHTML = highlightedText;
+       } else {
+           paragraph.textContent = textParagraph;
+        }
+   }
 
     readerContent.appendChild(paragraph);
   });
