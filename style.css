@@ -3261,3 +3261,10 @@ body:has(#libraryView:not(.hidden)) .library-actions {
   font: inherit;
   cursor: pointer;
 }
+
+.reader-search-highlight {
+  background: #ffe58a;
+  color: inherit;
+  border-radius: 3px;
+  padding: 0 2px;
+}
