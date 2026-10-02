@@ -17,7 +17,6 @@ const chapterPatterns = [
 
 let detectedChapters = [];
 
-
 /* =================================================
    CHAPTER DETECTION
 ================================================= */
@@ -163,7 +162,6 @@ detectChaptersButton.addEventListener("click", () => {
   }
 });
 
-
 /* =================================================
    READER CHAPTER NAVIGATION
 ================================================= */
@@ -181,9 +179,7 @@ function getCurrentReaderChapterIndex() {
   for (let index = 0; index < detectedChapters.length; index++) {
     const chapter = detectedChapters[index];
 
-    const element = document.getElementById(
-      `reader-${chapter.id}`
-    );
+    const element = document.getElementById(`reader-${chapter.id}`);
 
     if (!element) {
       continue;
@@ -199,15 +195,12 @@ function getCurrentReaderChapterIndex() {
   return currentIndex;
 }
 
-
 function updateReaderChapterNavigation() {
-
   if (!readerChapterSelect) {
     return;
   }
 
   if (!detectedChapters.length) {
-
     readerChapterSelect.innerHTML = "";
 
     const option = document.createElement("option");
@@ -227,20 +220,16 @@ function updateReaderChapterNavigation() {
     return;
   }
 
-  const currentIndex =
-    getCurrentReaderChapterIndex();
+  const currentIndex = getCurrentReaderChapterIndex();
 
-  appState.reader.currentChapterIndex =
-    currentIndex;
+  appState.reader.currentChapterIndex = currentIndex;
 
   readerChapterSelect.disabled = false;
 
   if (readerChapterSelect.options.length !== detectedChapters.length) {
-
     readerChapterSelect.innerHTML = "";
 
     detectedChapters.forEach((chapter, index) => {
-
       const option = document.createElement("option");
 
       option.value = index;
@@ -252,34 +241,25 @@ function updateReaderChapterNavigation() {
 
   readerChapterSelect.value = String(currentIndex);
 
-  readerPreviousChapter.disabled =
-    currentIndex === 0;
+  readerPreviousChapter.disabled = currentIndex === 0;
 
-  readerNextChapter.disabled =
-    currentIndex === detectedChapters.length - 1;
+  readerNextChapter.disabled = currentIndex === detectedChapters.length - 1;
 
   updateChapterListSelection();
 }
-
 
 /* =================================================
    GO TO CHAPTER
 ================================================= */
 
 function goToReaderChapter(index) {
-
-  if (
-    index < 0 ||
-    index >= detectedChapters.length
-  ) {
+  if (index < 0 || index >= detectedChapters.length) {
     return;
   }
 
   const chapter = detectedChapters[index];
 
-  const target = document.getElementById(
-    `reader-${chapter.id}`
-  );
+  const target = document.getElementById(`reader-${chapter.id}`);
 
   if (!target) {
     return;
@@ -288,14 +268,12 @@ function goToReaderChapter(index) {
   appState.reader.currentChapterIndex = index;
 
   if (readerChapterSelect) {
-     readerChapterSelect.value = String(index);
-   }
+    readerChapterSelect.value = String(index);
+  }
 
-  readerPreviousChapter.disabled =
-    index === 0;
+  readerPreviousChapter.disabled = index === 0;
 
-  readerNextChapter.disabled =
-    index === detectedChapters.length - 1;
+  readerNextChapter.disabled = index === detectedChapters.length - 1;
 
   updateChapterListSelection();
 
@@ -307,58 +285,39 @@ function goToReaderChapter(index) {
   stateChanged();
 }
 
-
 /* =================================================
    CHAPTER SELECTOR
 ================================================= */
 
-readerChapterSelect.addEventListener(
-  "change",
-  () => {
+readerChapterSelect.addEventListener("change", () => {
+  const index = Number(readerChapterSelect.value);
 
-    const index =
-      Number(readerChapterSelect.value);
-
-    if (!Number.isFinite(index)) {
-      return;
-    }
-
-    goToReaderChapter(index);
+  if (!Number.isFinite(index)) {
+    return;
   }
-);
 
+  goToReaderChapter(index);
+});
 
 /* =================================================
    PREVIOUS / NEXT
 ================================================= */
 
-readerPreviousChapter.addEventListener(
-  "click",
-  () => {
+readerPreviousChapter.addEventListener("click", () => {
+  const currentIndex = Number.isFinite(appState.reader.currentChapterIndex)
+    ? appState.reader.currentChapterIndex
+    : 0;
 
-    const currentIndex =
-      Number.isFinite(appState.reader.currentChapterIndex)
-        ? appState.reader.currentChapterIndex
-        : 0;
+  goToReaderChapter(currentIndex - 1);
+});
 
-    goToReaderChapter(currentIndex - 1);
-  }
-);
+readerNextChapter.addEventListener("click", () => {
+  const currentIndex = Number.isFinite(appState.reader.currentChapterIndex)
+    ? appState.reader.currentChapterIndex
+    : 0;
 
-
-readerNextChapter.addEventListener(
-  "click",
-  () => {
-
-    const currentIndex =
-      Number.isFinite(appState.reader.currentChapterIndex)
-        ? appState.reader.currentChapterIndex
-        : 0;
-
-    goToReaderChapter(currentIndex + 1);
-  }
-);
-
+  goToReaderChapter(currentIndex + 1);
+});
 
 /* =================================================
    READER CONTROLS
@@ -377,7 +336,6 @@ function updateReaderControls() {
 
   readerContent.style.lineHeight = spacing;
 }
-
 
 /* =================================================
    READER FONT SIZE
