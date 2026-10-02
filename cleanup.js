@@ -8,7 +8,6 @@ applyButton.addEventListener("click", applyCleanup);
 
 clearButton.addEventListener("click", clearDocument);
 
-
 /* =================================================
    CLEANUP HELPERS
 ================================================= */
@@ -24,10 +23,7 @@ function cleanSpacing(text) {
   result = result.replace(/[ \t]{2,}/g, " ");
 
   // Remove spaces before punctuation.
-  result = result.replace(
-    /[ \t]+([，。！？：；,.!?])/g,
-    "$1"
-  );
+  result = result.replace(/[ \t]+([，。！？：；,.!?])/g, "$1");
 
   // Remove spaces immediately inside Chinese quotation marks.
   result = result.replace(/「\s+/g, "「");
@@ -36,35 +32,24 @@ function cleanSpacing(text) {
   return result;
 }
 
-
 /**
  * Determine whether a line looks like a chapter/section heading.
  */
 function isLikelyHeading(line) {
-  if (
-    line.length <= 40 &&
-    /^第.{1,20}[章節部篇]/.test(line)
-  ) {
+  if (line.length <= 40 && /^第.{1,20}[章節部篇]/.test(line)) {
     return true;
   }
 
-  if (
-    line.length <= 60 &&
-    /^(chapter|part|section)\s+\d+/i.test(line)
-  ) {
+  if (line.length <= 60 && /^(chapter|part|section)\s+\d+/i.test(line)) {
     return true;
   }
 
-  if (
-    line.length <= 40 &&
-    /^[A-Z0-9][A-Z0-9 \-:]{3,}$/.test(line)
-  ) {
+  if (line.length <= 40 && /^[A-Z0-9][A-Z0-9 \-:]{3,}$/.test(line)) {
     return true;
   }
 
   return false;
 }
-
 
 /**
  * Join lines that appear to be wrapped versions of the
@@ -114,10 +99,7 @@ function joinBrokenLines(text) {
 
        Latin text generally does.
     */
-    if (
-      isCJK(paragraph.at(-1)) ||
-      isCJK(line[0])
-    ) {
+    if (isCJK(paragraph.at(-1)) || isCJK(line[0])) {
       paragraph += line;
     } else {
       paragraph += " " + line;
@@ -130,7 +112,6 @@ function joinBrokenLines(text) {
 
   return result.join("\n");
 }
-
 
 /**
  * Insert paragraph breaks where the text strongly suggests
@@ -151,34 +132,25 @@ function detectParagraphBreaks(text) {
 
     result.push(current);
 
-    const next = lines[i + 1]
-      ? lines[i + 1].trim()
-      : "";
+    const next = lines[i + 1] ? lines[i + 1].trim() : "";
 
     if (!next) {
       continue;
     }
 
-    const endsChineseSentence =
-      /[。！？]$/.test(current);
+    const endsChineseSentence = /[。！？]$/.test(current);
 
-    const endsEnglishSentence =
-      /[.!?]["')\]]?$/.test(current);
+    const endsEnglishSentence = /[.!?]["')\]]?$/.test(current);
 
-    const nextStartsDialogue =
-      /^[「『“"]/.test(next);
+    const nextStartsDialogue = /^[「『“"]/.test(next);
 
-    if (
-      (endsChineseSentence || endsEnglishSentence) &&
-      nextStartsDialogue
-    ) {
+    if ((endsChineseSentence || endsEnglishSentence) && nextStartsDialogue) {
       result.push("");
     }
   }
 
   return result.join("\n");
 }
-
 
 /* =================================================
    ANALYZE
@@ -209,9 +181,7 @@ function analyzeText() {
   /*
      Prevent cleanup from creating excessive blank lines.
   */
-  cleaned = cleaned
-    .replace(/\n{3,}/g, "\n\n")
-    .trim();
+  cleaned = cleaned.replace(/\n{3,}/g, "\n\n").trim();
 
   cleanedText.value = cleaned;
 
@@ -224,22 +194,16 @@ function analyzeText() {
   applyButton.disabled = false;
 
   if (original === cleaned) {
-    changeCount.textContent =
-      "No changes detected.";
+    changeCount.textContent = "No changes detected.";
   } else {
-    const originalLines =
-      original.split(/\r?\n/).length;
+    const originalLines = original.split(/\r?\n/).length;
 
-    const cleanedLines =
-      cleaned.split(/\r?\n/).length;
+    const cleanedLines = cleaned.split(/\r?\n/).length;
 
-    const difference = Math.abs(
-      cleanedLines - originalLines
-    );
+    const difference = Math.abs(cleanedLines - originalLines);
 
     if (difference === 0) {
-      changeCount.textContent =
-        "Text spacing or punctuation changed.";
+      changeCount.textContent = "Text spacing or punctuation changed.";
     } else {
       changeCount.textContent =
         `${difference} line structure change` +
@@ -264,17 +228,12 @@ async function applyCleanup() {
   const book = getCurrentBook();
 
   if (!book) {
-    showStatus(
-      "Open or import a book before applying cleanup."
-    );
+    showStatus("Open or import a book before applying cleanup.");
 
     return;
   }
 
-  await updateCurrentBookText(
-    cleaned,
-    true
-  );
+  await updateCurrentBookText(cleaned, true);
 
   renderCurrentView();
 
@@ -282,21 +241,15 @@ async function applyCleanup() {
     renderReader();
   }
 
-  showStatus(
-    "Cleaned text applied."
-  );
+  showStatus("Cleaned text applied.");
 }
-
 
 /* =================================================
    CLEAR DOCUMENT
 ================================================= */
 
 function clearDocument() {
-  if (
-    !inputText.value.trim() &&
-    !cleanedText.value.trim()
-  ) {
+  if (!inputText.value.trim() && !cleanedText.value.trim()) {
     return;
   }
 
@@ -317,14 +270,11 @@ function clearDocument() {
   inputText.value = "";
   cleanedText.value = "";
 
-  cleanupResult.classList.add(
-    "hidden"
-  );
+  cleanupResult.classList.add("hidden");
 
   applyButton.disabled = true;
 
-  changeCount.textContent =
-    "No changes yet";
+  changeCount.textContent = "No changes yet";
 
   detectedChapters = [];
 
@@ -336,7 +286,5 @@ function clearDocument() {
     renderReader();
   }
 
-  showStatus(
-    "Document cleared."
-  );
+  showStatus("Document cleared.");
 }
