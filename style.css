@@ -1385,6 +1385,13 @@ body[data-theme="sepia"] .reader-content {
   visibility: visible;
 }
 
+.menu-quill {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  display: block;
+}
+
 /* =========================================================
    FULLSCREEN READER
 ========================================================= */
