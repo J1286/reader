@@ -58,6 +58,8 @@ async function setMode(mode) {
   if (mode === "settings") {
     settingsDefaultStyle.value = appState.formatter.preset || "book";
 
+    settingsBackground.value = appState.appearance?.background || "bookshelf";
+
     settingsFontSize.value = appState.formatter.fontSize;
 
     settingsLineSpacing.value = appState.formatter.lineSpacing;
@@ -457,6 +459,7 @@ readerSearchInput?.addEventListener("keydown", (event) => {
 settingsResetDefaults?.addEventListener("click", () => {
   settingsDefaultStyle.value = "book";
   settingsDefaultFont.value = "system";
+  settingsBackground.value = "bookshelf";
 
   settingsFontSize.value = 18;
   settingsLineSpacing.value = 1.6;
@@ -480,6 +483,8 @@ settingsApplyDefaults?.addEventListener("click", () => {
   const readingWidthValue = Number(settingsReadingWidth.value);
 
   appState.formatter.preset = settingsDefaultStyle.value;
+
+  appState.appearance.background = settingsBackground.value;
 
   appState.reader.fontFamily = settingsDefaultFont.value;
 
