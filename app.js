@@ -210,6 +210,23 @@ readerThemeButtons.forEach((button) => {
 });
 
 /* =================================================
+   APP BACKGROUNDS
+================================================= */
+
+function setAppBackground(background) {
+  const validBackground =
+    background === "cozy-winter"
+      ? "cozy-winter"
+      : "bookshelf";
+
+  appState.appearance.background =
+    validBackground;
+
+  document.body.dataset.background =
+    validBackground;
+}
+
+/* =================================================
 MANUAL SETTINGS → CUSTOM
 ================================================= */
 
@@ -303,6 +320,12 @@ RESTORE SAVED THEME
 const savedTheme = appState.formatter.theme || appState.reader.theme || "light";
 
 setTheme(savedTheme);
+
+setAppBackground(
+  appState.appearance?.background ||
+  "bookshelf"
+);
+
 restoreFormatterSettings();
 
 /* =================================================
@@ -484,7 +507,7 @@ settingsApplyDefaults?.addEventListener("click", () => {
 
   appState.formatter.preset = settingsDefaultStyle.value;
 
-  appState.appearance.background = settingsBackground.value;
+  setAppBackground(settingsBackground.value);
 
   appState.reader.fontFamily = settingsDefaultFont.value;
 
