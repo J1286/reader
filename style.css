@@ -51,6 +51,32 @@ body {
     sans-serif;
 }
 
+body {
+  background-color: var(--page-bg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+body[data-background="bookshelf"] {
+  background-image:
+    linear-gradient(
+      rgba(18, 10, 5, 0.15),
+      rgba(18, 10, 5, 0.25)
+    ),
+    url("./assets/bookshelf-bg.png");
+}
+
+body[data-background="cozy-winter"] {
+  background-image:
+    linear-gradient(
+      rgba(10, 8, 12, 0.15),
+      rgba(10, 8, 12, 0.25)
+    ),
+    url("./assets/cozy-winter-bg.png");
+}
+
 button,
 input,
 textarea,
