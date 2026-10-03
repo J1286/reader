@@ -118,6 +118,8 @@ const settingsParagraphSpacing = document.getElementById(
 
 const settingsReadingWidth = document.getElementById("settingsReadingWidth");
 
+const settingsBackground = document.getElementById("settingsBackground");
+
 const settingsApplyDefaults = document.getElementById("settingsApplyDefaults");
 
 const settingsResetDefaults = document.getElementById("settingsResetDefaults");
@@ -182,6 +184,10 @@ const appState = {
   version: APP_VERSION,
 
   mode: "library",
+
+  appearance: {
+    background: "bookshelf"
+  },
 
   library: [],
 
@@ -429,6 +435,7 @@ function saveAppState() {
     const stateToSave = {
       version: appState.version,
       mode: appState.mode,
+      appearance: appState.appearance,
       currentBookId: appState.currentBookId,
       formatter: appState.formatter,
       cleanup: appState.cleanup,
@@ -463,6 +470,11 @@ function loadAppState() {
     appState.version = savedState.version || APP_VERSION;
 
     appState.mode = savedState.mode || "library";
+
+    appState.appearance = {
+     background: "bookshelf",
+     ...(savedState.appearance || {})
+    };
 
     appState.currentBookId = savedState.currentBookId || null;
 
