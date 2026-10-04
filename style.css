@@ -2866,6 +2866,24 @@ body:has(#libraryView:not(.hidden)) #appTitle {
   padding: 115px 40px 40px;
 }
 
+#libraryView[data-background="bookshelf"] {
+  background-image:
+    linear-gradient(
+      rgba(18, 10, 5, 0.2),
+      rgba(18, 10, 5, 0.34)
+    ),
+    url("./assets/bookshelf-bg.png");
+}
+
+#libraryView[data-background="cozy-winter"] {
+  background-image:
+    linear-gradient(
+      rgba(10, 8, 12, 0.12),
+      rgba(10, 8, 12, 0.22)
+    ),
+    url("./assets/cozy-winter-bg.png");
+}
+
 /* Desktop */
 @media (min-width: 760px) {
   #libraryView .library-panel {
