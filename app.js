@@ -516,6 +516,10 @@ settingsApplyDefaults?.addEventListener("click", () => {
 
   saveAppState();
 
+  if (appState.mode === "library") {
+    renderLibrary();
+  }   
+
   if (currentMode === "reader") {
     renderReader();
   }
