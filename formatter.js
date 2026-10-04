@@ -243,74 +243,134 @@ function getFormattedText() {
 function renderPreview(text = getBookText()) {
   const width = parseFloat(lineWidth.value) || 40;
 
-  const paragraphs = formatDocument(text, width);
+  const PREVIEW_CHARACTER_LIMIT = 10000;
 
-  const size = parseFloat(fontSize.value) || 18;
+  let previewText = text;
 
-  const spacing = parseFloat(lineSpacing.value) || 1.6;
+  if (text.length > PREVIEW_CHARACTER_LIMIT) {
+    const cutoff = text.lastIndexOf(
+      "\n\n",
+      PREVIEW_CHARACTER_LIMIT
+    );
 
-  const pageWidth = parseInt(previewWidth.value, 10) || 800;
+    if (cutoff > 0) {
+      previewText = text.slice(0, cutoff);
+    } else {
+      previewText = text.slice(
+        0,
+        PREVIEW_CHARACTER_LIMIT
+      );
+    }
+  }
+
+  const paragraphs =
+    formatDocument(previewText, width);
+
+  const size =
+    parseFloat(fontSize.value) || 18;
+
+  const spacing =
+    parseFloat(lineSpacing.value) || 1.6;
+
+  const pageWidth =
+    parseInt(previewWidth.value, 10) || 800;
 
   preview.style.fontSize = `${size}px`;
-
   preview.style.lineHeight = spacing;
-
   preview.style.width = `${pageWidth}px`;
 
-  widthValue.textContent = `${pageWidth}px`;
+  widthValue.textContent =
+    `${pageWidth}px`;
 
   preview.innerHTML = "";
 
   let chapterCounter = 0;
 
   paragraphs.forEach((lines, index) => {
-    const paragraph = document.createElement("div");
+    const paragraph =
+      document.createElement("div");
 
-    paragraph.className = "preview-paragraph";
+    paragraph.className =
+      "preview-paragraph";
 
-    paragraph.style.marginBottom = `${
-      parseInt(paragraphSpacing.value, 10) || 0
-    }px`;
+    paragraph.style.marginBottom =
+      `${parseInt(
+        paragraphSpacing.value,
+        10
+      ) || 0}px`;
 
     paragraph.style.textIndent =
-      appState.formatter.indent && index > 0 ? "2em" : "0";
+      appState.formatter.indent &&
+      index > 0
+        ? "2em"
+        : "0";
 
-    const fullText = lines.join("\n");
+    const fullText =
+      lines.join("\n");
 
-    const chapter = detectedChapters[chapterCounter];
+    const chapter =
+      detectedChapters[chapterCounter];
 
-    if (chapter && fullText.startsWith(chapter.title)) {
+    if (
+      chapter &&
+      fullText.startsWith(chapter.title)
+    ) {
       paragraph.id = chapter.id;
 
-      paragraph.classList.add("preview-chapter");
+      paragraph.classList.add(
+        "preview-chapter"
+      );
 
-      paragraph.style.textIndent = "0";
+      paragraph.style.textIndent =
+        "0";
 
-      const title = document.createElement("div");
+      const title =
+        document.createElement("div");
 
-      title.className = "preview-chapter-title";
+      title.className =
+        "preview-chapter-title";
 
-      title.textContent = chapter.title;
+      title.textContent =
+        chapter.title;
 
       paragraph.appendChild(title);
 
-      const remainder = fullText.slice(chapter.title.length).trim();
+      const remainder =
+        fullText
+          .slice(chapter.title.length)
+          .trim();
 
       if (remainder) {
-        const body = document.createElement("div");
+        const body =
+          document.createElement("div");
 
-        body.textContent = remainder;
+        body.textContent =
+          remainder;
 
         paragraph.appendChild(body);
       }
 
       chapterCounter++;
     } else {
-      paragraph.textContent = fullText;
+      paragraph.textContent =
+        fullText;
     }
 
     preview.appendChild(paragraph);
   });
+
+  if (text.length > PREVIEW_CHARACTER_LIMIT) {
+    const notice =
+      document.createElement("div");
+
+    notice.className =
+      "preview-limit-notice";
+
+    notice.textContent =
+      "Preview shows the beginning of this book. The full text will still be formatted and exported.";
+
+    preview.appendChild(notice);
+  }
 
   updateStats();
 }
