@@ -263,6 +263,15 @@ async function syncLibraryState() {
 ================================================= */
 
 async function renderLibrary() {
+
+    const libraryBackground =
+    appState.appearance?.background === "cozy-winter"
+      ? "cozy-winter"
+      : "bookshelf";
+
+  libraryView.dataset.background =
+    libraryBackground;
+   
   try {
     const books = await getAllBooks();
 
