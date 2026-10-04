@@ -85,7 +85,7 @@ FORMATTER VIEW RENDERING
 function renderCurrentView() {
   const book = getCurrentBook();
 
-  const text = book?.text || "";
+  const text = book?.text || currentBook?.text || "";
 
   prepareChapters(text);
   renderPreview(text);
