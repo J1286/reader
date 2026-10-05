@@ -400,6 +400,13 @@ if (libraryFolders) {
       return (b.lastOpened || 0) - (a.lastOpened || 0);
     });
 
+     const createFolderButton = document.getElementById("createFolderButton");
+
+   createFolderButton?.addEventListener(
+     "click",
+     createLibraryFolder
+   );
+
     books.forEach((book) => {
       const card = document.createElement("article");
       card.className = "book-card";
@@ -493,14 +500,6 @@ if (libraryFolders) {
 
       card.appendChild(cover);
       card.appendChild(deleteButton);
-
-      const createFolderButton =
-        document.getElementById("createFolderButton");
-
-        createFolderButton?.addEventListener(
-          "click",
-          createLibraryFolder
-        );
        
       const open = () => openBook(book.id);
       card.addEventListener("click", open);
