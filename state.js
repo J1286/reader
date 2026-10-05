@@ -199,7 +199,8 @@ const appState = {
 
   librarySettings: {
     sort: "recent",
-    booksPerRow: 2
+    booksPerRow: 2,
+    folders: []
   },
 
   formatter: {
@@ -280,15 +281,11 @@ function createBook({
 
   return {
     id: createBookId(),
-
     title: title || "Untitled",
-
     type: type || "txt",
-
     sourceName: sourceName || "",
-
+    folderId: null,
     text: text || "",
-
     chapters: [],
 
     createdAt: now,
@@ -485,8 +482,13 @@ function loadAppState() {
     appState.librarySettings = {
       sort: "recent",
       booksPerRow: 2,
+      folders: [],
       ...(savedState.librarySettings || {})
     };
+
+    if (!Array.isArray(appState.librarySettings.folders)) {
+      appState.librarySettings.folders = [];
+    }
 
     appState.formatter = {
       ...DEFAULT_FORMATTER_SETTINGS,
