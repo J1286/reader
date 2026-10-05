@@ -126,7 +126,7 @@ function renderReader() {
 
   restoringReaderPosition = true;
 
-  const text = book?.text || "";
+  const text = (book?.text || "").slice(0, 10000);
 
   if (book) {
     if (Array.isArray(book.chapters) && book.chapters.length) {
