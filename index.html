@@ -243,21 +243,30 @@
       <!-- CLEANUP -->
 
       <section>
-  <div class="section-title-row cleanup-title-row hidden">
-    <h2>Cleanup</h2>
+        <div class="cleanup-header">
+          <button
+            id="cleanupToggle"
+            class="section-toggle cleanup-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="cleanupOptions"
+          >
+          <span>Cleanup</span>
+          <span id="cleanupToggleIcon" class="toggle-icon">▸</span>
+        </button>
 
-    <button
-      id="cleanupHelpButton"
-      class="help-button"
-      type="button"
-      aria-expanded="false"
-      aria-controls="cleanupHelp"
-      title="Explain the cleanup options"
-      aria-label="Explain the cleanup options"
-    >
-      ?
-    </button>
-  </div>
+        <button
+          id="cleanupHelpButton"
+          class="help-button"
+          type="button"
+          aria-expanded="false"
+          aria-controls="cleanupHelp"
+          title="Explain the cleanup options"
+          aria-label="Explain the cleanup options"
+          >
+        ?
+        </button>
+      </div>
 
   <div id="cleanupHelp" class="format-help cleanup-help hidden" aria-hidden="true">
     <span>
@@ -281,7 +290,7 @@
     </span>
   </div>
 
-  <div class="cleanup-panel">
+  <div id="cleanupOptions" class="cleanup-panel hidden">
     <div class="cleanup-options">
       <label class="checkbox">
         <input id="cleanSpaces" type="checkbox" checked>
