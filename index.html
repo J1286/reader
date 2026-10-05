@@ -49,8 +49,18 @@
       <!-- LIBRARY ACTIONS -->
       <div class="library-actions">
 
+        <button
+          id="createFolderButton"
+          class="library-folder-button"
+          type="button"
+          title="Create folder"
+          aria-label="Create folder"
+        >
+          <i class="bi bi-folder-plus"></i>
+        </button>
+
         <button id="addBookButton" class="library-add-button" type="button">
-          + Books
+          +Books
         </button>
 
         <button id="refreshLibraryButton" class="library-sync-button secondary" type="button" aria-label="Sync library" title="Sync library">
@@ -117,7 +127,8 @@
     <div id="menuBackdrop" class="menu-backdrop"></div>
 
     <!-- LIBRARY VIEW -->
-
+    
+    <div id="libraryFolders" class="library-folders"></div>
     <div id="libraryView" class="app-view">
       <section id="librarySection">
         <div id="libraryPanel" class="library-panel"></div>
