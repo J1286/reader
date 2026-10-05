@@ -2391,6 +2391,54 @@ body.reader-fullscreen .reader-content {
   display: none;
 }
 
+.cleanup-title-row {
+  align-items: center;
+}
+
+.cleanup-title-row h2 {
+  margin-bottom: 10px;
+}
+
+.cleanup-help {
+  margin-bottom: 8px;
+}
+
+.cleanup-help span {
+  display: block;
+  flex: 1 1 220px;
+}
+
+.cleanup-help strong {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.keyword-cleanup {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1 1 100%;
+  min-width: 240px;
+}
+
+.keyword-cleanup label {
+  color: var(--muted-color);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+#cleanupKeywords {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 7px;
+}
+
+.keyword-hint {
+  color: var(--muted-color);
+  font-size: 12px;
+}
+
 .stepper {
   display: inline-flex;
   align-items: center;
