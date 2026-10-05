@@ -192,6 +192,10 @@ function analyzeText() {
     cleaned = detectParagraphBreaks(cleaned);
   }
 
+  if (removeKeywords.checked) {
+    cleaned = removeKeywordMatches(cleaned);
+  }
+
   /* Prevent cleanup from creating excessive blank lines. */
   cleaned = cleaned.replace(/\n{3,}/g, "\n\n").trim();
 
