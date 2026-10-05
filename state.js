@@ -15,6 +15,8 @@ const applyButton = document.getElementById("applyButton");
 const cleanSpaces = document.getElementById("cleanSpaces");
 const detectParagraphs = document.getElementById("detectParagraphs");
 const joinBrokenLinesCheckbox = document.getElementById("joinBrokenLines");
+const removeKeywords = document.getElementById("removeKeywords");
+const cleanupKeywords = document.getElementById("cleanupKeywords");
 
 const lineWidth = document.getElementById("lineWidth");
 const fontSize = document.getElementById("fontSize");
@@ -173,7 +175,9 @@ const DEFAULT_FORMATTER_SETTINGS = {
 const DEFAULT_CLEANUP_SETTINGS = {
   cleanSpaces: true,
   detectParagraphs: true,
-  joinBrokenLines: true
+  joinBrokenLines: true,
+  removeKeywords: false,
+  keywords: ""
 };
 
 /* =================================================
