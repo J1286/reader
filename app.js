@@ -388,6 +388,37 @@ cleanupHelpButton?.addEventListener("click", () => {
     String(nextOpen)
   );
 
+  const cleanupToggle =
+  document.getElementById("cleanupToggle");
+
+const cleanupToggleIcon =
+  document.getElementById("cleanupToggleIcon");
+
+const cleanupOptions =
+  document.getElementById("cleanupOptions");
+
+cleanupToggle?.addEventListener("click", () => {
+  const isOpen =
+    cleanupToggle.getAttribute("aria-expanded") === "true";
+
+  const nextOpen = !isOpen;
+
+  cleanupToggle.setAttribute(
+    "aria-expanded",
+    String(nextOpen)
+  );
+
+  cleanupOptions?.classList.toggle(
+    "hidden",
+    !nextOpen
+  );
+
+  if (cleanupToggleIcon) {
+    cleanupToggleIcon.textContent =
+      nextOpen ? "▾" : "▸";
+  }
+});
+
   cleanupHelp?.classList.toggle(
     "hidden",
     !nextOpen
