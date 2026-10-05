@@ -300,6 +300,65 @@ async function renderLibrary() {
 
   libraryView.dataset.background =
     libraryBackground;
+
+    const libraryFolders =
+  document.getElementById("libraryFolders");
+
+if (libraryFolders) {
+  libraryFolders.innerHTML = "";
+
+  const folders =
+    appState.librarySettings?.folders || [];
+
+  folders.forEach((folder) => {
+    const folderElement =
+      document.createElement("div");
+
+    folderElement.className =
+      "library-folder";
+
+    folderElement.dataset.folderId =
+      folder.id;
+
+    const icon =
+      document.createElement("i");
+
+    icon.className =
+      "bi bi-folder-fill library-folder-icon";
+
+    const name =
+      document.createElement("span");
+
+    name.className =
+      "library-folder-name";
+
+    name.textContent =
+      folder.name;
+
+    const count =
+      document.createElement("span");
+
+    count.className =
+      "library-folder-count";
+
+    const bookCount =
+      appState.library.filter(
+        (book) =>
+          book.folderId === folder.id
+      ).length;
+
+    count.textContent =
+      bookCount;
+
+    folderElement.appendChild(icon);
+    folderElement.appendChild(name);
+    folderElement.appendChild(count);
+
+    libraryFolders.appendChild(
+      folderElement
+    );
+  });
+}
    
   try {
     const books = await getAllBooks();
@@ -435,6 +494,14 @@ async function renderLibrary() {
       card.appendChild(cover);
       card.appendChild(deleteButton);
 
+      const createFolderButton =
+        document.getElementById("createFolderButton");
+
+        createFolderButton?.addEventListener(
+          "click",
+          createLibraryFolder
+        );
+       
       const open = () => openBook(book.id);
       card.addEventListener("click", open);
       card.addEventListener("keydown", (event) => {
