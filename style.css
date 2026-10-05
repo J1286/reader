@@ -2391,12 +2391,24 @@ body.reader-fullscreen .reader-content {
   display: none;
 }
 
-.cleanup-title-row {
+.cleanup-header {
+  display: flex;
   align-items: center;
+  gap: 8px;
+  margin-top: 4px;
 }
 
-.cleanup-title-row h2 {
-  margin-bottom: 10px;
+.cleanup-toggle {
+  flex: 1;
+  margin-top: 0;
+}
+
+.cleanup-header .help-button {
+  flex-shrink: 0;
+}
+
+.cleanup-panel.hidden {
+  display: none;
 }
 
 .cleanup-help {
