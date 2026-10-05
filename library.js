@@ -8,6 +8,35 @@ const STORE_NAME = "books";
 
 let libraryDB = null;
 
+function createLibraryFolder() {
+  const name = prompt("Folder name:");
+
+  if (name === null) {
+    return;
+  }
+
+  const folderName = name.trim();
+
+  if (!folderName) {
+    return;
+  }
+
+  const folder = {
+    id:
+      "folder-" +
+      Date.now().toString(36) +
+      "-" +
+      Math.random().toString(36).slice(2, 8),
+
+    name: folderName
+  };
+
+  appState.librarySettings.folders.push(folder);
+
+  saveAppState();
+  renderLibrary();
+}
+
 /* =================================================
    DATABASE
 ================================================= */
