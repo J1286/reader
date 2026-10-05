@@ -243,36 +243,94 @@
       <!-- CLEANUP -->
 
       <section>
-        <h2>Cleanup</h2>
-        <div class="cleanup-panel">
-          <div class="cleanup-options">
-            <label class="checkbox">
-              <input id="cleanSpaces" type="checkbox" checked>
-              Clean extra spaces
-            </label>
+  <div class="section-title-row cleanup-title-row">
+    <h2>Cleanup</h2>
 
-            <label class="checkbox">
-              <input id="detectParagraphs" type="checkbox" checked>
-              Detect possible paragraphs
-            </label>
+    <button
+      id="cleanupHelpButton"
+      class="help-button"
+      type="button"
+      aria-expanded="false"
+      aria-controls="cleanupHelp"
+      title="Explain the cleanup options"
+      aria-label="Explain the cleanup options"
+    >
+      ?
+    </button>
+  </div>
 
-            <label class="checkbox">
-              <input id="joinBrokenLines" type="checkbox" checked>
-              Join broken lines
-            </label>
-          </div>
+  <div id="cleanupHelp" class="format-help cleanup-help hidden" aria-hidden="true">
+    <span>
+      <strong>Clean extra spaces</strong>
+      Removes repeated spaces and fixes spaces around punctuation.
+    </span>
 
-          <div class="cleanup-buttons">
+    <span>
+      <strong>Detect possible paragraphs</strong>
+      Adds paragraph breaks where the text looks like a new paragraph or dialogue.
+    </span>
 
-            <button id="analyzeButton">
-              Analyze Text
-            </button>
+    <span>
+      <strong>Join broken lines</strong>
+      Combines lines that appear to belong to the same paragraph.
+    </span>
 
-            <button id="applyButton" class="secondary" disabled>
-              Apply to Input
-            </button>
-          </div>
-        </div>
+    <span>
+      <strong>Remove keywords</strong>
+      Removes specific words or phrases that you enter below.
+    </span>
+  </div>
+
+  <div class="cleanup-panel">
+    <div class="cleanup-options">
+      <label class="checkbox">
+        <input id="cleanSpaces" type="checkbox" checked>
+        Clean extra spaces
+      </label>
+
+      <label class="checkbox">
+        <input id="detectParagraphs" type="checkbox" checked>
+        Detect possible paragraphs
+      </label>
+
+      <label class="checkbox">
+        <input id="joinBrokenLines" type="checkbox" checked>
+        Join broken lines
+      </label>
+
+      <label class="checkbox">
+        <input id="removeKeywords" type="checkbox">
+        Remove keywords
+      </label>
+
+      <div class="keyword-cleanup">
+        <label for="cleanupKeywords">
+          Keywords to remove
+        </label>
+
+        <input
+          id="cleanupKeywords"
+          type="text"
+          placeholder="keyword 1, keyword 2, phrase to remove..."
+          autocomplete="off"
+        />
+
+        <span class="keyword-hint">
+          Separate multiple keywords with commas.
+        </span>
+      </div>
+    </div>
+
+    <div class="cleanup-buttons">
+      <button id="analyzeButton">
+        Analyze Text
+      </button>
+
+      <button id="applyButton" class="secondary" disabled>
+        Apply to Input
+      </button>
+    </div>
+  </div>
 
         <div id="cleanupResult" class="cleanup-result hidden">
           <div class="cleanup-header">
