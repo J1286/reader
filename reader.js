@@ -122,11 +122,11 @@ function highlightSearchText(text) {
 }
 
 function renderReader() {
-  const book = getCurrentBook();
+  const book = getCurrentBook() || currentBook;
 
   restoringReaderPosition = true;
 
-  const text = (book?.text || "").slice(0, 10000);
+  const text = book?.text || "";
 
   if (book) {
     if (Array.isArray(book.chapters) && book.chapters.length) {
