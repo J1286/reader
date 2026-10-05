@@ -371,33 +371,20 @@ formatHelpButton?.addEventListener("click", () => {
   formatHelp?.setAttribute("aria-hidden", String(!nextOpen));
 });
 
-const cleanupHelpButton =
-  document.getElementById("cleanupHelpButton");
+const cleanupHelpButton = document.getElementById("cleanupHelpButton");
 
-const cleanupHelp =
-  document.getElementById("cleanupHelp");
+const cleanupHelp = document.getElementById("cleanupHelp");
 
-cleanupHelpButton?.addEventListener("click", () => {
-  const isOpen =
-    cleanupHelpButton.getAttribute("aria-expanded") === "true";
-
-  const nextOpen = !isOpen;
-
-  cleanupHelpButton.setAttribute(
-    "aria-expanded",
-    String(nextOpen)
-  );
-
-  const cleanupToggle =
+const cleanupToggle =
   document.getElementById("cleanupToggle");
-
-const cleanupToggleIcon =
-  document.getElementById("cleanupToggleIcon");
 
 const cleanupOptions =
   document.getElementById("cleanupOptions");
 
-cleanupToggle?.addEventListener("click", () => {
+const cleanupToggleIcon =
+  document.getElementById("cleanupToggleIcon");
+
+cleanupToggle.addEventListener("click", () => {
   const isOpen =
     cleanupToggle.getAttribute("aria-expanded") === "true";
 
@@ -408,26 +395,13 @@ cleanupToggle?.addEventListener("click", () => {
     String(nextOpen)
   );
 
-  cleanupOptions?.classList.toggle(
+  cleanupOptions.classList.toggle(
     "hidden",
     !nextOpen
   );
 
-  if (cleanupToggleIcon) {
-    cleanupToggleIcon.textContent =
-      nextOpen ? "▾" : "▸";
-  }
-});
-
-  cleanupHelp?.classList.toggle(
-    "hidden",
-    !nextOpen
-  );
-
-  cleanupHelp?.setAttribute(
-    "aria-hidden",
-    String(!nextOpen)
-  );
+  cleanupToggleIcon.textContent =
+    nextOpen ? "▾" : "▸";
 });
 
 /* =================================================
