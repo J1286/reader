@@ -12,10 +12,7 @@ clearButton.addEventListener("click", clearDocument);
    CLEANUP HELPERS
 ================================================= */
 
-/**
- * Remove unnecessary spaces while preserving meaningful
- * whitespace and line structure.
- */
+/* Remove unnecessary spaces while preserving meaningful whitespace and line structure. */
 function cleanSpacing(text) {
   let result = text;
 
@@ -32,9 +29,37 @@ function cleanSpacing(text) {
   return result;
 }
 
-/**
- * Determine whether a line looks like a chapter/section heading.
- */
+/* Remove user-specified words or phrases. */
+function removeKeywordMatches(text) {
+  const keywords = cleanupKeywords.value
+    .split(",")
+    .map((keyword) => keyword.trim())
+    .filter(Boolean);
+
+  if (!keywords.length) {
+    return text;
+  }
+
+  let result = text;
+
+  for (const keyword of keywords) {
+    const escapedKeyword = keyword.replace(
+      /[.*+?^${}()|[\]\\]/g,
+      "\\$&"
+    );
+
+    const regex = new RegExp(
+      escapedKeyword,
+      "gi"
+    );
+
+    result = result.replace(regex, "");
+  }
+
+  return result;
+}
+
+/* Determine whether a line looks like a chapter/section heading. */
 function isLikelyHeading(line) {
   if (line.length <= 40 && /^第.{1,20}[章節部篇]/.test(line)) {
     return true;
@@ -51,10 +76,7 @@ function isLikelyHeading(line) {
   return false;
 }
 
-/**
- * Join lines that appear to be wrapped versions of the
- * same paragraph.
- */
+/* Join lines that appear to be wrapped versions of the same paragraph. */
 function joinBrokenLines(text) {
   const lines = text.split(/\r?\n/);
 
@@ -93,12 +115,7 @@ function joinBrokenLines(text) {
       continue;
     }
 
-    /*
-       CJK text normally does not need a space between
-       wrapped lines.
-
-       Latin text generally does.
-    */
+    /* CJK text normally does not need a space between wrapped lines. */
     if (isCJK(paragraph.at(-1)) || isCJK(line[0])) {
       paragraph += line;
     } else {
@@ -113,10 +130,7 @@ function joinBrokenLines(text) {
   return result.join("\n");
 }
 
-/**
- * Insert paragraph breaks where the text strongly suggests
- * a new paragraph has started.
- */
+
 function detectParagraphBreaks(text) {
   const lines = text.split(/\r?\n/);
 
@@ -178,19 +192,13 @@ function analyzeText() {
     cleaned = detectParagraphBreaks(cleaned);
   }
 
-  /*
-     Prevent cleanup from creating excessive blank lines.
-  */
+  /* Prevent cleanup from creating excessive blank lines. */
   cleaned = cleaned.replace(/\n{3,}/g, "\n\n").trim();
 
   cleanedText.value = cleaned;
 
   cleanupResult.classList.remove("hidden");
 
-  /*
-     There is always something available to apply once
-     analysis has completed, even when no changes were made.
-  */
   applyButton.disabled = false;
 
   if (original === cleaned) {
@@ -252,14 +260,6 @@ function clearDocument() {
   if (!inputText.value.trim() && !cleanedText.value.trim()) {
     return;
   }
-
-  /*
-     Clear the editor state without deleting the
-     book from the library.
-
-     Deleting a library book remains the responsibility
-     of the Delete button in the Library.
-  */
 
   appState.currentBookId = null;
 
