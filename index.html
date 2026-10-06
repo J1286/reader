@@ -848,11 +848,14 @@
     }
 
     function closeMenu() {
+      menuButton.focus();
+
       sideMenu.classList.remove("open");
       menuBackdrop.classList.remove("open");
       sideMenu.setAttribute("aria-hidden", "true");
       menuButton.setAttribute("aria-expanded", "false");
     }
+    
     menuButton.addEventListener("click", openMenu);
     closeMenuButton.addEventListener("click", closeMenu);
     menuBackdrop.addEventListener("click", closeMenu);
