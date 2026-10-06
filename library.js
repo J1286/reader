@@ -38,6 +38,37 @@ function createLibraryFolder() {
   renderLibrary();
 }
 
+async function moveBookToFolder(bookId, folderId) {
+  try {
+    const book = await getBook(bookId);
+
+    if (!book) {
+      showStatus("Book could not be found.");
+      return false;
+    }
+
+    book.folderId = folderId || null;
+    book.updatedAt = new Date().toISOString();
+
+    await saveBook(book);
+
+    await syncLibraryState();
+    await renderLibrary();
+
+    showStatus(
+      folderId
+        ? `Moved "${book.title}" to folder.`
+        : `Moved "${book.title}" to My Library.`
+    );
+
+    return true;
+  } catch (error) {
+    console.error("Could not move book:", error);
+    showStatus("Could not move that book.");
+    return false;
+  }
+}
+
 /* =================================================
    DATABASE
 ================================================= */
