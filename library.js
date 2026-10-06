@@ -38,14 +38,6 @@ function createLibraryFolder() {
   renderLibrary();
 }
 
-const createFolderButton =
-  document.getElementById("createFolderButton");
-
-createFolderButton?.addEventListener(
-  "click",
-  createLibraryFolder
-);
-
 /* =================================================
    DATABASE
 ================================================= */
@@ -352,6 +344,16 @@ if (
     folderElement.addEventListener(
       "click",
       () => {
+    currentLibraryFolderId =
+      folder.id;
+
+    renderLibrary();
+  }
+);
+
+    folderElement.addEventListener(
+      "click",
+      () => {
     currentLibraryFolderId = folder.id;
       renderLibrary();
       }
@@ -449,7 +451,18 @@ if (
           currentLibraryFolderId
       );
 
-    visibleBooks.forEach((book) => {
+    const visibleBooks =
+  currentLibraryFolderId === null
+    ? books.filter(
+        (book) => !book.folderId
+      )
+    : books.filter(
+        (book) =>
+          book.folderId ===
+          currentLibraryFolderId
+      );
+
+visibleBooks.forEach((book) => {
       const card = document.createElement("article");
       card.className = "book-card";
       card.setAttribute("role", "button");
@@ -588,7 +601,15 @@ card.appendChild(moveButton);
 
     showStatus("Could not load your library.");
   }
-}
+
+   const createFolderButton =
+     document.getElementById("createFolderButton");
+
+     createFolderButton?.addEventListener(
+       "click",
+     createLibraryFolder
+     );
+}   
 
 function getBookCoverHue(value) {
   const text = String(value || "book");
