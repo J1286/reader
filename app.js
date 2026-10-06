@@ -43,6 +43,8 @@ async function setMode(mode) {
   settingsView.classList.toggle("hidden", mode !== "settings");
 
   if (mode === "library") {
+    currentLibraryFolderId = null;
+
     await syncLibraryState();
     await renderLibrary();
   }
