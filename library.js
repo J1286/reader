@@ -544,8 +544,46 @@ async function renderLibrary() {
       moveButton.addEventListener("click", (event) => {
         event.stopPropagation();
 
-        // Temporary test for now.
-        showStatus(`Move "${book.title}" clicked.`);
+        const folders =
+          appState.librarySettings?.folders || [];
+
+        const options = [
+       {
+         id: null,
+         name: "My Library"
+       },
+       ...folders
+        ];
+
+        const folderNames = options
+          .map((folder, index) =>
+          `${index + 1}. ${folder.name}`
+          )
+          .join("\n");
+
+        const choice = prompt(
+          `Move "${book.title}" to:\n\n${folderNames}\n\nEnter the number:`
+        );
+
+        if (choice === null) {
+          return;
+        }
+
+        const index = Number(choice) - 1;
+
+        if (
+          !Number.isInteger(index) ||
+          index < 0 ||
+          index >= options.length
+          ) {
+          showStatus("Invalid folder selection.");
+            return;
+          }
+
+        moveBookToFolder(
+          book.id,
+          options[index].id
+        );
       });
 
       card.appendChild(moveButton);
