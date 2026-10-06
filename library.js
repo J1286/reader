@@ -332,11 +332,6 @@ async function renderLibrary() {
         renderLibrary();
       });
 
-      folderElement.addEventListener("click", () => {
-        currentLibraryFolderId = folder.id;
-        renderLibrary();
-      });
-
       const icon = document.createElement("i");
 
       icon.className = "bi bi-folder-fill library-folder-icon";
@@ -547,11 +542,15 @@ async function renderLibrary() {
 
     showStatus("Could not load your library.");
   }
-
-  const createFolderButton = document.getElementById("createFolderButton");
-
-  createFolderButton?.addEventListener("click", createLibraryFolder);
 }
+
+const createFolderButton =
+  document.getElementById("createFolderButton");
+
+createFolderButton?.addEventListener(
+  "click",
+  createLibraryFolder
+);
 
 function getBookCoverHue(value) {
   const text = String(value || "book");
