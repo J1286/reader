@@ -513,6 +513,7 @@ async function renderLibrary() {
 
       moveButton.type = "button";
       moveButton.className = "book-move-button";
+      moveButton.style.zIndex = "4";
 
       moveButton.setAttribute("aria-label", `Move ${book.title || "Untitled"}`);
 
