@@ -9,7 +9,7 @@ const STORE_NAME = "books";
 let libraryDB = null;
 
 function createLibraryFolder() {
-  const name = prompt("Folder name:");
+  const name = prompt("Folder Name:");
 
   if (name === null) {
     return;
@@ -36,6 +36,14 @@ function createLibraryFolder() {
   saveAppState();
   renderLibrary();
 }
+
+const createFolderButton =
+  document.getElementById("createFolderButton");
+
+createFolderButton?.addEventListener(
+  "click",
+  createLibraryFolder
+);
 
 /* =================================================
    DATABASE
@@ -399,13 +407,6 @@ if (libraryFolders) {
 
       return (b.lastOpened || 0) - (a.lastOpened || 0);
     });
-
-     const createFolderButton = document.getElementById("createFolderButton");
-
-   createFolderButton?.addEventListener(
-     "click",
-     createLibraryFolder
-   );
 
     books.forEach((book) => {
       const card = document.createElement("article");
