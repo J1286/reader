@@ -6,6 +6,7 @@ const DB_NAME = "textFormatterLibrary";
 const DB_VERSION = 1;
 const STORE_NAME = "books";
 
+let currentLibraryFolderId = null;
 let libraryDB = null;
 
 function createLibraryFolder() {
@@ -315,6 +316,26 @@ async function renderLibrary() {
 if (libraryFolders) {
   libraryFolders.innerHTML = "";
 
+  const librarySection =
+  document.getElementById("librarySection");
+
+if (
+  currentLibraryFolderId !== null &&
+  librarySection
+) {
+  const folder =
+    appState.librarySettings.folders.find(
+      (item) =>
+        item.id ===
+        currentLibraryFolderId
+    );
+
+  if (folder) {
+    librarySection.dataset.folderName =
+      folder.name;
+  }
+}
+
   const folders =
     appState.librarySettings?.folders || [];
 
@@ -327,6 +348,14 @@ if (libraryFolders) {
 
     folderElement.dataset.folderId =
       folder.id;
+
+    folderElement.addEventListener(
+      "click",
+      () => {
+    currentLibraryFolderId = folder.id;
+      renderLibrary();
+      }
+    );
 
     const icon =
       document.createElement("i");
@@ -408,7 +437,19 @@ if (libraryFolders) {
       return (b.lastOpened || 0) - (a.lastOpened || 0);
     });
 
-    books.forEach((book) => {
+    const visibleBooks =
+      currentLibraryFolderId === null
+      ? books.filter(
+        (book) =>
+          !book.folderId
+      )
+      : books.filter(
+        (book) =>
+          book.folderId ===
+          currentLibraryFolderId
+      );
+
+    visibleBooks.forEach((book) => {
       const card = document.createElement("article");
       card.className = "book-card";
       card.setAttribute("role", "button");
