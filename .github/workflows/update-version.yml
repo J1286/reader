@@ -59,6 +59,10 @@ jobs:
           minor = int(match.group(3))
           patch = int(match.group(4)) + 1
 
+          if patch > 9:
+          patch = 0
+          minor += 1
+
           version = f"{major}.{minor}.{patch}"
 
           new_cache_name = (
