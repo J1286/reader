@@ -293,112 +293,78 @@ async function syncLibraryState() {
 ================================================= */
 
 async function renderLibrary() {
-
-    const libraryBackground =
+  const libraryBackground =
     appState.appearance?.background === "cozy-winter"
       ? "cozy-winter"
       : "bookshelf";
 
-  libraryView.dataset.background =
-    libraryBackground;
+  libraryView.dataset.background = libraryBackground;
 
-    const libraryFolders =
-  document.getElementById("libraryFolders");
+  const libraryFolders = document.getElementById("libraryFolders");
 
-if (libraryFolders) {
-  libraryFolders.innerHTML = "";
+  if (libraryFolders) {
+    libraryFolders.innerHTML = "";
 
-  const librarySection =
-  document.getElementById("librarySection");
+    const librarySection = document.getElementById("librarySection");
 
-if (
-  currentLibraryFolderId !== null &&
-  librarySection
-) {
-  const folder =
-    appState.librarySettings.folders.find(
-      (item) =>
-        item.id ===
-        currentLibraryFolderId
-    );
+    if (currentLibraryFolderId !== null && librarySection) {
+      const folder = appState.librarySettings.folders.find(
+        (item) => item.id === currentLibraryFolderId
+      );
 
-  if (folder) {
-    librarySection.dataset.folderName =
-      folder.name;
-  }
-}
-
-  const folders =
-    appState.librarySettings?.folders || [];
-
-  folders.forEach((folder) => {
-    const folderElement =
-      document.createElement("div");
-
-    folderElement.className =
-      "library-folder";
-
-    folderElement.dataset.folderId =
-      folder.id;
-
-    folderElement.addEventListener(
-      "click",
-      () => {
-    currentLibraryFolderId =
-      folder.id;
-
-    renderLibrary();
-  }
-);
-
-    folderElement.addEventListener(
-      "click",
-      () => {
-    currentLibraryFolderId = folder.id;
-      renderLibrary();
+      if (folder) {
+        librarySection.dataset.folderName = folder.name;
       }
-    );
+    }
 
-    const icon =
-      document.createElement("i");
+    const folders = appState.librarySettings?.folders || [];
 
-    icon.className =
-      "bi bi-folder-fill library-folder-icon";
+    folders.forEach((folder) => {
+      const folderElement = document.createElement("div");
 
-    const name =
-      document.createElement("span");
+      folderElement.className = "library-folder";
 
-    name.className =
-      "library-folder-name";
+      folderElement.dataset.folderId = folder.id;
 
-    name.textContent =
-      folder.name;
+      folderElement.addEventListener("click", () => {
+        currentLibraryFolderId = folder.id;
 
-    const count =
-      document.createElement("span");
+        renderLibrary();
+      });
 
-    count.className =
-      "library-folder-count";
+      folderElement.addEventListener("click", () => {
+        currentLibraryFolderId = folder.id;
+        renderLibrary();
+      });
 
-    const bookCount =
-      appState.library.filter(
-        (book) =>
-          book.folderId === folder.id
+      const icon = document.createElement("i");
+
+      icon.className = "bi bi-folder-fill library-folder-icon";
+
+      const name = document.createElement("span");
+
+      name.className = "library-folder-name";
+
+      name.textContent = folder.name;
+
+      const count = document.createElement("span");
+
+      count.className = "library-folder-count";
+
+      const bookCount = appState.library.filter(
+        (book) => book.folderId === folder.id
       ).length;
 
-    count.textContent =
-      bookCount;
+      count.textContent = bookCount;
 
-    folderElement.appendChild(icon);
-    folderElement.appendChild(name);
-    folderElement.appendChild(count);
+      folderElement.appendChild(icon);
+      folderElement.appendChild(name);
+      folderElement.appendChild(count);
 
-    libraryFolders.appendChild(
-      folderElement
-    );
-  });
-}
-   
+      libraryFolders.appendChild(folderElement);
+    });
+  }
+
   try {
     const books = await getAllBooks();
 
@@ -441,28 +407,15 @@ if (
 
     const visibleBooks =
       currentLibraryFolderId === null
-      ? books.filter(
-        (book) =>
-          !book.folderId
-      )
-      : books.filter(
-        (book) =>
-          book.folderId ===
-          currentLibraryFolderId
-      );
+        ? books.filter((book) => !book.folderId)
+        : books.filter((book) => book.folderId === currentLibraryFolderId);
 
     const visibleBooks =
-  currentLibraryFolderId === null
-    ? books.filter(
-        (book) => !book.folderId
-      )
-    : books.filter(
-        (book) =>
-          book.folderId ===
-          currentLibraryFolderId
-      );
+      currentLibraryFolderId === null
+        ? books.filter((book) => !book.folderId)
+        : books.filter((book) => book.folderId === currentLibraryFolderId);
 
-visibleBooks.forEach((book) => {
+    visibleBooks.forEach((book) => {
       const card = document.createElement("article");
       card.className = "book-card";
       card.setAttribute("role", "button");
@@ -554,30 +507,27 @@ visibleBooks.forEach((book) => {
       });
 
       card.appendChild(cover);
-card.appendChild(deleteButton);
+      card.appendChild(deleteButton);
 
-const moveButton = document.createElement("button");
+      const moveButton = document.createElement("button");
 
-moveButton.type = "button";
-moveButton.className = "book-move-button";
+      moveButton.type = "button";
+      moveButton.className = "book-move-button";
 
-moveButton.setAttribute(
-  "aria-label",
-  `Move ${book.title || "Untitled"}`
-);
+      moveButton.setAttribute("aria-label", `Move ${book.title || "Untitled"}`);
 
-moveButton.title = "Move book";
-moveButton.innerHTML = '<i class="bi bi-folder"></i>';
+      moveButton.title = "Move book";
+      moveButton.innerHTML = '<i class="bi bi-folder"></i>';
 
-moveButton.addEventListener("click", (event) => {
-  event.stopPropagation();
+      moveButton.addEventListener("click", (event) => {
+        event.stopPropagation();
 
-  // Temporary test for now.
-  showStatus(`Move "${book.title}" clicked.`);
-});
+        // Temporary test for now.
+        showStatus(`Move "${book.title}" clicked.`);
+      });
 
-card.appendChild(moveButton);
-       
+      card.appendChild(moveButton);
+
       const open = () => openBook(book.id);
       card.addEventListener("click", open);
       card.addEventListener("keydown", (event) => {
@@ -602,14 +552,10 @@ card.appendChild(moveButton);
     showStatus("Could not load your library.");
   }
 
-   const createFolderButton =
-     document.getElementById("createFolderButton");
+  const createFolderButton = document.getElementById("createFolderButton");
 
-     createFolderButton?.addEventListener(
-       "click",
-     createLibraryFolder
-     );
-}   
+  createFolderButton?.addEventListener("click", createLibraryFolder);
+}
 
 function getBookCoverHue(value) {
   const text = String(value || "book");
