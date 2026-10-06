@@ -541,7 +541,29 @@ if (
       });
 
       card.appendChild(cover);
-      card.appendChild(deleteButton);
+card.appendChild(deleteButton);
+
+const moveButton = document.createElement("button");
+
+moveButton.type = "button";
+moveButton.className = "book-move-button";
+
+moveButton.setAttribute(
+  "aria-label",
+  `Move ${book.title || "Untitled"}`
+);
+
+moveButton.title = "Move book";
+moveButton.innerHTML = '<i class="bi bi-folder"></i>';
+
+moveButton.addEventListener("click", (event) => {
+  event.stopPropagation();
+
+  // Temporary test for now.
+  showStatus(`Move "${book.title}" clicked.`);
+});
+
+card.appendChild(moveButton);
        
       const open = () => openBook(book.id);
       card.addEventListener("click", open);
