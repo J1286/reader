@@ -3438,3 +3438,31 @@ body:has(#libraryView:not(.hidden)) .library-actions {
     gap: 10px;
   }
 }
+
+.book-move-button {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+
+  width: 30px;
+  height: 30px;
+  min-height: 30px;
+
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+  border-radius: 7px;
+
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+
+  cursor: pointer;
+}
+
+.book-move-button i {
+  font-size: 15px;
+}
