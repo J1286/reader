@@ -575,13 +575,9 @@ async function renderLibrary() {
   }
 }
 
-const createFolderButton =
-  document.getElementById("createFolderButton");
+const createFolderButton = document.getElementById("createFolderButton");
 
-createFolderButton?.addEventListener(
-  "click",
-  createLibraryFolder
-);
+createFolderButton?.addEventListener("click", createLibraryFolder);
 
 function getBookCoverHue(value) {
   const text = String(value || "book");
