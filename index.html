@@ -35,11 +35,7 @@
     <header class="header">
 
       <button id="menuButton" class="menu-button" ...>
-        <img
-        src="./assets/menu-quill.png"
-        alt=""
-        class="menu-quill"
-        >
+        <img src="./assets/menu-quill.png" alt="" class="menu-quill">
       </button>
 
       <div class="app-title">
@@ -49,13 +45,7 @@
       <!-- LIBRARY ACTIONS -->
       <div class="library-actions">
 
-        <button
-          id="createFolderButton"
-          class="library-folder-button"
-          type="button"
-          title="Create Folder"
-          aria-label="Create Folder"
-        >
+        <button id="createFolderButton" class="library-folder-button" type="button" title="Create Folder" aria-label="Create Folder">
           <i class="bi bi-folder-plus"></i>
         </button>
 
@@ -127,14 +117,30 @@
     <div id="menuBackdrop" class="menu-backdrop"></div>
 
     <!-- LIBRARY VIEW -->
-    
-    <div id="libraryView" class="app-view">
-    <div id="libraryFolders" class="library-folders"></div>
 
-    <section id="librarySection">
-      <div id="libraryPanel" class="library-panel"></div>
-    </section>
-   </div>
+    <div id="libraryView" class="app-view">
+      <div id="libraryFolders" class="library-folders"></div>
+
+      <section id="librarySection">
+        <div id="libraryPanel" class="library-panel"></div>
+      </section>
+
+      <div id="moveBookDialog" class="move-book-dialog hidden" aria-hidden="true">
+        <div class="move-book-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="moveBookDialogTitle">
+          <div class="move-book-dialog-header">
+            <strong id="moveBookDialogTitle">
+              Move Book
+            </strong>
+
+            <button id="moveBookDialogClose" type="button" class="move-book-dialog-close" aria-label="Close">
+              ×
+            </button>
+          </div>
+
+          <div id="moveBookFolderList" class="move-book-folder-list"></div>
+        </div>
+      </div>
+    </div>
 
     <!-- READER VIEW -->
 
@@ -256,102 +262,83 @@
 
       <section>
         <div class="cleanup-header">
-          <button
-            id="cleanupToggle"
-            class="section-toggle cleanup-toggle"
-            type="button"
-            aria-expanded="false"
-            aria-controls="cleanupOptions"
-          >
-          <span>Cleanup</span>
-          <span id="cleanupToggleIcon" class="toggle-icon">▸</span>
-        </button>
+          <button id="cleanupToggle" class="section-toggle cleanup-toggle" type="button" aria-expanded="false" aria-controls="cleanupOptions">
+            <span>Cleanup</span>
+            <span id="cleanupToggleIcon" class="toggle-icon">▸</span>
+          </button>
 
-        <button
-          id="cleanupHelpButton"
-          class="help-button"
-          type="button"
-          aria-expanded="false"
-          aria-controls="cleanupHelp"
-          title="Explain the cleanup options"
-          aria-label="Explain the cleanup options"
-          >
-        ?
-        </button>
-      </div>
+          <button id="cleanupHelpButton" class="help-button" type="button" aria-expanded="false" aria-controls="cleanupHelp" title="Explain the cleanup options" aria-label="Explain the cleanup options">
+            ?
+          </button>
+        </div>
 
-  <div id="cleanupHelp" class="format-help cleanup-help hidden" aria-hidden="true">
-    <span>
-      <strong>Clean extra spaces</strong>
-      Removes repeated spaces and fixes spaces around punctuation.
-    </span>
+        <div id="cleanupHelp" class="format-help cleanup-help hidden" aria-hidden="true">
+          <span>
+            <strong>Clean extra spaces</strong>
+            Removes repeated spaces and fixes spaces around punctuation.
+          </span>
 
-    <span>
-      <strong>Detect possible paragraphs</strong>
-      Adds paragraph breaks where the text looks like a new paragraph or dialogue.
-    </span>
+          <span>
+            <strong>Detect possible paragraphs</strong>
+            Adds paragraph breaks where the text looks like a new paragraph or dialogue.
+          </span>
 
-    <span>
-      <strong>Join broken lines</strong>
-      Combines lines that appear to belong to the same paragraph.
-    </span>
+          <span>
+            <strong>Join broken lines</strong>
+            Combines lines that appear to belong to the same paragraph.
+          </span>
 
-    <span>
-      <strong>Remove keywords</strong>
-      Removes specific words or phrases that you enter below.
-    </span>
-  </div>
+          <span>
+            <strong>Remove keywords</strong>
+            Removes specific words or phrases that you enter below.
+          </span>
+        </div>
 
-  <div id="cleanupOptions" class="cleanup-panel hidden">
-    <div class="cleanup-options">
-      <label class="checkbox">
-        <input id="cleanSpaces" type="checkbox" checked>
-        Clean extra spaces
-      </label>
+        <div id="cleanupOptions" class="cleanup-panel hidden">
+          <div class="cleanup-options">
+            <label class="checkbox">
+              <input id="cleanSpaces" type="checkbox" checked>
+              Clean extra spaces
+            </label>
 
-      <label class="checkbox">
-        <input id="detectParagraphs" type="checkbox" checked>
-        Detect possible paragraphs
-      </label>
+            <label class="checkbox">
+              <input id="detectParagraphs" type="checkbox" checked>
+              Detect possible paragraphs
+            </label>
 
-      <label class="checkbox">
-        <input id="joinBrokenLines" type="checkbox" checked>
-        Join broken lines
-      </label>
+            <label class="checkbox">
+              <input id="joinBrokenLines" type="checkbox" checked>
+              Join broken lines
+            </label>
 
-      <label class="checkbox">
-        <input id="removeKeywords" type="checkbox">
-        Remove keywords
-      </label>
+            <label class="checkbox">
+              <input id="removeKeywords" type="checkbox">
+              Remove keywords
+            </label>
 
-      <div class="keyword-cleanup">
-        <label for="cleanupKeywords">
-          Keywords to remove
-        </label>
+            <div class="keyword-cleanup">
+              <label for="cleanupKeywords">
+                Keywords to remove
+              </label>
 
-        <input
-          id="cleanupKeywords"
-          type="text"
-          placeholder="keyword 1, keyword 2, phrase to remove..."
-          autocomplete="off"
-        />
+              <input id="cleanupKeywords" type="text" placeholder="keyword 1, keyword 2, phrase to remove..." autocomplete="off" />
 
-        <span class="keyword-hint">
-          Separate multiple keywords with commas.
-        </span>
-      </div>
-    </div>
+              <span class="keyword-hint">
+                Separate multiple keywords with commas.
+              </span>
+            </div>
+          </div>
 
-    <div class="cleanup-buttons">
-      <button id="analyzeButton">
-        Analyze Text
-      </button>
+          <div class="cleanup-buttons">
+            <button id="analyzeButton">
+              Analyze Text
+            </button>
 
-      <button id="applyButton" class="secondary" disabled>
-        Apply to Input
-      </button>
-    </div>
-  </div>
+            <button id="applyButton" class="secondary" disabled>
+              Apply to Input
+            </button>
+          </div>
+        </div>
 
         <div id="cleanupResult" class="cleanup-result hidden">
           <div class="cleanup-header">
@@ -689,7 +676,7 @@
                 Apply
               </button>
             </div>
-            
+
           </div>
         </section>
 
@@ -849,13 +836,11 @@
 
     function closeMenu() {
       menuButton.focus();
-
       sideMenu.classList.remove("open");
       menuBackdrop.classList.remove("open");
       sideMenu.setAttribute("aria-hidden", "true");
       menuButton.setAttribute("aria-expanded", "false");
     }
-    
     menuButton.addEventListener("click", openMenu);
     closeMenuButton.addEventListener("click", closeMenu);
     menuBackdrop.addEventListener("click", closeMenu);
