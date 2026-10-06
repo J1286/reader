@@ -410,11 +410,6 @@ async function renderLibrary() {
         ? books.filter((book) => !book.folderId)
         : books.filter((book) => book.folderId === currentLibraryFolderId);
 
-    const visibleBooks =
-      currentLibraryFolderId === null
-        ? books.filter((book) => !book.folderId)
-        : books.filter((book) => book.folderId === currentLibraryFolderId);
-
     visibleBooks.forEach((book) => {
       const card = document.createElement("article");
       card.className = "book-card";
