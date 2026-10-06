@@ -544,46 +544,72 @@ async function renderLibrary() {
       moveButton.addEventListener("click", (event) => {
         event.stopPropagation();
 
-        const folders =
-          appState.librarySettings?.folders || [];
+        const moveBookDialog = document.getElementById("moveBookDialog");
 
-        const options = [
-       {
-         id: null,
-         name: "My Library"
-       },
-       ...folders
-        ];
-
-        const folderNames = options
-          .map((folder, index) =>
-          `${index + 1}. ${folder.name}`
-          )
-          .join("\n");
-
-        const choice = prompt(
-          `Move "${book.title}" to:\n\n${folderNames}\n\nEnter the number:`
+        const moveBookDialogTitle = document.getElementById(
+          "moveBookDialogTitle"
         );
 
-        if (choice === null) {
+        const moveBookFolderList = document.getElementById(
+          "moveBookFolderList"
+        );
+
+        if (!moveBookDialog || !moveBookDialogTitle || !moveBookFolderList) {
           return;
         }
 
-        const index = Number(choice) - 1;
+        const folders = appState.librarySettings?.folders || [];
 
-        if (
-          !Number.isInteger(index) ||
-          index < 0 ||
-          index >= options.length
-          ) {
-          showStatus("Invalid folder selection.");
-            return;
-          }
+        const options = [
+          {
+            id: null,
+            name: "My Library"
+          },
+          ...folders
+        ];
 
-        moveBookToFolder(
-          book.id,
-          options[index].id
-        );
+        moveBookDialogTitle.textContent = `Move "${book.title || "Untitled"}"`;
+
+        moveBookFolderList.innerHTML = "";
+
+        options.forEach((folder) => {
+          const option = document.createElement("button");
+
+          option.type = "button";
+          option.className = "move-book-folder-option";
+
+          option.innerHTML = `
+      <i class="bi ${folder.id === null ? "bi-house" : "bi-folder"}"></i>
+      <span class="move-book-folder-option-name"></span>
+    `;
+
+          option.querySelector(".move-book-folder-option-name").textContent =
+            folder.name;
+
+          option.addEventListener("click", async () => {
+            moveBookDialog.classList.add("hidden");
+            moveBookDialog.setAttribute("aria-hidden", "true");
+
+            await moveBookToFolder(book.id, folder.id);
+          });
+
+          moveBookFolderList.appendChild(option);
+        });
+
+        moveBookDialog.classList.remove("hidden");
+        moveBookDialog.setAttribute("aria-hidden", "false");
+      });
+
+      const moveBookDialogClose = document.getElementById(
+        "moveBookDialogClose"
+      );
+
+      const moveBookDialog = document.getElementById("moveBookDialog");
+
+      moveBookDialogClose?.addEventListener("click", () => {
+        moveBookDialog?.classList.add("hidden");
+
+        moveBookDialog?.setAttribute("aria-hidden", "true");
       });
 
       card.appendChild(moveButton);
