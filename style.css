@@ -3523,6 +3523,29 @@ body:has(#libraryView:not(.hidden)) .library-actions {
 
 .library-folder {
   position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  min-height: 58px;
+
+  padding: 10px 12px;
+
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+
+  background: var(--panel-bg);
+  color: var(--text-color);
+
+  cursor: pointer;
+
+  box-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.06);
+}
+
+.library-folder:hover {
+  transform: translateY(-1px);
 }
 
 .library-folder-name {
