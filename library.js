@@ -472,8 +472,8 @@ async function renderLibrary() {
     folderElement.appendChild(renameButton);
 
     libraryFolders.appendChild(folderElement);
-    }
-
+    })
+     
   try {
     const books = await getAllBooks();
 
