@@ -2970,6 +2970,136 @@ body:has(#libraryView:not(.hidden)) #appTitle {
     url("./assets/cozy-winter-bg.png");
 }
 
+/* =========================================================
+   LIBRARY FOLDERS
+========================================================= */
+
+.library-folders {
+  display: grid;
+
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(150px, 1fr)
+  );
+
+  gap: 12px;
+
+  margin-bottom: 18px;
+}
+
+.library-folder {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  min-height: 58px;
+
+  padding: 10px 12px;
+
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+
+  background: var(--panel-bg);
+  color: var(--text-color);
+
+  cursor: pointer;
+
+  box-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.06);
+}
+
+.library-folder:hover {
+  transform: translateY(-1px);
+}
+
+.library-folder-icon {
+  flex-shrink: 0;
+
+  font-size: 28px;
+}
+
+.library-folder-name {
+  flex: 1;
+  min-width: 0;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-weight: 600;
+}
+
+.library-folder-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+
+  flex-shrink: 0;
+}
+
+.library-folder-action {
+  width: 30px;
+  height: 30px;
+  min-height: 30px;
+
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+  border-radius: 7px;
+
+  background: transparent;
+  color: var(--muted-color);
+
+  cursor: pointer;
+}
+
+.library-folder-action:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--text-color);
+}
+
+.library-folder-action i {
+  font-size: 15px;
+}
+
+.library-folder-button {
+  width: 36px;
+  height: 36px;
+  min-height: 36px;
+
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+
+  background: var(--panel-bg);
+  color: var(--text-color);
+
+  cursor: pointer;
+}
+
+.library-folder-button i {
+  font-size: 18px;
+}
+
+@media (max-width: 700px) {
+  .library-folders {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+}
+
 /* Desktop */
 @media (min-width: 760px) {
   #libraryView .library-panel {
