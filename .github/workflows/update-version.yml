@@ -60,8 +60,10 @@ jobs:
           patch = int(match.group(4)) + 1
 
           if patch > 9:
-          patch = 0
-          minor += 1
+              patch = 0
+              minor += 1
+
+          version = f"{major}.{minor}.{patch}"
 
           version = f"{major}.{minor}.{patch}"
 
