@@ -344,6 +344,14 @@ async function renderLibrary() {
   libraryView.dataset.background = libraryBackground;
 
   const libraryFolders = document.getElementById("libraryFolders");
+  const libraryBackButton = document.getElementById("libraryBackButton");
+
+  if (libraryBackButton) {
+    libraryBackButton.classList.toggle(
+      "hidden",
+      currentLibraryFolderId === null
+    );
+  }
 
   if (libraryFolders) {
     libraryFolders.innerHTML = "";
