@@ -50,6 +50,53 @@ function createLibraryFolder() {
   renderLibrary();
 }
 
+function deleteLibraryFolder(folderId) {
+  const folders =
+    appState.librarySettings?.folders || [];
+
+  const folder =
+    folders.find(
+      (item) => item.id === folderId
+    );
+
+  if (!folder) {
+    return;
+  }
+
+  const confirmed = confirm(
+    `Delete folder "${folder.name}"?\n\nBooks inside it will be moved back to My Library.`
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  appState.librarySettings.folders =
+    folders.filter(
+      (item) => item.id !== folderId
+    );
+
+  appState.library =
+    appState.library.map((book) => {
+      if (book.folderId === folderId) {
+        return {
+          ...book,
+          folderId: null
+        };
+      }
+
+      return book;
+    });
+
+  if (currentLibraryFolderId === folderId) {
+    currentLibraryFolderId = null;
+  }
+
+  saveAppState();
+
+  renderLibrary();
+}
+
 async function moveBookToFolder(bookId, folderId) {
   try {
     const book = await getBook(bookId);
@@ -454,6 +501,37 @@ async function renderLibrary() {
     }
   );
 
+  /* ---------- Delete ---------- */
+
+const deleteFolderButton =
+  document.createElement("button");
+
+deleteFolderButton.type =
+  "button";
+
+deleteFolderButton.className =
+  "library-folder-action";
+
+deleteFolderButton.setAttribute(
+  "aria-label",
+  `Delete ${folder.name}`
+);
+
+deleteFolderButton.title =
+  "Delete folder";
+
+deleteFolderButton.innerHTML =
+  '<i class="bi bi-trash"></i>';
+
+deleteFolderButton.addEventListener(
+  "click",
+  (event) => {
+    event.stopPropagation();
+
+    deleteLibraryFolder(folder.id);
+  }
+);
+
 /* ---------- Open folder ---------- */
 
     folderElement.addEventListener(
@@ -470,6 +548,7 @@ async function renderLibrary() {
     folderElement.appendChild(name);
     folderElement.appendChild(count);
     folderElement.appendChild(renameButton);
+    folderElement.appendChild(deleteFolderButton);
 
     libraryFolders.appendChild(folderElement);
     });
