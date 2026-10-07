@@ -50,7 +50,7 @@ function createLibraryFolder() {
   renderLibrary();
 }
 
-function deleteLibraryFolder(folderId) {
+async function deleteLibraryFolder(folderId) {
   const folders =
     appState.librarySettings?.folders || [];
 
@@ -71,30 +71,41 @@ function deleteLibraryFolder(folderId) {
     return;
   }
 
-  appState.librarySettings.folders =
-    folders.filter(
-      (item) => item.id !== folderId
+  try {
+    const books = await getAllBooks();
+
+    for (const book of books) {
+      if (book.folderId === folderId) {
+        book.folderId = null;
+        book.updatedAt =
+          new Date().toISOString();
+
+        await saveBook(book);
+      }
+    }
+
+    appState.librarySettings.folders =
+      folders.filter(
+        (item) => item.id !== folderId
+      );
+
+    if (currentLibraryFolderId === folderId) {
+      currentLibraryFolderId = null;
+    }
+
+    await syncLibraryState();
+    await renderLibrary();
+
+  } catch (error) {
+    console.error(
+      "Could not delete folder:",
+      error
     );
 
-  appState.library =
-    appState.library.map((book) => {
-      if (book.folderId === folderId) {
-        return {
-          ...book,
-          folderId: null
-        };
-      }
-
-      return book;
-    });
-
-  if (currentLibraryFolderId === folderId) {
-    currentLibraryFolderId = null;
+    showStatus(
+      "Could not delete that folder."
+    );
   }
-
-  saveAppState();
-
-  renderLibrary();
 }
 
 async function moveBookToFolder(bookId, folderId) {
@@ -441,20 +452,6 @@ async function renderLibrary() {
 
     name.className = "library-folder-name";
 
-    name.textContent = folder.name;
-
-    const count = document.createElement("span");
-
-    count.className = "library-folder-count";
-
-    const bookCount =
-      appState.library.filter(
-        (book) =>
-        book.folderId === folder.id
-      ).length;
-
-    count.textContent = bookCount;
-
 /* ---------- Rename ---------- */
 
     const renameButton = document.createElement("button");
@@ -544,11 +541,16 @@ deleteFolderButton.addEventListener(
       }
     );
 
+    const actions = document.createElement("div");
+
+    actions.className =
+     "library-folder-actions";
+
+    actions.appendChild(renameButton);
+    actions.appendChild(deleteFolderButton);
     folderElement.appendChild(icon);
     folderElement.appendChild(name);
-    folderElement.appendChild(count);
-    folderElement.appendChild(renameButton);
-    folderElement.appendChild(deleteFolderButton);
+    folderElement.appendChild(actions);
 
     libraryFolders.appendChild(folderElement);
     });
