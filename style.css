@@ -3603,3 +3603,34 @@ body:has(#libraryView:not(.hidden)) .library-actions {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.library-folder-action {
+  width: 28px;
+  height: 28px;
+  min-height: 28px;
+
+  flex-shrink: 0;
+
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+  border-radius: 6px;
+
+  background: transparent;
+  color: var(--muted-color);
+
+  cursor: pointer;
+}
+
+.library-folder-action:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--text-color);
+}
+
+.library-folder-action i {
+  font-size: 14px;
+}
