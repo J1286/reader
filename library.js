@@ -375,9 +375,12 @@ async function renderLibrary() {
       }
     }
 
-    const folders = appState.librarySettings?.folders || [];
+    const folders =
+      appState.librarySettings?.folders || [];
 
-    const folderElement = document.createElement("div");
+    folders.forEach((folder) => {
+      const folderElement =
+        document.createElement("div");
 
     folderElement.className = "library-folder";
 
