@@ -465,7 +465,7 @@ async function renderLibrary() {
       `Rename ${folder.name}`
     );
 
-    renameButton.title = "Rename folder";
+    renameButton.title = "Rename Folder";
 
     renameButton.innerHTML = 
       '<i class="bi bi-pencil"></i>';
@@ -515,7 +515,7 @@ deleteFolderButton.setAttribute(
 );
 
 deleteFolderButton.title =
-  "Delete folder";
+  "Delete Folder";
 
 deleteFolderButton.innerHTML =
   '<i class="bi bi-trash"></i>';
