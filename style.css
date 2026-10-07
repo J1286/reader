@@ -2827,6 +2827,32 @@ body.reader-fullscreen .reader-content {
   filter: drop-shadow(0 0 5px currentColor);
 }
 
+.library-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-bottom: 14px;
+  padding: 7px 11px;
+
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+
+  background: var(--panel-bg);
+  color: var(--text-color);
+
+  font: inherit;
+  cursor: pointer;
+}
+
+.library-back-button:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.library-back-button.hidden {
+  display: none;
+}
+
 /* =========================================================
    LIBRARY HEADER
 ========================================================= */
