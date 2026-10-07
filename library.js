@@ -346,6 +346,13 @@ async function renderLibrary() {
   const libraryFolders = document.getElementById("libraryFolders");
   const libraryBackButton = document.getElementById("libraryBackButton");
 
+  if (libraryFolders) {
+    libraryFolders.classList.toggle(
+      "hidden",
+      currentLibraryFolderId !== null
+    );
+  }
+
   if (libraryBackButton) {
     libraryBackButton.classList.toggle(
       "hidden",
