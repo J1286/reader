@@ -377,46 +377,99 @@ async function renderLibrary() {
 
     const folders = appState.librarySettings?.folders || [];
 
-    folders.forEach((folder) => {
-      const folderElement = document.createElement("div");
+    const folderElement = document.createElement("div");
 
-      folderElement.className = "library-folder";
+    folderElement.className = "library-folder";
 
-      folderElement.dataset.folderId = folder.id;
+    folderElement.dataset.folderId = folder.id;
 
-      folderElement.addEventListener("click", () => {
-        currentLibraryFolderId = folder.id;
+    const icon = document.createElement("i");
 
-        renderLibrary();
-      });
+    icon.className = "bi bi-folder-fill library-folder-icon";
 
-      const icon = document.createElement("i");
+    const name = document.createElement("span");
 
-      icon.className = "bi bi-folder-fill library-folder-icon";
+    name.className = "library-folder-name";
 
-      const name = document.createElement("span");
+    name.textContent = folder.name;
 
-      name.className = "library-folder-name";
+    const count = document.createElement("span");
 
-      name.textContent = folder.name;
+    count.className = "library-folder-count";
 
-      const count = document.createElement("span");
-
-      count.className = "library-folder-count";
-
-      const bookCount = appState.library.filter(
-        (book) => book.folderId === folder.id
+    const bookCount =
+      appState.library.filter(
+        (book) =>
+        book.folderId === folder.id
       ).length;
 
-      count.textContent = bookCount;
+    count.textContent = bookCount;
 
-      folderElement.appendChild(icon);
-      folderElement.appendChild(name);
-      folderElement.appendChild(count);
+/* ---------- Rename ---------- */
 
-      libraryFolders.appendChild(folderElement);
-    });
-  }
+    const renameButton = document.createElement("button");
+
+    renameButton.type = "button";
+
+    renameButton.className = "library-folder-action";
+
+    renameButton.setAttribute(
+      "aria-label",
+      `Rename ${folder.name}`
+    );
+
+    renameButton.title = "Rename folder";
+
+    renameButton.innerHTML = 
+      '<i class="bi bi-pencil"></i>';
+
+    renameButton.addEventListener(
+      "click",
+      (event) => {
+        event.stopPropagation();
+
+      const newName =
+        prompt(
+          "Folder Name:",
+          folder.name
+        );
+
+      if (newName === null) {
+        return;
+      }
+
+      const trimmedName = newName.trim();
+
+      if (!trimmedName) {
+        return;
+      }
+
+      folder.name = trimmedName;
+
+      saveAppState();
+      renderLibrary();
+    }
+  );
+
+/* ---------- Open folder ---------- */
+
+    folderElement.addEventListener(
+      "click",
+      () => {
+        currentLibraryFolderId =
+        folder.id;
+
+        renderLibrary();
+      }
+    );
+
+    folderElement.appendChild(icon);
+    folderElement.appendChild(name);
+    folderElement.appendChild(count);
+    folderElement.appendChild(renameButton);
+
+    libraryFolders.appendChild(folderElement);
+    }
 
   try {
     const books = await getAllBooks();
