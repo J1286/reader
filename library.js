@@ -472,9 +472,10 @@ async function renderLibrary() {
     folderElement.appendChild(renameButton);
 
     libraryFolders.appendChild(folderElement);
-    })
-     
-  try {
+    });
+   }
+ 
+   try {
     const books = await getAllBooks();
 
     const booksPerRow = appState.librarySettings?.booksPerRow || 2;
