@@ -3515,8 +3515,10 @@ body:has(#libraryView:not(.hidden)) .library-actions {
   display: grid;
   grid-template-columns: repeat(
     auto-fill,
-    minmax(150px, 1fr)
+    minmax(180px, 260px)
   );
+
+  justify-content: start;
   gap: 12px;
   margin-bottom: 18px;
 }
