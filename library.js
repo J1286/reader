@@ -11,14 +11,6 @@ let currentLibraryFolderId = null;
 const libraryBackButton =
   document.getElementById("libraryBackButton");
 
-libraryBackButton?.addEventListener(
-  "click",
-  () => {
-    currentLibraryFolderId = null;
-    renderLibrary();
-  }
-);
-
 let libraryDB = null;
 
 function createLibraryFolder() {
