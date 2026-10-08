@@ -451,6 +451,7 @@ async function renderLibrary() {
     const name = document.createElement("span");
 
     name.className = "library-folder-name";
+    name.textContent = folder.name;
 
 /* ---------- Rename ---------- */
 
