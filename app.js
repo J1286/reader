@@ -315,8 +315,6 @@ addBookButton.addEventListener("click", () => {
   fileInput.click();
 });
 
-refreshLibraryButton.addEventListener("click", renderLibrary);
-
 openLibraryDB()
   .then(() => renderLibrary())
   .catch((error) => {
