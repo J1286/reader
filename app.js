@@ -371,9 +371,38 @@ formatHelpButton?.addEventListener("click", () => {
   formatHelp?.setAttribute("aria-hidden", String(!nextOpen));
 });
 
-const cleanupHelpButton = document.getElementById("cleanupHelpButton");
+const cleanupHelpButton =
+  document.getElementById("cleanupHelpButton");
 
-const cleanupHelp = document.getElementById("cleanupHelp");
+const cleanupHelp =
+  document.getElementById("cleanupHelp");
+
+cleanupHelpButton?.addEventListener(
+  "click",
+  () => {
+    const isOpen =
+      cleanupHelpButton.getAttribute(
+        "aria-expanded"
+      ) === "true";
+
+    const nextOpen = !isOpen;
+
+    cleanupHelpButton.setAttribute(
+      "aria-expanded",
+      String(nextOpen)
+    );
+
+    cleanupHelp?.classList.toggle(
+      "hidden",
+      !nextOpen
+    );
+
+    cleanupHelp?.setAttribute(
+      "aria-hidden",
+      String(!nextOpen)
+    );
+  }
+);
 
 const cleanupToggle =
   document.getElementById("cleanupToggle");
