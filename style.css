@@ -2722,7 +2722,7 @@ body.reader-fullscreen .reader-content {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 32% 9px 12px;
+  padding: 40% 9px 12px;
   color: #fff;
 }
 
