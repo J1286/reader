@@ -797,6 +797,14 @@ deleteFolderButton.addEventListener(
   }
 }
 
+libraryBackButton?.addEventListener(
+  "click",
+  () => {
+    currentLibraryFolderId = null;
+    renderLibrary();
+  }
+);
+
 const createFolderButton = document.getElementById("createFolderButton");
 
 createFolderButton?.addEventListener("click", createLibraryFolder);
