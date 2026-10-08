@@ -477,6 +477,26 @@ readerSearchButton?.addEventListener("click", () => {
 readerSearchClose?.addEventListener("click", () => {
   readerSearchBar?.classList.add("hidden");
   readerSearchInput.value = "";
+
+  readerSearchQuery = "";
+  readerSearchMatches = [];
+  readerSearchIndex = -1;
+  pendingSearchPosition = null;
+
+  renderReader();
+});
+
+readerSearchInput?.addEventListener("input", () => {
+  if (readerSearchInput.value.trim() !== "") {
+    return;
+  }
+
+  readerSearchQuery = "";
+  readerSearchMatches = [];
+  readerSearchIndex = -1;
+  pendingSearchPosition = null;
+
+  renderReader();
 });
 
 readerSearchInput?.addEventListener("keydown", (event) => {
