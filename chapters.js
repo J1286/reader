@@ -277,9 +277,9 @@ function goToReaderChapter(index) {
 
   updateChapterListSelection();
 
-  readerContent.scrollTo({
-    top: target.offsetTop,
-    behavior: "smooth"
+  target.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
   });
 
   stateChanged();
