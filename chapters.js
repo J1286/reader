@@ -166,26 +166,28 @@ detectChaptersButton.addEventListener("click", () => {
    READER CHAPTER NAVIGATION
 ================================================= */
 
+
 function getCurrentReaderChapterIndex() {
   if (!detectedChapters.length) {
     return 0;
   }
 
-  const scrollTop = readerContent.scrollTop;
+  const containerTop = readerContent.getBoundingClientRect().top;
   const threshold = 40;
 
   let currentIndex = 0;
 
   for (let index = 0; index < detectedChapters.length; index++) {
     const chapter = detectedChapters[index];
-
     const element = document.getElementById(`reader-${chapter.id}`);
 
     if (!element) {
       continue;
     }
 
-    if (element.offsetTop <= scrollTop + threshold) {
+    const elementTop = element.getBoundingClientRect().top;
+
+    if (elementTop <= containerTop + threshold) {
       currentIndex = index;
     } else {
       break;
