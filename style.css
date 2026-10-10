@@ -3744,3 +3744,105 @@ body:has(#libraryView:not(.hidden)) .library-actions {
 .library-folder-action i {
   font-size: 14px;
 }
+
+/* =========================================================
+   BATCH LIBRARY ACTIONS
+========================================================= */
+
+.batch-actions {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 16px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  background: rgba(35, 24, 17, 0.92);
+  color: #fff8ed;
+}
+
+.batch-actions.hidden {
+  display: none;
+}
+
+#selectionCount {
+  margin-right: auto;
+  font-weight: 600;
+}
+
+.batch-actions button {
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 7px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.batch-actions button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+#selectBooksButton.active {
+  background: var(--panel-bg);
+  outline: 2px solid var(--text-color);
+}
+
+#libraryPanel.selection-mode .book-card {
+  cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: 3px;
+}
+
+#libraryPanel.selection-mode .book-card::after {
+  content: "";
+  position: absolute;
+  z-index: 6;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 27px;
+  height: 27px;
+  border: 2px solid #fff8ed;
+  border-radius: 50%;
+  background: rgba(35, 24, 17, 0.75);
+  color: white;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1;
+  pointer-events: none;
+}
+
+#libraryPanel.selection-mode .book-card.book-selected {
+  outline-color: #f5d69a;
+}
+
+#libraryPanel.selection-mode .book-card.book-selected::after {
+  content: "✓";
+  border-color: #f5d69a;
+  background: #75502e;
+}
+
+#libraryPanel.selection-mode .book-delete-button,
+#libraryPanel.selection-mode .book-move-button {
+  display: none !important;
+}
+
+@media (max-width: 480px) {
+  .batch-actions {
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .batch-actions button {
+    padding: 6px 8px;
+    font-size: 13px;
+  }
+}
