@@ -204,15 +204,6 @@ readerThemeButtons.forEach((button) => {
   });
 });
 
-  stateChanged();
-}
-
-readerThemeButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    setReaderTheme(button.dataset.readerTheme);
-  });
-});
-
 /* =================================================
 MANUAL SETTINGS → CUSTOM
 ================================================= */
