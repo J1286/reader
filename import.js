@@ -149,9 +149,13 @@ browseFileButton.addEventListener("click", () => {
 });
 
 fileInput.addEventListener("change", async () => {
-  const file = fileInput.files[0];
+  const files = Array.from(fileInput.files || []);
 
-  if (file) {
+  if (!files.length) {
+    return;
+  }
+
+  for (const file of files) {
     await importFile(file);
   }
 
