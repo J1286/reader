@@ -49,6 +49,16 @@
           <i class="bi bi-folder-plus"></i>
         </button>
 
+        <button
+          id="selectBooksButton"
+          class="library-folder-button"
+          type="button"
+          title="Select Books"
+          aria-label="Select Books"
+        >
+          <i class="bi bi-check2-square"></i>
+        </button>
+
         <button id="addBookButton" class="library-add-button" type="button">
           +Books
         </button>
@@ -123,6 +133,14 @@
         <i class="bi bi-arrow-left"></i>
         <span>My Library</span>
       </button>
+
+      <div id="batchActions" class="batch-actions hidden">
+        <span id="selectionCount">0 selected</span>
+        <button id="selectAllBooksButton" type="button">Select All</button>
+        <button id="batchMoveBooksButton" type="button">Move</button>
+        <button id="batchDeleteBooksButton" type="button">Delete</button>
+        <button id="cancelBookSelectionButton" type="button">Cancel</button>
+      </div>
       
       <div id="libraryFolders" class="library-folders"></div>
 
