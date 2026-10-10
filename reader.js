@@ -407,7 +407,8 @@ async function persistReaderPosition() {
     scrollTop,
     progress
   };
-
+   
+  book.lastOpened = Date.now();
   book.updatedAt = new Date().toISOString();
 
   currentBook = book;
