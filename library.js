@@ -600,9 +600,108 @@ document.getElementById("batchDeleteBooksButton")
     }
   });
 
+
+
 /* =================================================
    LIBRARY RENDERING
 ================================================= */
+
+async function renderContinueReading(books) {
+  const section = document.getElementById("continueReadingSection");
+  const list = document.getElementById("continueReadingList");
+  const count = document.getElementById("continueReadingCount");
+
+  if (!section || !list || !count) return;
+
+  const getProgress = (book) =>
+    Number(book.reader?.progress ?? book.readerState?.progress ?? 0);
+
+  const recentBooks = books
+    .filter((book) =>
+      !book.continueReadingHidden &&
+      getProgress(book) < 1 &&
+      Number(book.lastOpened) > 0
+    )
+    .sort((a, b) => Number(b.lastOpened) - Number(a.lastOpened))
+    .slice(0, 2);
+
+  list.innerHTML = "";
+  section.classList.toggle("hidden", recentBooks.length === 0);
+  count.textContent = recentBooks.length
+    ? `${recentBooks.length} of 2`
+    : "";
+
+  recentBooks.forEach((book) => {
+    const progressValue = Math.max(0, Math.min(1, getProgress(book)));
+    const percent = Math.round(progressValue * 100);
+
+    const card = document.createElement("article");
+    card.className = "continue-reading-card";
+
+    const openButton = document.createElement("button");
+    openButton.type = "button";
+    openButton.className = "continue-reading-open";
+    openButton.setAttribute("aria-label", `Continue reading ${book.title}`);
+
+    const cover = document.createElement("div");
+    cover.className = "continue-reading-cover";
+    cover.style.backgroundImage =
+      `url(${JSON.stringify(book.coverImage || "./assets/default-book-cover.png")})`;
+
+    const details = document.createElement("div");
+    details.className = "continue-reading-details";
+
+    const title = document.createElement("strong");
+    title.className = "continue-reading-title";
+    title.textContent = book.title || "Untitled";
+
+    const progressText = document.createElement("span");
+    progressText.className = "continue-reading-progress";
+    progressText.textContent = `${percent}% read`;
+
+    const track = document.createElement("div");
+    track.className = "continue-reading-track";
+
+    const bar = document.createElement("div");
+    bar.className = "continue-reading-bar";
+    bar.style.width = `${percent}%`;
+
+    track.appendChild(bar);
+    details.append(title, progressText, track);
+    openButton.append(cover, details);
+
+    openButton.addEventListener("click", () => openBook(book.id));
+
+    const removeButton = document.createElement("button");
+    removeButton.type = "button";
+    removeButton.className = "continue-reading-remove";
+    removeButton.title = "Remove from Continue Reading";
+    removeButton.setAttribute(
+      "aria-label",
+      `Remove ${book.title} from Continue Reading`
+    );
+    removeButton.innerHTML = '<i class="bi bi-x-lg"></i>';
+
+    removeButton.addEventListener("click", async () => {
+      try {
+        const storedBook = await getBook(book.id);
+        if (!storedBook) return;
+
+        storedBook.continueReadingHidden = true;
+        await saveBook(storedBook);
+        await syncLibraryState();
+        await renderLibrary();
+      } catch (error) {
+        console.error("Could not remove book from Continue Reading:", error);
+        showStatus("Could not remove that book from Continue Reading.");
+      }
+    });
+
+    card.append(openButton, removeButton);
+    list.appendChild(card);
+  });
+}
+
 
 async function renderLibrary() {
   const libraryBackground =
@@ -776,6 +875,7 @@ deleteFolderButton.addEventListener(
     libraryPanel.style.setProperty("--library-columns", booksPerRow);
 
     appState.library = books;
+    await renderContinueReading(books);
 
     if (appState.currentBookId && !getBookById(appState.currentBookId)) {
       appState.currentBookId = null;
@@ -1109,6 +1209,7 @@ async function openBook(bookId, searchPosition = null) {
     prepareChapters(book.text || "");
 
     book.lastOpened = Date.now();
+    delete book.continueReadingHidden;
 
     book.updatedAt = new Date().toISOString();
 
