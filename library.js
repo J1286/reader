@@ -783,14 +783,19 @@ deleteFolderButton.addEventListener(
     }
 
     libraryPanel.innerHTML = "";
+    
+if (!books.length) {
+  // Exit selection mode when the library becomes empty.
+  bookSelectionMode = false;
+  selectedBookIds.clear();
+  updateBatchActions();
 
-    if (!books.length) {
-      const empty = document.createElement("div");
-      empty.className = "library-empty";
-      empty.textContent = "No books in your library yet.";
-      libraryPanel.appendChild(empty);
-      return;
-    }
+  const empty = document.createElement("div");
+  empty.className = "library-empty";
+  empty.textContent = "No books in your library yet.";
+  libraryPanel.appendChild(empty);
+  return;
+}
 
     const sortMode = appState.librarySettings?.sort || "recent";
 
