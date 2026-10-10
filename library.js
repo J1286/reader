@@ -8,6 +8,76 @@ const STORE_NAME = "books";
 
 let currentLibraryFolderId = null;
 
+let bookSelectionMode = false;
+const selectedBookIds = new Set();
+
+function getVisibleBookIds() {
+  return (appState.library || [])
+    .filter((book) =>
+      currentLibraryFolderId === null
+        ? !book.folderId
+        : book.folderId === currentLibraryFolderId
+    )
+    .map((book) => book.id);
+}
+
+function updateBatchActions() {
+  const toolbar = document.getElementById("batchActions");
+  const count = document.getElementById("selectionCount");
+  const selectButton = document.getElementById("selectBooksButton");
+  const visibleIds = getVisibleBookIds();
+
+  // Remove selections that are no longer visible.
+  for (const id of selectedBookIds) {
+    if (!visibleIds.includes(id)) {
+      selectedBookIds.delete(id);
+    }
+  }
+
+  toolbar?.classList.toggle("hidden", !bookSelectionMode);
+
+  if (count) {
+    count.textContent = `${selectedBookIds.size} selected`;
+  }
+
+  if (selectButton) {
+    selectButton.classList.toggle("active", bookSelectionMode);
+    selectButton.setAttribute(
+      "aria-pressed",
+      String(bookSelectionMode)
+    );
+    selectButton.title = bookSelectionMode
+      ? "Exit Selection"
+      : "Select Books";
+  }
+
+  const allSelected =
+    visibleIds.length > 0 &&
+    visibleIds.every((id) => selectedBookIds.has(id));
+
+  const selectAllButton =
+    document.getElementById("selectAllBooksButton");
+
+  if (selectAllButton) {
+    selectAllButton.textContent = allSelected
+      ? "Deselect All"
+      : "Select All";
+  }
+
+  const moveButton =
+    document.getElementById("batchMoveBooksButton");
+  const deleteButton =
+    document.getElementById("batchDeleteBooksButton");
+
+  if (moveButton) {
+    moveButton.disabled = selectedBookIds.size === 0;
+  }
+
+  if (deleteButton) {
+    deleteButton.disabled = selectedBookIds.size === 0;
+  }
+}
+
 const libraryBackButton =
   document.getElementById("libraryBackButton");
 
@@ -381,6 +451,155 @@ async function syncLibraryState() {
   return books;
 }
 
+document.getElementById("selectBooksButton")
+  ?.addEventListener("click", () => {
+    bookSelectionMode = !bookSelectionMode;
+
+    if (!bookSelectionMode) {
+      selectedBookIds.clear();
+    }
+
+    renderLibrary();
+  });
+
+document.getElementById("selectAllBooksButton")
+  ?.addEventListener("click", () => {
+    const visibleIds = getVisibleBookIds();
+    const allSelected =
+      visibleIds.length > 0 &&
+      visibleIds.every((id) => selectedBookIds.has(id));
+
+    if (allSelected) {
+      visibleIds.forEach((id) => selectedBookIds.delete(id));
+    } else {
+      visibleIds.forEach((id) => selectedBookIds.add(id));
+    }
+
+    renderLibrary();
+  });
+
+document.getElementById("cancelBookSelectionButton")
+  ?.addEventListener("click", () => {
+    bookSelectionMode = false;
+    selectedBookIds.clear();
+    renderLibrary();
+  });
+
+
+document.getElementById("batchMoveBooksButton")
+  ?.addEventListener("click", () => {
+    if (!selectedBookIds.size) return;
+
+    const dialog = document.getElementById("moveBookDialog");
+    const dialogTitle = document.getElementById("moveBookDialogTitle");
+    const folderList = document.getElementById("moveBookFolderList");
+
+    if (!dialog || !dialogTitle || !folderList) return;
+
+    const options = [
+      { id: null, name: "My Library" },
+      ...(appState.librarySettings?.folders || [])
+    ];
+
+    dialogTitle.textContent =
+      `Move ${selectedBookIds.size} selected books`;
+
+    folderList.innerHTML = "";
+
+    options.forEach((folder) => {
+      const option = document.createElement("button");
+      option.type = "button";
+      option.className = "move-book-folder-option";
+      option.innerHTML = `
+        <i class="bi ${
+          folder.id === null ? "bi-house" : "bi-folder"
+        }"></i>
+        <span class="move-book-folder-option-name"></span>
+      `;
+
+      option.querySelector(
+        ".move-book-folder-option-name"
+      ).textContent = folder.name;
+
+      option.addEventListener("click", async () => {
+        dialog.classList.add("hidden");
+        dialog.setAttribute("aria-hidden", "true");
+
+        try {
+          const books = await getAllBooks();
+          let moved = 0;
+
+          for (const book of books) {
+            if (!selectedBookIds.has(book.id)) continue;
+
+            book.folderId = folder.id || null;
+            book.updatedAt = new Date().toISOString();
+
+            await saveBook(book);
+            moved++;
+          }
+
+          selectedBookIds.clear();
+          bookSelectionMode = false;
+
+          await syncLibraryState();
+          await renderLibrary();
+
+          showStatus(`${moved} books moved to ${folder.name}.`);
+        } catch (error) {
+          console.error("Could not move selected books:", error);
+          showStatus("Could not move all selected books.");
+          await syncLibraryState();
+          await renderLibrary();
+        }
+      });
+
+      folderList.appendChild(option);
+    });
+
+    dialog.classList.remove("hidden");
+    dialog.setAttribute("aria-hidden", "false");
+  });
+
+document.getElementById("batchDeleteBooksButton")
+  ?.addEventListener("click", async () => {
+    const ids = [...selectedBookIds];
+
+    if (!ids.length) return;
+
+    const confirmed = confirm(
+      `Delete ${ids.length} selected books from your library?\n\nThis cannot be undone.`
+    );
+
+    if (!confirmed) return;
+
+    try {
+      for (const id of ids) {
+        await deleteBook(id);
+      }
+
+      selectedBookIds.clear();
+      bookSelectionMode = false;
+
+      await syncLibraryState();
+      stateChanged();
+
+      if (appState.currentBookId === null) {
+        inputText.value = "";
+        detectedChapters = [];
+        renderCurrentView();
+      }
+
+      await renderLibrary();
+      showStatus(`${ids.length} books deleted.`);
+    } catch (error) {
+      console.error("Could not delete selected books:", error);
+      await syncLibraryState();
+      await renderLibrary();
+      showStatus("Could not delete all selected books.");
+    }
+  });
+
 /* =================================================
    LIBRARY RENDERING
 ================================================= */
@@ -597,6 +816,10 @@ deleteFolderButton.addEventListener(
     visibleBooks.forEach((book) => {
       const card = document.createElement("article");
       card.className = "book-card";
+      card.classList.toggle(
+        "book-selected",
+        selectedBookIds.has(book.id)
+      );
       card.setAttribute("role", "button");
       card.setAttribute("tabindex", "0");
       card.setAttribute("aria-label", `Open ${book.title || "Untitled"}`);
@@ -772,8 +995,23 @@ deleteFolderButton.addEventListener(
 
       card.appendChild(moveButton);
 
-      const open = () => openBook(book.id);
+      const open = () => {
+        if (bookSelectionMode) {
+          if (selectedBookIds.has(book.id)) {
+            selectedBookIds.delete(book.id);
+          } else {
+            selectedBookIds.add(book.id);
+          }
+
+          renderLibrary();
+          return;
+        }
+
+        openBook(book.id);
+      };
+
       card.addEventListener("click", open);
+       
       card.addEventListener("keydown", (event) => {
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
@@ -783,6 +1021,14 @@ deleteFolderButton.addEventListener(
 
       libraryPanel.appendChild(card);
     });
+
+    libraryPanel.classList.toggle(
+      "selection-mode",
+      bookSelectionMode
+    );
+
+    updateBatchActions();
+      
   } catch (error) {
     console.error("Could not render library:", error);
 
