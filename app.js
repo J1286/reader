@@ -190,17 +190,19 @@ function showStatus(message) {
 }
 
 /* =================================================
-READER THEMES
+   READER THEMES
 ================================================= */
 
 function setReaderTheme(theme) {
-  appState.reader.theme = theme;
+  // Keep Reader and Tools on the same saved theme.
+  setTheme(theme);
+}
 
-  document.body.dataset.theme = theme;
-
-  readerThemeButtons.forEach((button) => {
-    button.classList.toggle("active", button.dataset.readerTheme === theme);
+readerThemeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    setReaderTheme(button.dataset.readerTheme);
   });
+});
 
   stateChanged();
 }
