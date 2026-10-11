@@ -619,7 +619,7 @@ async function renderContinueReading(books) {
   const recentBooks = books
     .filter((book) =>
       !book.continueReadingHidden &&
-      getProgress(book) < 1 &&
+      Math.round(getProgress(book) * 100) < 100 &&
       Number(book.lastOpened) > 0
     )
     .sort((a, b) => Number(b.lastOpened) - Number(a.lastOpened))
