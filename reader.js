@@ -197,9 +197,9 @@ function renderReader() {
   }
 
   const paragraphs = getBookParagraphs(text);
+  const fragment = document.createDocumentFragment();
 
   let chapterCounter = 0;
-
   paragraphs.forEach((textParagraph, index) => {
     const paragraph = document.createElement("div");
 
@@ -265,8 +265,10 @@ function renderReader() {
         }
    }
 
-    readerContent.appendChild(paragraph);
+    fragment.appendChild(paragraph);
   });
+
+  readerContent.appendChild(fragment);
 
   const savedScrollTop = Number.isFinite(Number(appState.reader.scrollTop))
     ? Number(appState.reader.scrollTop)
