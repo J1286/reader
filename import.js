@@ -255,27 +255,62 @@ async function importTextFile(file) {
   try {
     const buffer = await file.arrayBuffer();
     const bytes = new Uint8Array(buffer);
-
     
     let text;
 
-    // Detect UTF-16 using its byte-order mark (BOM).
+    // 1. Detect UTF-16 from its byte-order mark.
     if (bytes[0] === 0xff && bytes[1] === 0xfe) {
       text = new TextDecoder("utf-16le").decode(bytes);
     } else if (bytes[0] === 0xfe && bytes[1] === 0xff) {
       text = new TextDecoder("utf-16be").decode(bytes);
     } else {
-      // Preserve the existing decoding order for other files.
+      // 2. Prefer UTF-8 when the entire file is valid UTF-8.
       try {
         text = new TextDecoder("utf-8", {
           fatal: true
         }).decode(bytes);
       } catch {
-        try {
-          text = new TextDecoder("windows-950").decode(bytes);
-        } catch {
-          text = new TextDecoder("big5").decode(bytes);
+        // 3. Legacy Chinese encodings need a best-effort choice.
+        const big5Text = new TextDecoder("big5").decode(bytes);
+        const gbText = new TextDecoder("gb18030").decode(bytes);
+
+        // Compare common Simplified vs. Traditional Chinese characters.
+        const simplifiedHints =
+          "这来为发后里国说时对过还会们个长经实当开现从动关与无见学问应点体进将两种还没让给听话头东车书爱亲妈爷边风气数写请该处战军门间";
+        const traditionalHints =
+          "這來為發後裡國說時對過還會們個長經實當開現從動關與無見學問應點體進將兩種還沒讓給聽話頭東車書愛親媽爺邊風氣數寫請該處戰軍門間";
+
+        function scoreCharacters(sample, characters) {
+          let score = 0;
+          for (const char of sample) {
+            if (characters.includes(char)) score++;
+          }
+          return score;
         }
+
+        // Sample the beginning and middle to avoid scanning every character.
+        function getSample(value) {
+          const middle = Math.floor(value.length / 2);
+          return (
+            value.slice(0, 12000) +
+            value.slice(middle, middle + 12000)
+          );
+        }
+
+        const big5Sample = getSample(big5Text);
+        const gbSample = getSample(gbText);
+
+        const big5Score =
+          scoreCharacters(big5Sample, traditionalHints) -
+          scoreCharacters(big5Sample, simplifiedHints);
+
+        const gbScore =
+          scoreCharacters(gbSample, simplifiedHints) -
+          scoreCharacters(gbSample, traditionalHints);
+
+        // Prefer GB18030 only when its Simplified Chinese signal is stronger.
+        // Otherwise retain the app's Traditional Chinese-friendly default.
+        text = gbScore > big5Score ? gbText : big5Text;
       }
     }
 
