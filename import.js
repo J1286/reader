@@ -256,19 +256,26 @@ async function importTextFile(file) {
     const buffer = await file.arrayBuffer();
     const bytes = new Uint8Array(buffer);
 
+    
     let text;
 
-    try {
-      // Modern TXT files
-      text = new TextDecoder("utf-8", {
-        fatal: true
-      }).decode(bytes);
-    } catch {
+    // Detect UTF-16 using its byte-order mark (BOM).
+    if (bytes[0] === 0xff && bytes[1] === 0xfe) {
+      text = new TextDecoder("utf-16le").decode(bytes);
+    } else if (bytes[0] === 0xfe && bytes[1] === 0xff) {
+      text = new TextDecoder("utf-16be").decode(bytes);
+    } else {
+      // Preserve the existing decoding order for other files.
       try {
-        text = new TextDecoder("windows-950").decode(bytes);
+        text = new TextDecoder("utf-8", {
+          fatal: true
+        }).decode(bytes);
       } catch {
-        // Final fallback
-        text = new TextDecoder("big5").decode(bytes);
+        try {
+          text = new TextDecoder("windows-950").decode(bytes);
+        } catch {
+          text = new TextDecoder("big5").decode(bytes);
+        }
       }
     }
 
