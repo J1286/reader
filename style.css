@@ -2058,6 +2058,22 @@ body.reader-fullscreen .reader-content {
 
     justify-content: space-between;
   }
+
+  @media (max-width: 700px) {
+     .library-folder-icon {
+     font-size: 23px;
+     }
+
+     .library-folder-action {
+       width: 25px;
+       height: 28px;
+       min-height: 28px;
+     }
+
+     .library-folder-actions {
+       gap: 2px;
+     }
+   }
 }
 
 /* =========================================================
@@ -3095,7 +3111,7 @@ body:has(#libraryView:not(.hidden)) #appTitle {
 
 @media (max-width: 700px) {
   .library-folders {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
   }
 }
