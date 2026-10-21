@@ -7,15 +7,15 @@ const presetSettings = {
     fontSize: 14,
     lineSpacing: 1.55,
     paragraphSpacing: 14,
-    previewWidth: 760,
+    previewWidth: 1100,
     indent: true
   },
 
   ereader: {
     fontSize: 16,
-    lineSpacing: 1.55,
+    lineSpacing: 1.45,
     paragraphSpacing: 12,
-    previewWidth: 680,
+    previewWidth: 1080,
     indent: true
   },
 
@@ -23,15 +23,15 @@ const presetSettings = {
     fontSize: 15,
     lineSpacing: 1.5,
     paragraphSpacing: 16,
-    previewWidth: 900,
+    previewWidth: 1250,
     indent: false
   },
 
   manuscript: {
-    fontSize: 14,
+    fontSize: 13.5,
     lineSpacing: 1.7,
     paragraphSpacing: 12,
-    previewWidth: 800,
+    previewWidth: 1000,
     indent: false
   }
 };
