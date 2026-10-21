@@ -3541,52 +3541,22 @@ body:has(#libraryView:not(.hidden)) .library-actions {
 
 .library-folder {
   position: relative;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .library-folder-name {
   flex: 1;
   min-width: 0;
-}
-
-.library-folder-actions {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  flex-shrink: 0;
-}
-
-.library-folder-action {
-  width: 30px;
-  height: 30px;
-  min-height: 30px;
-
-  padding: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border: 0;
-  border-radius: 7px;
-
-  background: transparent;
-  color: var(--muted-color);
-
-  cursor: pointer;
-}
-
-.library-folder-action:hover {
-  background: rgba(0, 0, 0, 0.08);
-  color: var(--text-color);
-}
-
-.library-folder-action i {
-  font-size: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @media (max-width: 700px) {
   .library-folders {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
   }
 }
