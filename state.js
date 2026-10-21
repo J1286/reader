@@ -154,21 +154,22 @@ const APP_STORAGE_KEY = "myReaderAppState";
 const APP_VERSION = 1;
 
 const DEFAULT_READER_SETTINGS = {
-  fontSize: 18,
-  lineSpacing: 1.6,
-  theme: "light",
-  contentWidth: 720,
+  fontSize: 16,
+  lineSpacing: 1.4,
+  paragraphSpacing: 16,
+  theme: "sepia",
+  contentWidth: 1200,
   fontFamily: "current"
 };
 
 const DEFAULT_FORMATTER_SETTINGS = {
   preset: "book",
-  theme: "light",
+  theme: "sepia",
   lineWidth: 40,
-  fontSize: 18,
-  lineSpacing: 1.6,
-  paragraphSpacing: 16,
-  previewWidth: 800,
+  fontSize: 14,
+  lineSpacing: 1.55,
+  paragraphSpacing: 14,
+  previewWidth: 1100,
   indent: true
 };
 
