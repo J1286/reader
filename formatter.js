@@ -267,13 +267,13 @@ function renderPreview(text = getBookText()) {
     formatDocument(previewText, width);
 
   const size =
-    parseFloat(fontSize.value) || 18;
+    parseFloat(fontSize.value) || 14;
 
   const spacing =
-    parseFloat(lineSpacing.value) || 1.6;
+    parseFloat(lineSpacing.value) || 1.55;
 
   const pageWidth =
-    parseInt(previewWidth.value, 10) || 800;
+    parseInt(previewWidth.value, 10) || 1200;
 
   preview.style.fontSize = `${size}px`;
   preview.style.lineHeight = spacing;
