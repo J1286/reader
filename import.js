@@ -64,7 +64,6 @@ async function importPdfFile(file) {
 
     for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
       const page = await pdf.getPage(pageNumber);
-
       const textContent = await page.getTextContent();
 
       const items = textContent.items
@@ -75,10 +74,13 @@ async function importPdfFile(file) {
           y: item.transform[5]
         }));
 
+      // Group text items that share approximately the same baseline.
       const lines = [];
 
       for (const item of items) {
-        let line = lines.find((existing) => Math.abs(existing.y - item.y) < 3);
+        let line = lines.find(
+          (existing) => Math.abs(existing.y - item.y) < 3
+        );
 
         if (!line) {
           line = {
@@ -92,17 +94,88 @@ async function importPdfFile(file) {
         line.items.push(item);
       }
 
+      // Read lines from top to bottom and items from left to right.
       lines.sort((a, b) => b.y - a.y);
 
-      const pageLines = lines.map((line) => {
-        line.items.sort((a, b) => a.x - b.x);
+      const pageLines = lines
+        .map((line) => {
+          line.items.sort((a, b) => a.x - b.x);
 
-        return line.items.map((item) => item.text).join(" ");
-      });
+          return {
+            y: line.y,
+            x: line.items[0].x,
+            text: line.items.map((item) => item.text).join(" ")
+          };
+        })
+        .filter((line) => line.text.trim());
 
-      pages.push(pageLines.join("\n"));
+      if (!pageLines.length) {
+        continue;
+      }
+
+      // Estimate normal line spacing from the smaller vertical gaps.
+      const gaps = [];
+
+      for (let i = 1; i < pageLines.length; i++) {
+        const gap = pageLines[i - 1].y - pageLines[i].y;
+
+        if (gap > 0) {
+          gaps.push(gap);
+        }
+      }
+
+      gaps.sort((a, b) => a - b);
+
+      const normalGap = gaps.length
+        ? gaps[Math.floor((gaps.length - 1) * 0.35)]
+        : 0;
+
+      // Estimate the page's left text margin.
+      const leftMargin = Math.min(...pageLines.map((line) => line.x));
+
+      const paragraphs = [];
+      let currentParagraph = "";
+
+      for (let i = 0; i < pageLines.length; i++) {
+        const line = pageLines[i];
+
+        if (i === 0) {
+          currentParagraph = line.text;
+          continue;
+        }
+
+        const previousLine = pageLines[i - 1];
+        const verticalGap = previousLine.y - line.y;
+
+        // A larger vertical gap usually means a new paragraph.
+        const largeGap =
+          normalGap > 0 &&
+          verticalGap > normalGap * 1.55;
+
+        // An indented line may indicate the start of a paragraph.
+        const indented =
+          line.x > leftMargin + 18;
+
+        if (largeGap || indented) {
+          if (currentParagraph) {
+            paragraphs.push(currentParagraph);
+          }
+
+          currentParagraph = line.text;
+        } else {
+          // Join wrapped lines into a continuous paragraph.
+          currentParagraph += " " + line.text;
+        }
+      }
+
+      if (currentParagraph) {
+        paragraphs.push(currentParagraph);
+      }
+
+      pages.push(paragraphs.join("\n\n"));
     }
 
+    // Keep page boundaries separated.
     const text = pages.join("\n\n");
 
     await loadImportedText(text, file.name);
