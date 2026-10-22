@@ -2871,6 +2871,44 @@ body.reader-fullscreen .reader-content {
   display: none;
 }
 
+
+.library-breadcrumbs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 14px;
+  color: var(--muted-color);
+  font-size: 0.95rem;
+}
+
+.library-breadcrumbs:empty {
+  display: none;
+}
+
+.library-breadcrumb {
+  padding: 3px 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-color);
+  font: inherit;
+  cursor: pointer;
+}
+
+.library-breadcrumb:hover {
+  text-decoration: underline;
+}
+
+.library-breadcrumb[aria-current="location"] {
+  font-weight: 700;
+  cursor: default;
+  text-decoration: none;
+}
+
+.library-breadcrumb-separator {
+  opacity: 0.65;
+}
+
 /* =========================================================
    LIBRARY HEADER
 ========================================================= */
