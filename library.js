@@ -114,6 +114,30 @@ function createLibraryFolder() {
 }
 
 
+function getFolderFullName(folderId) {
+  const folders =
+    appState.librarySettings?.folders || [];
+
+  const names = [];
+  const visited = new Set();
+
+  let folder = folders.find(
+    (item) => item.id === folderId
+  );
+
+  while (folder && !visited.has(folder.id)) {
+    visited.add(folder.id);
+    names.unshift(folder.name);
+
+    folder = folder.parentId
+      ? folders.find((item) => item.id === folder.parentId)
+      : null;
+  }
+
+  return names.join(" / ") || "Unknown folder";
+}
+
+
 async function deleteLibraryFolder(folderId) {
   const folders =
     appState.librarySettings?.folders || [];
@@ -512,11 +536,16 @@ document.getElementById("batchMoveBooksButton")
     const folderList = document.getElementById("moveBookFolderList");
 
     if (!dialog || !dialogTitle || !folderList) return;
-
-    const options = [
-      { id: null, name: "My Library" },
-      ...(appState.librarySettings?.folders || [])
-    ];
+   
+   const options = [
+     { id: null, name: "My Library" },
+     ...(appState.librarySettings?.folders || []).map(
+       (folder) => ({
+         ...folder,
+         name: getFolderFullName(folder.id)
+       })
+     )
+   ];
 
     dialogTitle.textContent =
       `Move ${selectedBookIds.size} selected books`;
@@ -1063,12 +1092,15 @@ if (!books.length) {
         const folders = appState.librarySettings?.folders || [];
 
         const options = [
-          {
-            id: null,
-            name: "My Library"
-          },
-          ...folders
-        ];
+        {
+          id: null,
+          name: "My Library"
+        },
+        ...folders.map((folder) => ({
+        ...folder,
+        name: getFolderFullName(folder.id)
+        }))
+      ];
 
         moveBookDialogTitle.textContent = `Move "${book.title || "Untitled"}"`;
 
