@@ -113,21 +113,29 @@ function createLibraryFolder() {
   renderLibrary();
 }
 
+
 async function deleteLibraryFolder(folderId) {
   const folders =
     appState.librarySettings?.folders || [];
 
-  const folder =
-    folders.find(
-      (item) => item.id === folderId
-    );
+  const folder = folders.find(
+    (item) => item.id === folderId
+  );
 
   if (!folder) {
     return;
   }
 
+  const parentId = folder.parentId || null;
+
+  const destinationName = parentId
+    ? folders.find((item) => item.id === parentId)?.name || "parent folder"
+    : "My Library";
+
   const confirmed = confirm(
-    `Delete folder "${folder.name}"?\n\nBooks inside it will be moved back to My Library.`
+    `Delete folder "${folder.name}"?\n\n` +
+    `Its books and immediate subfolders will be moved to "${destinationName}".\n` +
+    `Any deeper subfolders will keep their existing structure.`
   );
 
   if (!confirmed) {
@@ -137,37 +145,45 @@ async function deleteLibraryFolder(folderId) {
   try {
     const books = await getAllBooks();
 
+    // Move books directly inside the deleted folder to its parent.
     for (const book of books) {
       if (book.folderId === folderId) {
-        book.folderId = null;
-        book.updatedAt =
-          new Date().toISOString();
+        book.folderId = parentId;
+        book.updatedAt = new Date().toISOString();
 
         await saveBook(book);
       }
     }
 
-    appState.librarySettings.folders =
-      folders.filter(
-        (item) => item.id !== folderId
-      );
-
-    if (currentLibraryFolderId === folderId) {
-      currentLibraryFolderId = null;
+    // Reparent immediate subfolders without disturbing deeper folders.
+    for (const childFolder of folders) {
+      if (childFolder.parentId === folderId) {
+        childFolder.parentId = parentId;
+      }
     }
 
+    // Remove only the selected folder.
+    appState.librarySettings.folders = folders.filter(
+      (item) => item.id !== folderId
+    );
+
+    // If the deleted folder is currently open, navigate to its parent.
+    if (currentLibraryFolderId === folderId) {
+      currentLibraryFolderId = parentId;
+    }
+
+    selectedBookIds.clear();
+    bookSelectionMode = false;
+
+    saveAppState();
     await syncLibraryState();
     await renderLibrary();
 
+    showStatus(`Folder "${folder.name}" deleted.`);
   } catch (error) {
-    console.error(
-      "Could not delete folder:",
-      error
-    );
+    console.error("Could not delete folder:", error);
 
-    showStatus(
-      "Could not delete that folder."
-    );
+    showStatus("Could not delete that folder.");
   }
 }
 
