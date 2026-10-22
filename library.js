@@ -96,15 +96,16 @@ function createLibraryFolder() {
     return;
   }
 
-  const folder = {
-    id:
-      "folder-" +
-      Date.now().toString(36) +
-      "-" +
-      Math.random().toString(36).slice(2, 8),
+    const folder = {
+       id:
+         "folder-" +
+         Date.now().toString(36) +
+         "-" +
+         Math.random().toString(36).slice(2, 8),
 
-    name: folderName
-  };
+       name: folderName,
+       parentId: currentLibraryFolderId || null
+     };
 
   appState.librarySettings.folders.push(folder);
 
@@ -714,13 +715,6 @@ async function renderLibrary() {
   const libraryFolders = document.getElementById("libraryFolders");
   const libraryBackButton = document.getElementById("libraryBackButton");
 
-  if (libraryFolders) {
-    libraryFolders.classList.toggle(
-      "hidden",
-      currentLibraryFolderId !== null
-    );
-  }
-
   if (libraryBackButton) {
     libraryBackButton.classList.toggle(
       "hidden",
@@ -743,10 +737,16 @@ async function renderLibrary() {
       }
     }
 
-    const folders =
-      appState.librarySettings?.folders || [];
+      const folders =
+        appState.librarySettings?.folders || [];
 
-    folders.forEach((folder) => {
+      const childFolders = folders.filter((folder) =>
+        currentLibraryFolderId === null
+          ? !folder.parentId
+          : folder.parentId === currentLibraryFolderId
+      );
+
+    childFolders.forEach((folder) => {
       const folderElement =
         document.createElement("div");
 
@@ -1151,7 +1151,12 @@ if (!books.length) {
 libraryBackButton?.addEventListener(
   "click",
   () => {
-    currentLibraryFolderId = null;
+    const folders = appState.librarySettings?.folders || [];
+    const currentFolder = folders.find(
+      (item) => item.id === currentLibraryFolderId
+    );
+
+    currentLibraryFolderId = currentFolder?.parentId || null;
     renderLibrary();
   }
 );
