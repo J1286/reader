@@ -163,6 +163,74 @@ function getFolderDescendantIds(folderId) {
 }
 
 
+async function moveLibraryFolder(folderId) {
+  const folders =
+    appState.librarySettings?.folders || [];
+
+  const folder = folders.find(
+    (item) => item.id === folderId
+  );
+
+  if (!folder) return;
+
+  const descendants = getFolderDescendantIds(folderId);
+
+  const options = [
+    { id: null, name: "My Library" },
+    ...folders
+      .filter(
+        (item) =>
+          item.id !== folderId &&
+          !descendants.has(item.id)
+      )
+      .map((item) => ({
+        ...item,
+        name: getFolderFullName(item.id)
+      }))
+  ];
+
+  const destination = prompt(
+    `Move "${folder.name}" to:\n\n` +
+    options
+      .map(
+        (item, index) =>
+          `${index + 1}. ${item.name}`
+      )
+      .join("\n") +
+    "\n\nEnter the destination number:"
+  );
+
+  if (destination === null) return;
+
+  const index = Number(destination.trim()) - 1;
+
+  if (
+    !Number.isInteger(index) ||
+    index < 0 ||
+    index >= options.length
+  ) {
+    showStatus("Invalid destination.");
+    return;
+  }
+
+  const target = options[index];
+
+  folder.parentId = target.id;
+
+  saveAppState();
+
+  if (currentLibraryFolderId === folderId) {
+    currentLibraryFolderId = target.id;
+  }
+
+  await renderLibrary();
+
+  showStatus(
+    `Moved "${folder.name}" to ${target.name}.`
+  );
+}
+
+
 async function deleteLibraryFolder(folderId) {
   const folders =
     appState.librarySettings?.folders || [];
