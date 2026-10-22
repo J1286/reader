@@ -2066,14 +2066,8 @@ body.reader-fullscreen .reader-content {
      font-size: 23px;
      }
 
-     .library-folder-action {
-       width: 25px;
-       height: 28px;
-       min-height: 28px;
-     }
-
      .library-folder-actions {
-       gap: 2px;
+       gap: 1px;
      }
    }
 }
@@ -3100,9 +3094,11 @@ body:has(#libraryView:not(.hidden)) #appTitle {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 8px;
 
+  width: 100%;
   min-width: 0;
+  justify-self: stretch;
+  gap: 8px;
 }
 
 .library-folder-action:hover {
