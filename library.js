@@ -138,6 +138,31 @@ function getFolderFullName(folderId) {
 }
 
 
+function getFolderDescendantIds(folderId) {
+  const folders =
+    appState.librarySettings?.folders || [];
+
+  const descendants = new Set();
+  const pending = [folderId];
+
+  while (pending.length) {
+    const parentId = pending.pop();
+
+    for (const folder of folders) {
+      if (
+        folder.parentId === parentId &&
+        !descendants.has(folder.id)
+      ) {
+        descendants.add(folder.id);
+        pending.push(folder.id);
+      }
+    }
+  }
+
+  return descendants;
+}
+
+
 async function deleteLibraryFolder(folderId) {
   const folders =
     appState.librarySettings?.folders || [];
