@@ -3030,11 +3030,11 @@ body:has(#libraryView:not(.hidden)) #appTitle {
   grid-template-rows: auto auto;
   align-items: center;
   column-gap: 10px;
-  row-gap: 4px;
+  row-gap: 1px;
 
-  min-height: 76px;
+  min-height: 64px;
   min-width: 0;
-  padding: 10px 12px;
+  padding: 6px 12px;
 
   border: 1px solid var(--border-color);
   border-radius: 10px;
@@ -3098,7 +3098,7 @@ body:has(#libraryView:not(.hidden)) #appTitle {
   width: 100%;
   min-width: 0;
   justify-self: stretch;
-  gap: 8px;
+  gap: 6px;
 }
 
 .library-folder-action:hover {
