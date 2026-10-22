@@ -31,6 +31,10 @@ async function createLibraryBackup() {
 
       currentBookId: appState.currentBookId,
 
+      folders: (appState.librarySettings?.folders || []).map(
+        (folder) => ({ ...folder })
+      ),
+
       formatter: {
         ...appState.formatter
       },
@@ -244,6 +248,55 @@ async function restoreLibrary(file) {
     */
     for (const book of restoredBooks) {
       await saveBook(book);
+    }
+    
+    if (Array.isArray(backup.folders)) {
+      const currentFolders =
+        appState.librarySettings?.folders || [];
+
+      const foldersById = new Map(
+        currentFolders.map((folder) => [
+          folder.id,
+          { ...folder }
+        ])
+      );
+
+      for (const folder of backup.folders) {
+        if (!folder || !folder.id || !folder.name) {
+          continue;
+        }
+
+        foldersById.set(folder.id, {
+          ...folder,
+          id: String(folder.id),
+          name: String(folder.name),
+          parentId: folder.parentId
+            ? String(folder.parentId)
+            : null
+        });
+      }
+
+      appState.librarySettings =
+        appState.librarySettings || {};
+
+      appState.librarySettings.folders =
+        Array.from(foldersById.values());
+
+      // Repair references to parents that aren't present.
+      const restoredFolderIds = new Set(
+        appState.librarySettings.folders.map(
+          (folder) => folder.id
+        )
+      );
+
+      for (const folder of appState.librarySettings.folders) {
+        if (
+          folder.parentId &&
+          !restoredFolderIds.has(folder.parentId)
+        ) {
+          folder.parentId = null;
+        }
+      }
     }
 
     if (backup.formatter && typeof backup.formatter === "object") {
