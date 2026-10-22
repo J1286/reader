@@ -3030,27 +3030,16 @@ body:has(#libraryView:not(.hidden)) #appTitle {
    LIBRARY FOLDERS
 ========================================================= */
 
-.library-folders {
-  display: grid;
-
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(150px, 1fr)
-  );
-
-  gap: 12px;
-
-  margin-bottom: 18px;
-}
-
 .library-folder {
-  display: flex;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  grid-template-rows: auto auto;
   align-items: center;
+  column-gap: 10px;
+  row-gap: 4px;
 
-  gap: 10px;
-
-  min-height: 58px;
-
+  min-height: 76px;
+  min-width: 0;
   padding: 10px 12px;
 
   border: 1px solid var(--border-color);
@@ -3061,8 +3050,7 @@ body:has(#libraryView:not(.hidden)) #appTitle {
 
   cursor: pointer;
 
-  box-shadow:
-    0 3px 10px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
 }
 
 .library-folder:hover {
@@ -3076,24 +3064,25 @@ body:has(#libraryView:not(.hidden)) #appTitle {
 }
 
 .library-folder-name {
-  flex: 1;
+  grid-column: 2;
+  grid-row: 1;
+
   min-width: 0;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 
   font-weight: 600;
 }
 
 .library-folder-actions {
+  grid-column: 2;
+  grid-row: 2;
+
   display: flex;
   align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
 
-  gap: 4px;
-
-  flex-shrink: 0;
+  min-width: 0;
 }
 
 .library-folder-action {
