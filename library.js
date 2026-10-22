@@ -1118,10 +1118,15 @@ if (!books.length) {
 
     books.sort((a, b) => {
       if (sortMode === "title") {
-        return (a.title || "").localeCompare(b.title || "", undefined, {
-          sensitivity: "base"
-        });
-      }
+        return (a.title || "").localeCompare(
+          b.title || "",
+          undefined,
+          {
+         sensitivity: "base",
+         numeric: true
+         }
+       );
+     }
 
       if (sortMode === "progress") {
         return (b.progress || 0) - (a.progress || 0);
