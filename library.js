@@ -1006,6 +1006,25 @@ async function renderLibrary() {
     }
   );
 
+/* ---------- Move Folder ---------- */
+
+const moveFolderButton = document.createElement("button");
+
+moveFolderButton.type = "button";
+moveFolderButton.className = "library-folder-action";
+moveFolderButton.setAttribute(
+  "aria-label",
+  `Move ${folder.name}`
+);
+moveFolderButton.title = "Move Folder";
+moveFolderButton.innerHTML =
+  '<i class="bi bi-folder-symlink"></i>';
+
+moveFolderButton.addEventListener("click", (event) => {
+  event.stopPropagation();
+  moveLibraryFolder(folder.id);
+});
+
   /* ---------- Delete ---------- */
 
 const deleteFolderButton =
@@ -1055,6 +1074,7 @@ deleteFolderButton.addEventListener(
      "library-folder-actions";
 
     actions.appendChild(renameButton);
+    actions.appendChild(moveFolderButton);
     actions.appendChild(deleteFolderButton);
     folderElement.appendChild(icon);
     folderElement.appendChild(name);
