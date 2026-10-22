@@ -1,4 +1,4 @@
-/* =================================================
+/* ===============================================
    BOOK LIBRARY
 ================================================= */
 
@@ -765,6 +765,65 @@ async function renderLibrary() {
       "hidden",
       currentLibraryFolderId === null
     );
+  }
+
+  const breadcrumbNav =
+    document.getElementById("libraryBreadcrumbs");
+
+  if (breadcrumbNav) {
+    breadcrumbNav.innerHTML = "";
+
+    const folders =
+      appState.librarySettings?.folders || [];
+
+    const path = [];
+    const visited = new Set();
+
+    let folder = folders.find(
+      (item) => item.id === currentLibraryFolderId
+    );
+
+    while (folder && !visited.has(folder.id)) {
+      visited.add(folder.id);
+      path.unshift(folder);
+
+      folder = folder.parentId
+        ? folders.find((item) => item.id === folder.parentId)
+        : null;
+    }
+
+    const crumbs = [
+      { id: null, name: "My Library" },
+      ...path
+    ];
+
+    crumbs.forEach((crumb, index) => {
+      if (index > 0) {
+        const separator = document.createElement("span");
+        separator.className = "library-breadcrumb-separator";
+        separator.textContent = "/";
+        breadcrumbNav.appendChild(separator);
+      }
+
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "library-breadcrumb";
+      button.textContent = crumb.name;
+
+      if (index === crumbs.length - 1) {
+        button.setAttribute("aria-current", "location");
+        button.disabled = true;
+      } else {
+        button.addEventListener("click", () => {
+          currentLibraryFolderId = crumb.id;
+          selectedBookIds.clear();
+          bookSelectionMode = false;
+          renderLibrary();
+        });
+      }
+
+      breadcrumbNav.appendChild(button);
+    });
   }
 
   if (libraryFolders) {
