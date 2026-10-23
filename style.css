@@ -3212,7 +3212,8 @@ body:has(#libraryView:not(.hidden)) #appTitle {
     min-height: calc(100vh - 76px);
     padding: 10px 10px 22px;
     border-radius: 12px;
-    background-size: 100% 100%;
+    background-size: 100% auto;
+    background-repeat: repeat-y;
   }
 
   #libraryView .library-panel {
