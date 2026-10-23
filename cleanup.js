@@ -245,6 +245,12 @@ async function applyCleanup() {
     return;
   }
 
+  // Preserve the first original before any cleanup is applied.
+  if (typeof book.originalText !== "string") {
+    book.originalText = book.text || "";
+    await saveBook(book);
+  }
+
   await updateCurrentBookText(cleaned, true);
 
   renderCurrentView();
