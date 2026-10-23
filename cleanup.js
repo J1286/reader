@@ -80,37 +80,56 @@ function isLikelyHeading(line) {
   return false;
 }
 
-/* Join lines that appear to be wrapped versions of the same paragraph. */
+
+/* Join wrapped lines while preserving likely paragraph and dialogue boundaries. */
 function joinBrokenLines(text) {
   const lines = text.split(/\r?\n/);
-
   const result = [];
-
   let paragraph = "";
+
+  function flushParagraph() {
+    if (paragraph) {
+      result.push(paragraph);
+      paragraph = "";
+    }
+  }
+
+  function endsSentence(line) {
+    return /[。！？!?]["'」』”’）)\]]*$/.test(line);
+  }
+
+  function startsDialogue(line) {
+    return /^[「『“"「『（(—–-]/.test(line);
+  }
+
+  function startsNewChineseParagraph(line) {
+    return /^(?:　{1,}| {2,})/.test(line);
+  }
 
   for (const rawLine of lines) {
     const line = rawLine.trim();
 
+    // Keep existing paragraph breaks.
     if (!line) {
-      if (paragraph) {
-        result.push(paragraph);
-        paragraph = "";
-      }
+      flushParagraph();
 
-      result.push("");
+      if (result.length && result[result.length - 1] !== "") {
+        result.push("");
+      }
 
       continue;
     }
 
+    // Keep chapter headings separate.
     if (isLikelyHeading(line)) {
-      if (paragraph) {
-        result.push(paragraph);
-        paragraph = "";
+      flushParagraph();
+
+      if (result.length && result[result.length - 1] !== "") {
+        result.push("");
       }
 
       result.push(line);
       result.push("");
-
       continue;
     }
 
@@ -119,7 +138,18 @@ function joinBrokenLines(text) {
       continue;
     }
 
-    /* CJK text normally does not need a space between wrapped lines. */
+    // A sentence ending followed by dialogue is likely a new paragraph.
+    // Also respect an obvious indented paragraph in Chinese text.
+    if (
+      (endsSentence(paragraph) && startsDialogue(line)) ||
+      startsNewChineseParagraph(rawLine)
+    ) {
+      flushParagraph();
+      paragraph = line;
+      continue;
+    }
+
+    // CJK text normally joins without a space; English needs one.
     if (isCJK(paragraph.at(-1)) || isCJK(line[0])) {
       paragraph += line;
     } else {
@@ -127,9 +157,7 @@ function joinBrokenLines(text) {
     }
   }
 
-  if (paragraph) {
-    result.push(paragraph);
-  }
+  flushParagraph();
 
   return result.join("\n");
 }
