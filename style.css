@@ -2985,7 +2985,7 @@ body:has(#libraryView:not(.hidden)) #appTitle {
   overflow: hidden;
   background-image: linear-gradient(rgba(18, 10, 5, 0.2), rgba(18, 10, 5, 0.34)),
     url("./assets/bookshelf-bg.png");
-  background-size: 100% auto;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center top;
 }
@@ -3212,7 +3212,7 @@ body:has(#libraryView:not(.hidden)) #appTitle {
     min-height: calc(100vh - 76px);
     padding: 10px 10px 22px;
     border-radius: 12px;
-    background-size: 100% auto;
+    background-size: 100% 100%;
   }
 
   #libraryView .library-panel {
