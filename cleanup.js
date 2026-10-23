@@ -8,6 +8,10 @@ applyButton.addEventListener("click", applyCleanup);
 
 clearButton.addEventListener("click", clearDocument);
 
+document
+  .getElementById("resetOriginalButton")
+  .addEventListener("click", resetToOriginal);
+
 /* =================================================
    CLEANUP HELPERS
 ================================================= */
@@ -260,6 +264,35 @@ async function applyCleanup() {
   }
 
   showStatus("Cleaned text applied.");
+}
+
+/* =================================================
+   RESET TO ORIGINAL
+================================================= */
+
+async function resetToOriginal() {
+  const book = getCurrentBook();
+
+  if (!book || typeof book.originalText !== "string") {
+    showStatus("No saved original text is available for this book.");
+    return;
+  }
+
+  if (!confirm("Restore this book to its original text? Your current text will be replaced.")) {
+    return;
+  }
+
+  await updateCurrentBookText(book.originalText, true);
+
+  cleanedText.value = book.originalText;
+
+  renderCurrentView();
+
+  if (currentMode === "reader") {
+    renderReader();
+  }
+
+  showStatus("Original text restored.");
 }
 
 /* =================================================
