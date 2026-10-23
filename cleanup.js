@@ -103,7 +103,7 @@ function joinBrokenLines(text) {
   }
 
   function startsNewChineseParagraph(line) {
-    return /^(?:　{1,}| {2,})/.test(line);
+    return /^(?:　+|[ \t]+)/.test(line);
   }
 
   for (const rawLine of lines) {
