@@ -216,10 +216,14 @@ function analyzeText() {
   if (cleanSpaces.checked) {
     cleaned = cleanSpacing(cleaned);
   }
-   console.log("Join lines enabled:", joinBrokenLinesCheckbox.checked);
+   
   if (joinBrokenLinesCheckbox.checked) {
-    cleaned = joinBrokenLines(cleaned);
-  }
+  const beforeJoin = cleaned;
+  cleaned = joinBrokenLines(cleaned);
+
+  console.log("Before join:", beforeJoin.slice(0, 500));
+  console.log("After join:", cleaned.slice(0, 500));
+}
 
   if (detectParagraphs.checked) {
     cleaned = detectParagraphBreaks(cleaned);
