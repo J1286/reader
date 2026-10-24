@@ -218,6 +218,10 @@ function analyzeText() {
   if (joinBrokenLinesCheckbox.checked) {
   const beforeJoin = cleaned;
   cleaned = joinBrokenLines(cleaned);
+
+  console.log("Join enabled:", true);
+  console.log("Line count before:", beforeJoin.split(/\r?\n/).length);
+  console.log("Line count after:", cleaned.split(/\r?\n/).length);
 }
 
   if (detectParagraphs.checked) {
@@ -232,7 +236,6 @@ function analyzeText() {
   cleaned = cleaned.replace(/\n{3,}/g, "\n\n").trim();
 
   cleanedText.value = cleaned;
-   console.log("Suggested cleanup:", cleaned.slice(0, 300));
 
   cleanupResult.classList.remove("hidden");
 
