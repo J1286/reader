@@ -232,6 +232,7 @@ function analyzeText() {
   cleaned = cleaned.replace(/\n{3,}/g, "\n\n").trim();
 
   cleanedText.value = cleaned;
+   console.log("Suggested cleanup:", cleaned.slice(0, 300));
 
   cleanupResult.classList.remove("hidden");
 
