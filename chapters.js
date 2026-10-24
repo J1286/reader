@@ -12,15 +12,13 @@ const chapterPatterns = [
   /^section\s+\d+\b[\s:.\-]*(.*)$/i,
 
   /^第\s*[一二三四五六七八九十百千万亿两\d]+\s*[章節部篇回卷][\s:：、.\-]*(.*)$/,
-  /^第\s*\d+\s*[章節部篇回卷][\s:：、.\-]*(.*)$/
+  /^第\s*\d+\s*[章節部篇回卷][\s:：、.\-]*(.*)$/,
 
   // Standalone numbered headings
   /^\d+\s*[.．、\-–—:：]\s*\S.*$/,
 
-  // Chinese numbered headings: 
+  // Chinese numbered headings
   /^[一二三四五六七八九十百千]+\s+\S.*$/,
-
-  // Chinese numbered headings with punctuation
   /^[一二三四五六七八九十百千]+\s*[、.．\-–—:：]\s*\S.*$/
 ];
 
