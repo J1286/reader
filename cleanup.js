@@ -109,14 +109,12 @@ function joinBrokenLines(text) {
   for (const rawLine of lines) {
     const line = rawLine.trim();
 
-    // Treat blank lines as paragraph boundaries only when the previous line looks like a complete sentence.
+   // Preserve blank lines as paragraph boundaries.
    if (!line) {
-     if (paragraph && /[。！？!?」』”’）)\]]$/.test(paragraph)) {
-       flushParagraph();
+     flushParagraph();
 
-       if (result.length && result[result.length - 1] !== "") {
-         result.push("");
-       }
+     if (result.length && result[result.length - 1] !== "") {
+     result.push("");
      }
 
      continue;
