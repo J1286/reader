@@ -196,6 +196,9 @@ function renderReader() {
     return;
   }
 
+   console.log("Reader text:", text.slice(0, 500));
+console.log("Saved book text:", getCurrentBook()?.text?.slice(0, 500));
+
   const paragraphs = getBookParagraphs(text);
   const fragment = document.createDocumentFragment();
 
