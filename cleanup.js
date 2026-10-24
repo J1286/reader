@@ -108,6 +108,13 @@ function joinBrokenLines(text) {
 
   for (const rawLine of lines) {
     const line = rawLine.trim();
+     if (rawLine.includes("高高的") || rawLine.includes("紅牆")) {
+  console.log("Line debug:", {
+    raw: JSON.stringify(rawLine),
+    trimmed: JSON.stringify(line),
+    paragraph: JSON.stringify(paragraph)
+  });
+}
 
     // Keep existing paragraph breaks.
     if (!line) {
@@ -220,9 +227,6 @@ function analyzeText() {
   if (joinBrokenLinesCheckbox.checked) {
   const beforeJoin = cleaned;
   cleaned = joinBrokenLines(cleaned);
-
-  console.log("Before join:", beforeJoin.slice(0, 500));
-  console.log("After join:", cleaned.slice(0, 500));
 }
 
   if (detectParagraphs.checked) {
