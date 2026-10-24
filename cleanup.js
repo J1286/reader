@@ -108,13 +108,7 @@ function joinBrokenLines(text) {
 
   for (const rawLine of lines) {
     const line = rawLine.trim();
-     if (rawLine.includes("高高的") || rawLine.includes("紅牆")) {
-  console.log("Line debug:", {
-    raw: JSON.stringify(rawLine),
-    trimmed: JSON.stringify(line),
-    paragraph: JSON.stringify(paragraph)
-  });
-}
+  }
 
     // Keep existing paragraph breaks.
     if (!line) {
@@ -126,7 +120,7 @@ function joinBrokenLines(text) {
 
       continue;
     }
-
+   console.log("Heading check:", JSON.stringify(line), isLikelyHeading(line));
     // Keep chapter headings separate.
     if (isLikelyHeading(line)) {
       flushParagraph();
