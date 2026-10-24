@@ -145,6 +145,7 @@ function joinBrokenLines(text) {
       startsNewChineseParagraph(rawLine)
     ) {
       flushParagraph();
+      result.push("");
       paragraph = line;
       continue;
     }
