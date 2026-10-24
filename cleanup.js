@@ -99,7 +99,7 @@ function joinBrokenLines(text) {
   }
 
   function startsDialogue(line) {
-    return /^[「『“"「『（(—–-]/.test(line);
+    return /^[「『“"（(—–-]/.test(line);
   }
 
   function startsNewChineseParagraph(line) {
@@ -108,20 +108,17 @@ function joinBrokenLines(text) {
 
   for (const rawLine of lines) {
     const line = rawLine.trim();
-  }
 
-    // Keep chapter headings separate.
-    if (isLikelyHeading(line)) {
+    // Preserve blank lines as paragraph boundaries.
+    if (!line) {
       flushParagraph();
 
-    if (result.length && result[result.length - 1] !== "") {
-      result.push("");
-    }
+      if (result.length && result[result.length - 1] !== "") {
+        result.push("");
+      }
 
-    result.push(line);
-    result.push("");
-    continue;
-   }
+      continue;
+    }
 
     // Keep chapter headings separate.
     if (isLikelyHeading(line)) {
@@ -141,8 +138,7 @@ function joinBrokenLines(text) {
       continue;
     }
 
-    // A sentence ending followed by dialogue is likely a new paragraph.
-    // Also respect an obvious indented paragraph in Chinese text.
+    // Preserve dialogue and clearly indented paragraphs.
     if (
       (endsSentence(paragraph) && startsDialogue(line)) ||
       startsNewChineseParagraph(rawLine)
@@ -153,7 +149,7 @@ function joinBrokenLines(text) {
       continue;
     }
 
-    // CJK text normally joins without a space; English needs one.
+    // Join wrapped lines, without adding spaces between CJK text.
     if (isCJK(paragraph.at(-1)) || isCJK(line[0])) {
       paragraph += line;
     } else {
@@ -165,7 +161,6 @@ function joinBrokenLines(text) {
 
   return result.join("\n");
 }
-
 
 function detectParagraphBreaks(text) {
   const lines = text.split(/\r?\n/);
