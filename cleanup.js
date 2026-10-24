@@ -109,16 +109,18 @@ function joinBrokenLines(text) {
   for (const rawLine of lines) {
     const line = rawLine.trim();
 
-    // Preserve blank lines as paragraph boundaries.
-    if (!line) {
-      flushParagraph();
+    // Treat blank lines as paragraph boundaries only when the previous line looks like a complete sentence.
+   if (!line) {
+     if (paragraph && /[。！？!?」』”’）)\]]$/.test(paragraph)) {
+       flushParagraph();
 
-      if (result.length && result[result.length - 1] !== "") {
-        result.push("");
-      }
+       if (result.length && result[result.length - 1] !== "") {
+         result.push("");
+       }
+     }
 
-      continue;
-    }
+     continue;
+   }
 
     // Keep chapter headings separate.
     if (isLikelyHeading(line)) {
