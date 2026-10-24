@@ -110,17 +110,19 @@ function joinBrokenLines(text) {
     const line = rawLine.trim();
   }
 
-    // Keep existing paragraph breaks.
-    if (!line) {
+    // Keep chapter headings separate.
+    if (isLikelyHeading(line)) {
       flushParagraph();
 
-      if (result.length && result[result.length - 1] !== "") {
-        result.push("");
-      }
-
-      continue;
+    if (result.length && result[result.length - 1] !== "") {
+      result.push("");
     }
-   console.log("Heading check:", JSON.stringify(line), isLikelyHeading(line));
+
+    result.push(line);
+    result.push("");
+    continue;
+   }
+
     // Keep chapter headings separate.
     if (isLikelyHeading(line)) {
       flushParagraph();
