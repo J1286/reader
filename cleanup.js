@@ -216,10 +216,10 @@ function analyzeText() {
   }
    
   if (joinBrokenLinesCheckbox.checked) {
+     console.log("Raw input sample:", JSON.stringify(cleaned.slice(0, 300)));
+console.log("Join checkbox:", joinBrokenLinesCheckbox.checked);
   const beforeJoin = cleaned;
   cleaned = joinBrokenLines(cleaned);
-     console.log("Text changed:", beforeJoin !== cleaned);
-console.log("Joined sample:", cleaned.slice(100, 600));
 }
 
   if (detectParagraphs.checked) {
