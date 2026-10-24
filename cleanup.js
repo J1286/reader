@@ -285,6 +285,8 @@ async function applyCleanup() {
   }
 
   await updateCurrentBookText(cleaned, true);
+   console.log("Cleanup result:", cleaned.slice(0, 500));
+console.log("Book after update:", getCurrentBook()?.text?.slice(0, 500));
 
   renderCurrentView();
 
