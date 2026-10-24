@@ -216,7 +216,7 @@ function analyzeText() {
   if (cleanSpaces.checked) {
     cleaned = cleanSpacing(cleaned);
   }
-
+   console.log("Join lines enabled:", joinBrokenLinesCheckbox.checked);
   if (joinBrokenLinesCheckbox.checked) {
     cleaned = joinBrokenLines(cleaned);
   }
@@ -285,8 +285,6 @@ async function applyCleanup() {
   }
 
   await updateCurrentBookText(cleaned, true);
-   console.log("Cleanup result:", cleaned.slice(0, 500));
-console.log("Book after update:", getCurrentBook()?.text?.slice(0, 500));
 
   renderCurrentView();
 
