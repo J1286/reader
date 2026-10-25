@@ -1,7 +1,7 @@
 {
-  "name": "My Reader",
-  "short_name": "Reader",
-  "description": "A personal offline reader and library.",
+  "name": "Neverleaf",
+  "short_name": "Neverleaf",
+  "description": "A personal reading library.",
   "start_url": "/reader/",
   "scope": "/reader/",
   "display": "standalone",
