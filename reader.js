@@ -4,34 +4,34 @@
 
 const presetSettings = {
   book: {
-    fontSize: 14,
+    fontSize: 17,
     lineSpacing: 1.55,
-    paragraphSpacing: 14,
-    previewWidth: 1100,
+    paragraphSpacing: 14.5,
+    previewWidth: 1000,
     indent: true
   },
 
   ereader: {
     fontSize: 16,
     lineSpacing: 1.45,
-    paragraphSpacing: 12,
-    previewWidth: 1080,
+    paragraphSpacing: 13.5,
+    previewWidth: 900,
     indent: true
   },
 
   web: {
-    fontSize: 15,
+    fontSize: 15.5,
     lineSpacing: 1.5,
     paragraphSpacing: 16,
-    previewWidth: 1250,
+    previewWidth: 1150,
     indent: false
   },
 
   manuscript: {
-    fontSize: 13.5,
+    fontSize: 14.5,
     lineSpacing: 1.7,
     paragraphSpacing: 12,
-    previewWidth: 1000,
+    previewWidth: 900,
     indent: false
   }
 };
