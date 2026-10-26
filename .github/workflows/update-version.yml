@@ -49,7 +49,7 @@ jobs:
           sw_path = Path("sw.js")
           text = sw_path.read_text()
 
-          pattern = r'(const CACHE_NAME = "my-reader-v)(\d+)\.(\d+)\.(\d+)(";)'
+          pattern = r'(const CACHE_NAME = "neverleaf-v)(\d+)\.(\d+)\.(\d+)(";)'
           match = re.search(pattern, text)
 
           if not match:
