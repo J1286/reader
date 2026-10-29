@@ -142,14 +142,14 @@ function updateChapterListSelection() {
     button.setAttribute("aria-current", isActive ? "true" : "false");
   });
 
-  const activeButton = chapterButtons[currentIndex];
-
-  if (activeButton) {
-    activeButton.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest"
-    });
-  }
+//  const activeButton = chapterButtons[currentIndex];
+//
+//  if (activeButton) {
+//    activeButton.scrollIntoView({
+//      behavior: "smooth",
+//      block: "nearest"
+//    });
+//  }
 }
 
 /* =================================================
