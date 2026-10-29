@@ -71,7 +71,7 @@ function prepareChapters(text, persist = true) {
     }));
   }
 
-  chapterPanel.innerHTML = "";
+  renderChapterNavigation(detectedChapters);
 }
 
 /* =================================================
@@ -79,6 +79,23 @@ function prepareChapters(text, persist = true) {
 ================================================= */
 
 function renderChapterNavigation(chapters) {
+  const signature = JSON.stringify(
+    chapters.map((chapter) => [
+      chapter.id,
+      chapter.title,
+      chapter.lineIndex
+    ])
+  );
+
+  // Reuse the existing chapter list if nothing changed.
+  if (
+    chapterPanel.dataset.chapterSignature === signature &&
+    chapterPanel.querySelectorAll(".chapter-item").length === chapters.length
+  ) {
+    updateChapterListSelection();
+    return;
+  }
+
   chapterPanel.innerHTML = "";
 
   if (!chapters.length) {
@@ -88,6 +105,8 @@ function renderChapterNavigation(chapters) {
     empty.textContent = "No chapters detected yet.";
 
     chapterPanel.appendChild(empty);
+
+    chapterPanel.dataset.chapterSignature = signature;
 
     return;
   }
@@ -115,6 +134,8 @@ function renderChapterNavigation(chapters) {
 
     chapterPanel.appendChild(button);
   });
+
+  chapterPanel.dataset.chapterSignature = signature;
 
   updateChapterListSelection();
 }
