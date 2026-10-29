@@ -842,6 +842,24 @@ async function renderContinueReading(books) {
 }
 
 
+function updateLibraryBackgroundSizing() {
+  const librarySection = document.getElementById("librarySection");
+  const header = document.querySelector(".header");
+
+  if (!librarySection) return;
+
+  const availableHeight =
+    window.innerHeight - (header?.offsetHeight || 0);
+
+  const isLong =
+    librarySection.scrollHeight > availableHeight;
+
+  libraryView.dataset.contentLength = isLong
+    ? "long"
+    : "short";
+}
+
+
 async function renderLibrary() {
   const libraryBackground =
     appState.appearance?.background === "cozy-winter"
@@ -1111,6 +1129,7 @@ if (!books.length) {
   empty.className = "library-empty";
   empty.textContent = "No books in your library yet.";
   libraryPanel.appendChild(empty);
+  updateLibraryBackgroundSizing();
   return;
 }
 
@@ -1358,6 +1377,7 @@ if (!books.length) {
     );
 
     updateBatchActions();
+    updateLibraryBackgroundSizing();
       
   } catch (error) {
     console.error("Could not render library:", error);
