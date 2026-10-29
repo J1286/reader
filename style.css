@@ -4006,3 +4006,8 @@ body:has(#libraryView:not(.hidden)) .library-actions {
     grid-template-columns: 1fr;
   }
 }
+
+/* Keep the library menu button aligned with the header. */
+body:has(#libraryView:not(.hidden)) .menu-button {
+  top: calc(env(safe-area-inset-top) + 3px);
+}
