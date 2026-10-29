@@ -4025,3 +4025,7 @@ body:has(#libraryView:not(.hidden)) .menu-button {
     background-repeat: repeat-y;
   }
 }
+
+body:has(#libraryView:not(.hidden)) {
+  overscroll-behavior-y: none;
+}
