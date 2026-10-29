@@ -89,17 +89,7 @@ function renderCurrentView() {
 
   const text = book?.text || currentBook?.text || "";
 
-  if (book && Array.isArray(book.chapters)) {
-    detectedChapters = book.chapters.map((chapter, index) => ({
-      ...chapter,
-      id: chapter.id || `chapter-${index + 1}`
-    }));
-
-    renderChapterNavigation(detectedChapters);
-  } else {
-    prepareChapters(text);
-  }
-
+  prepareChapters(text);
   renderPreview(text);
 }
 
