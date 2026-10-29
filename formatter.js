@@ -372,5 +372,5 @@ function renderPreview(text = getBookText()) {
     preview.appendChild(notice);
   }
 
-  updateStats();
+  // Temporary performance test: skip full-book statistics.
 }
