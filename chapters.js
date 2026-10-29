@@ -71,7 +71,7 @@ function prepareChapters(text, persist = true) {
     }));
   }
 
-  renderChapterNavigation(detectedChapters);
+  chapterPanel.innerHTML = "";
 }
 
 /* =================================================
