@@ -4014,12 +4014,12 @@ body:has(#libraryView:not(.hidden)) .menu-button {
 
 /* Cozy Winter background sizing */
 @media (max-width: 700px) {
-  #libraryView[data-background="cozy-winter"] {
+  #libraryView[data-background]:not([data-background="bookshelf"]) {
     background-size: 100% 100%;
     background-repeat: no-repeat;
   }
 
-  #libraryView[data-background="cozy-winter"][data-content-length="long"] {
+  #libraryView[data-background]:not([data-background="bookshelf"])[data-content-length="long"] {
     background-size: 100% auto;
     background-repeat: repeat-y;
   }
