@@ -4011,3 +4011,16 @@ body:has(#libraryView:not(.hidden)) .library-actions {
 body:has(#libraryView:not(.hidden)) .menu-button {
   top: calc(env(safe-area-inset-top) + 3px);
 }
+
+/* Cozy Winter background sizing */
+@media (max-width: 700px) {
+  #libraryView[data-background="cozy-winter"] {
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+
+  #libraryView[data-background="cozy-winter"][data-content-length="long"] {
+    background-size: 100% auto;
+    background-repeat: repeat-y;
+  }
+}
