@@ -2979,6 +2979,7 @@ body:has(#libraryView:not(.hidden)) #appTitle {
 /* Bookshelf background */
 #libraryView {
   position: relative;
+  box-sizing: border-box;
   min-height: calc(100vh - 94px);
   padding: 18px 18px 28px;
   border-radius: 16px;
