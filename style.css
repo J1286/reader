@@ -4051,3 +4051,13 @@ body:has(#libraryView:not(.hidden)) {
     min-height: 0;
   }
 }
+
+@media (max-width: 700px) {
+  body:has(#libraryView:not(.hidden)) .container {
+    flex: 1 1 auto;
+  }
+
+  body:has(#libraryView:not(.hidden)) #libraryView {
+    flex: 1 1 auto;
+  }
+}
