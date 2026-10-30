@@ -4031,12 +4031,17 @@ body:has(#libraryView:not(.hidden)) {
 }
 
 @media (max-width: 700px) {
-  body:has(#libraryView:not(.hidden)) .container {
+  body:has(#libraryView:not(.hidden)) {
     display: flex;
     flex-direction: column;
-    min-height: calc(
-      100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)
-    );
+    min-height: 100dvh;
+  }
+
+  body:has(#libraryView:not(.hidden)) .container {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+    min-height: 0;
   }
 
   body:has(#libraryView:not(.hidden)) #libraryView {
