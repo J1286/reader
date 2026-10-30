@@ -2020,10 +2020,17 @@ body.reader-fullscreen .reader-content {
   /* STATUS */
 
   .status {
-    margin: 0 var(--mobile-padding) calc(16px + env(safe-area-inset-bottom));
+  position: fixed;
+  left: 10px;
+  right: 10px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 110;
 
-    font-size: 13px;
-  }
+  min-height: 0;
+  margin: 0;
+
+  font-size: 13px;
+}
 
   /* FULLSCREEN */
 
