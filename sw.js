@@ -1,4 +1,4 @@
-const CACHE_NAME = "neverleaf-v1.8.2";
+const CACHE_NAME = "neverleaf-v1.8.3";
 
 const APP_SHELL = [
   "/reader/",
