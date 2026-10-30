@@ -4050,7 +4050,17 @@ body:has(#libraryView:not(.hidden)) {
   }
 }
 
-body:has(#libraryView:not(.hidden)) #libraryView {
-  margin-bottom: calc(-1 * env(safe-area-inset-bottom));
-  padding-bottom: calc(22px + env(safe-area-inset-bottom));
+@media (max-width: 700px) {
+  body:has(#libraryView:not(.hidden)) {
+    padding-bottom: 0;
+  }
+
+  body:has(#libraryView:not(.hidden)) .container {
+    min-height: calc(100dvh - env(safe-area-inset-top));
+  }
+
+  body:has(#libraryView:not(.hidden)) #libraryView {
+    margin-bottom: 0;
+    padding-bottom: 22px;
+  }
 }
