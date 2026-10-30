@@ -844,15 +844,12 @@ async function renderContinueReading(books) {
 
 function updateLibraryBackgroundSizing() {
   const librarySection = document.getElementById("librarySection");
-  const header = document.querySelector(".header");
 
-  if (!librarySection) return;
-
-  const availableHeight =
-    window.innerHeight - (header?.offsetHeight || 0);
+  if (!librarySection || !libraryView) return;
 
   const isLong =
-    librarySection.scrollHeight > availableHeight;
+    librarySection.scrollHeight >
+    libraryView.clientHeight + 2;
 
   libraryView.dataset.contentLength = isLong
     ? "long"
