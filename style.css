@@ -4034,7 +4034,9 @@ body:has(#libraryView:not(.hidden)) {
   body:has(#libraryView:not(.hidden)) {
     display: flex;
     flex-direction: column;
+    height: 100dvh;
     min-height: 100dvh;
+    padding-bottom: 0;
   }
 
   body:has(#libraryView:not(.hidden)) .container {
